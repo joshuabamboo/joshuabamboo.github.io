@@ -4,7 +4,7 @@
   <title><![CDATA[My Octopress Blog]]></title>
   <link href="http://joshuabamboo.github.io/atom.xml" rel="self"/>
   <link href="http://joshuabamboo.github.io/"/>
-  <updated>2014-10-15T09:08:01-04:00</updated>
+  <updated>2014-10-15T09:09:56-04:00</updated>
   <id>http://joshuabamboo.github.io/</id>
   <author>
     <name><![CDATA[Josh Owens]]></name>
@@ -142,13 +142,11 @@
 
 <h5>A new array is an instance within the class Array</h5>
 
-<pre><code>    `rappers = []`
-</code></pre>
+<p><code>rappers = []</code></p>
 
 <p>is the same as</p>
 
-<pre><code> `rappers = Array.new`
-</code></pre>
+<p><code>rappers = Array.new</code></p>
 
 <h5>Now we can pass our rappers array as an argument into another class&#8217; method</h5>
 

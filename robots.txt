@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: 
+
+Sitemap: http://joshuabamboo.github.io/sitemap.xml 

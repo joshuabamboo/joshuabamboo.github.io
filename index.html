@@ -150,9 +150,9 @@
 </span><span class='line'>      <span class="vc">@@artists</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
 </span><span class='line'>      <span class="k">end</span>
 </span><span class='line'>
-</span><span class='line'>      <span class="k">def</span> <span class="nf">add_song</span><span class="p">(</span><span class="n">song</span><span class="p">)</span>                           <span class="c1">### passing in a parameter that&#39;s an instance of the Song class</span>
+</span><span class='line'>      <span class="k">def</span> <span class="nf">add_song</span><span class="p">(</span><span class="n">song</span><span class="p">)</span>                      <span class="c1">### passing in a parameter that&#39;s an instance of the Song class</span>
 </span><span class='line'>          <span class="vi">@songs</span> <span class="o">&lt;&lt;</span> <span class="n">song</span>
-</span><span class='line'>      <span class="vi">@genres</span> <span class="o">&lt;&lt;</span> <span class="n">song</span><span class="o">.</span><span class="n">genre</span>          <span class="c1">### calling genre method from the Song class</span>
+</span><span class='line'>      <span class="vi">@genres</span> <span class="o">&lt;&lt;</span> <span class="n">song</span><span class="o">.</span><span class="n">genre</span>       <span class="c1">### calling genre method from the Song class</span>
 </span><span class='line'>      <span class="k">if</span> <span class="n">song</span><span class="o">.</span><span class="n">genre</span>
 </span><span class='line'>        <span class="n">song</span><span class="o">.</span><span class="n">genre</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span>
 </span><span class='line'>      <span class="k">end</span>
@@ -200,50 +200,56 @@
 
 <h5>Array is a class (Just like the ones we created above)</h5>
 
-<pre><code>    ```ruby
-    class Array
-        ...
-    end
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="k">class</span> <span class="nc">Array</span>
+</span><span class='line'>      <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>A new array is an instance within the class Array</h5>
+
+<pre><code>    `rappers = []`
 </code></pre>
+
+<p>is the same as</p>
+
+<pre><code> `rappers = Array.new`
+</code></pre>
+
+<h5>Now we can pass our rappers array as an argument into another class&#8217; method</h5>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#####A new array is an instance within the class Array</span>
-</span><span class='line'>      <span class="sb">`rappers = []`</span>
-</span><span class='line'><span class="n">is</span> <span class="n">the</span> <span class="n">same</span> <span class="n">as</span>
-</span><span class='line'>
-</span><span class='line'>     <span class="sb">`rappers = Array.new`</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">#####Now we can pass our rappers array as an argument into another class&#39; method</span>
-</span><span class='line'>      <span class="sb">```ruby</span>
-</span><span class='line'><span class="sb">     class Artist</span>
-</span><span class='line'><span class="sb">         def count_rappers(rappers)</span>
-</span><span class='line'><span class="sb">             rappers.size                    ### calling size method on rappers array</span>
-</span><span class='line'><span class="sb">         end             </span>
-</span><span class='line'><span class="sb">     end</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="k">class</span> <span class="nc">Artist</span>
+</span><span class='line'>      <span class="k">def</span> <span class="nf">count_rappers</span><span class="p">(</span><span class="n">rappers</span><span class="p">)</span>
+</span><span class='line'>          <span class="n">rappers</span><span class="o">.</span><span class="n">size</span>                   <span class="c1">### calling size method on rappers array</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Note that we are calling size on rappers, but we have not defined any method called size in our Artist class. The reason we have access to the size method is because it is one of the many methods within the class Array.
-    <code>ruby
-        class Array
-            def size
-                ...
-            end
-        end
-</code>
-Rappers is an instance of the class Array; therefore, methods within that class can be called on the rappers array. This is really no different than the first example of the Artist, Genre and Song classes. Within the Artist class, the add_song method is being passed a parameter that is an instance of the Song class. This allows us to then call methods from the Song class on that instance. Similarly, in the Song class we can access the Genre class method by passing in an instance of Genre. As long as the method&rsquo;s parameter is an instance of a particular class, we will always be able to reach into that class.</p>
+<p>Note that we are calling size on rappers, but we have not defined any method called size in our Artist class. The reason we have access to the size method is because it is one of the many methods within the class Array.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="k">class</span> <span class="nc">Array</span>
+</span><span class='line'>      <span class="k">def</span> <span class="nf">size</span>
+</span><span class='line'>          <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Rappers is an instance of the class Array; therefore, methods within that class can be called on the rappers array. This is really no different than the first example of the Artist, Genre and Song classes. Within the Artist class, the add_song method is being passed a parameter that is an instance of the Song class. This allows us to then call methods from the Song class on that instance. Similarly, in the Song class we can access the Genre class method by passing in an instance of Genre. As long as the method&rsquo;s parameter is an instance of a particular class, we will always be able to reach into that class.</p>
 </div>
   
   

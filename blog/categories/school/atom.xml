@@ -4,7 +4,7 @@
   <title><![CDATA[Category: School | My Octopress Blog]]></title>
   <link href="http://joshuabamboo.github.io/blog/categories/school/atom.xml" rel="self"/>
   <link href="http://joshuabamboo.github.io/"/>
-  <updated>2014-10-15T09:04:45-04:00</updated>
+  <updated>2014-10-15T09:08:01-04:00</updated>
   <id>http://joshuabamboo.github.io/</id>
   <author>
     <name><![CDATA[Josh Owens]]></name>
@@ -18,69 +18,68 @@
     <link href="http://joshuabamboo.github.io/blog/2014/10/14/communicating-with-other-classes/"/>
     <updated>2014-10-14T22:15:57-04:00</updated>
     <id>http://joshuabamboo.github.io/blog/2014/10/14/communicating-with-other-classes</id>
-    <content type="html"><![CDATA[<p>When creating multiple classes, I noticed I was having a hard time wrapping my head around calling methods that weren&rsquo;t defined in my class. If you&rsquo;re like me, you had a hard time understanding how you could access methods from other classes. Here&rsquo;s an example of what I mean:
-&#8220;`ruby
-        class Artist
+    <content type="html"><![CDATA[<p>When creating multiple classes, I noticed I was having a hard time wrapping my head around calling methods that weren&rsquo;t defined in my class. If you&rsquo;re like me, you had a hard time understanding how you could access methods from other classes. Here&rsquo;s an example of what I mean:</p>
+
+<pre><code class="ruby">        class Artist
             @@artists = []
-            attr_accessor :name, :songs, :genres</p>
+            attr_accessor :name, :songs, :genres
 
-<pre><code>        def initialize
-            @songs = []
-        @genres = []
-        @@artists &lt;&lt; self
-        end
+            def initialize
+                @songs = []
+            @genres = []
+            @@artists &lt;&lt; self
+            end
 
-        def add_song(song)                           ### passing in a parameter that's an instance of the Song class
-            @songs &lt;&lt; song
-        @genres &lt;&lt; song.genre          ### calling genre method from the Song class
-        if song.genre                  
-          song.genre.add_artist(self)
-        end
-        end
-    end
-
-
-    class Song
-        attr_accessor :name, :artist, :genre
-
-        def genre=(genre)                           ### passing in a parameter that's an instance of the Genre class
-            @genre = genre
-            genre.add_song(self)        ### calling add_song method from the Genre class
-        end
-    end
-
-
-    class Genre
-            attr_accessor :name, :songs, :artists
-            @@genres = []
-
-        def initialize
-                @songs = [] 
-                @artists = []
-                @@genres &lt;&lt; self
-        end
-
-
-        def add_song(song)
+            def add_song(song)                      ### passing in a parameter that's an instance of the Song class
                 @songs &lt;&lt; song
+            @genres &lt;&lt; song.genre       ### calling genre method from the Song class
+            if song.genre                  
+              song.genre.add_artist(self)
+            end
+            end
         end
 
 
-        def add_artist(artist)
-                @artists &lt;&lt; artist
-                @artists.uniq!
+        class Song
+            attr_accessor :name, :artist, :genre
+
+            def genre=(genre)                           ### passing in a parameter that's an instance of the Genre class
+                @genre = genre
+                genre.add_song(self)        ### calling add_song method from the Genre class
+            end
         end
-    end
+
+
+        class Genre
+                attr_accessor :name, :songs, :artists
+                @@genres = []
+
+            def initialize
+                    @songs = [] 
+                    @artists = []
+                    @@genres &lt;&lt; self
+            end
+
+
+            def add_song(song)
+                    @songs &lt;&lt; song
+            end
+
+
+            def add_artist(artist)
+                    @artists &lt;&lt; artist
+                    @artists.uniq!
+            end
+        end
 </code></pre>
 
-<pre><code>Here we have three classes (Artist, Song, Genre). Notice the comments (###). These classes are calling methods that do not exist in their class. This can be confusing, especially if you're thinking about the concept of [scope](http://www.techotopia.com/index.php/Ruby_Variable_Scope). The method isn't defined. How could I possibly use it, right?! Wrong.
+<p>Here we have three classes (Artist, Song, Genre). Notice the comments (###). These classes are calling methods that do not exist in their class. This can be confusing, especially if you&rsquo;re thinking about the concept of <a href="http://www.techotopia.com/index.php/Ruby_Variable_Scope">scope</a>. The method isn&rsquo;t defined. How could I possibly use it, right?! Wrong.</p>
 
+<p>A simple step back helped me finally wrap my head around it. Think about a class that already exists that we use all the time, like arrays.</p>
 
-A simple step back helped me finally wrap my head around it. Think about a class that already exists that we use all the time, like arrays. 
+<h5>Array is a class (Just like the ones we created above)</h5>
 
-#####Array is a class (Just like the ones we created above)
-        ```ruby
-        class Array
+<pre><code class="ruby">        class Array
             ...
         end
 </code></pre>
@@ -97,17 +96,16 @@ A simple step back helped me finally wrap my head around it. Think about a class
 
 <h5>Now we can pass our rappers array as an argument into another class&#8217; method</h5>
 
-<pre><code>    ```ruby
-    class Artist
-        def count_rappers(rappers)
-            rappers.size                    ### calling size method on rappers array
-        end             
-    end
+<pre><code class="ruby">        class Artist
+            def count_rappers(rappers)
+                rappers.size                    ### calling size method on rappers array
+            end             
+        end
 </code></pre>
 
-<pre><code>Note that we are calling size on rappers, but we have not defined any method called size in our Artist class. The reason we have access to the size method is because it is one of the many methods within the class Array. 
-    ```ruby 
-        class Array
+<p>Note that we are calling size on rappers, but we have not defined any method called size in our Artist class. The reason we have access to the size method is because it is one of the many methods within the class Array.</p>
+
+<pre><code class="ruby ">        class Array
             def size
                 ...
             end

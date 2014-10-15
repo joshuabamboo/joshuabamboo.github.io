@@ -4,7 +4,7 @@
   <title><![CDATA[My Octopress Blog]]></title>
   <link href="http://joshuabamboo.github.io/atom.xml" rel="self"/>
   <link href="http://joshuabamboo.github.io/"/>
-  <updated>2014-10-15T03:08:53-04:00</updated>
+  <updated>2014-10-15T07:41:56-04:00</updated>
   <id>http://joshuabamboo.github.io/</id>
   <author>
     <name><![CDATA[Josh Owens]]></name>
@@ -51,24 +51,24 @@
 
 
     class Genre
-        attr_accessor :name, :songs, :artists
-        @@genres = []
+            attr_accessor :name, :songs, :artists
+            @@genres = []
 
         def initialize
-            @songs = [] 
-            @artists = []
-            @@genres &lt;&lt; self
+                @songs = [] 
+                @artists = []
+                @@genres &lt;&lt; self
         end
 
 
         def add_song(song)
-            @songs &lt;&lt; song
+                @songs &lt;&lt; song
         end
 
 
         def add_artist(artist)
-            @artists &lt;&lt; artist
-            @artists.uniq!
+                @artists &lt;&lt; artist
+                @artists.uniq!
         end
     end
 </code></pre>
@@ -105,7 +105,7 @@
     end
 </code></pre>
 
-<p>Note that we are calling size on rappers, but we have not defined anything method called size in our Artist class. The reason we have access to the size method is because it is one of the many methods within the class Array.</p>
+<p>Note that we are calling size on rappers, but we have not defined any method called size in our Artist class. The reason we have access to the size method is because it is one of the many methods within the class Array.</p>
 
 <pre><code>    class Array
         def size

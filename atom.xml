@@ -4,7 +4,7 @@
   <title><![CDATA[My Octopress Blog]]></title>
   <link href="http://joshuabamboo.github.io/atom.xml" rel="self"/>
   <link href="http://joshuabamboo.github.io/"/>
-  <updated>2014-10-15T09:09:56-04:00</updated>
+  <updated>2014-10-15T09:17:18-04:00</updated>
   <id>http://joshuabamboo.github.io/</id>
   <author>
     <name><![CDATA[Josh Owens]]></name>
@@ -81,9 +81,9 @@
 </span><span class='line'>      <span class="vc">@@artists</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
 </span><span class='line'>      <span class="k">end</span>
 </span><span class='line'>
-</span><span class='line'>      <span class="k">def</span> <span class="nf">add_song</span><span class="p">(</span><span class="n">song</span><span class="p">)</span>                      <span class="c1">### passing in a parameter that&#39;s an instance of the Song class</span>
+</span><span class='line'>      <span class="k">def</span> <span class="nf">add_song</span><span class="p">(</span><span class="n">song</span><span class="p">)</span>      <span class="c1">### passing in a parameter that&#39;s an instance of the Song class</span>
 </span><span class='line'>          <span class="vi">@songs</span> <span class="o">&lt;&lt;</span> <span class="n">song</span>
-</span><span class='line'>      <span class="vi">@genres</span> <span class="o">&lt;&lt;</span> <span class="n">song</span><span class="o">.</span><span class="n">genre</span>       <span class="c1">### calling genre method from the Song class</span>
+</span><span class='line'>      <span class="vi">@genres</span> <span class="o">&lt;&lt;</span> <span class="n">song</span><span class="o">.</span><span class="n">genre</span>    <span class="c1">### calling genre method from the Song class</span>
 </span><span class='line'>      <span class="k">if</span> <span class="n">song</span><span class="o">.</span><span class="n">genre</span>
 </span><span class='line'>        <span class="n">song</span><span class="o">.</span><span class="n">genre</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span>
 </span><span class='line'>      <span class="k">end</span>
@@ -94,9 +94,9 @@
 </span><span class='line'>  <span class="k">class</span> <span class="nc">Song</span>
 </span><span class='line'>      <span class="kp">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:artist</span><span class="p">,</span> <span class="ss">:genre</span>
 </span><span class='line'>
-</span><span class='line'>      <span class="k">def</span> <span class="nf">genre</span><span class="o">=</span><span class="p">(</span><span class="n">genre</span><span class="p">)</span>                            <span class="c1">### passing in a parameter that&#39;s an instance of the Genre class</span>
+</span><span class='line'>      <span class="k">def</span> <span class="nf">genre</span><span class="o">=</span><span class="p">(</span><span class="n">genre</span><span class="p">)</span>        <span class="c1">### passing in a parameter that&#39;s an instance of the Genre class</span>
 </span><span class='line'>          <span class="vi">@genre</span> <span class="o">=</span> <span class="n">genre</span>
-</span><span class='line'>          <span class="n">genre</span><span class="o">.</span><span class="n">add_song</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span>        <span class="c1">### calling add_song method from the Genre class</span>
+</span><span class='line'>          <span class="n">genre</span><span class="o">.</span><span class="n">add_song</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span>  <span class="c1">### calling add_song method from the Genre class</span>
 </span><span class='line'>      <span class="k">end</span>
 </span><span class='line'>  <span class="k">end</span>
 </span><span class='line'>
@@ -157,13 +157,13 @@
 <span class='line-number'>5</span>
 </pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="k">class</span> <span class="nc">Artist</span>
 </span><span class='line'>      <span class="k">def</span> <span class="nf">count_rappers</span><span class="p">(</span><span class="n">rappers</span><span class="p">)</span>
-</span><span class='line'>          <span class="n">rappers</span><span class="o">.</span><span class="n">size</span>                   <span class="c1">### calling size method on rappers array</span>
+</span><span class='line'>          <span class="n">rappers</span><span class="o">.</span><span class="n">size</span>     <span class="c1">### calling size method on rappers array</span>
 </span><span class='line'>      <span class="k">end</span>
 </span><span class='line'>  <span class="k">end</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Note that we are calling size on rappers, but we have not defined any method called size in our Artist class. The reason we have access to the size method is because it is one of the many methods within the class Array.</p>
+<p>Note that we are calling size on rappers, but we have not defined any method called size in our Artist class. The reason we have access to the size method is because it is <a href="http://www.ruby-doc.org/core-2.1.3/Array.html">one of the many methods within the class Array</a>.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>

@@ -17,11 +17,11 @@ When creating multiple classes, I noticed I was having a hard time wrapping my h
 		    @@artists << self
 			end
 
-			def add_song(song)
+			def add_song(song)							 ### passing in a parameter that's an instance of the Song class
 				@songs << song
-		    @genres << song.genre          ### calling genre method
+		    @genres << song.genre          ### calling genre method from the Song class
 		    if song.genre                  
-		      song.genre.add_artist(self)  ### calling add_artist method
+		      song.genre.add_artist(self)
 		    end
 			end
 		end
@@ -30,9 +30,9 @@ When creating multiple classes, I noticed I was having a hard time wrapping my h
 		class Song
 			attr_accessor :name, :artist, :genre
 
-			def genre=(genre)
+			def genre=(genre)							### passing in a parameter that's an instance of the Genre class
 				@genre = genre
-				genre.add_song(self)        ### calling add_song method
+				genre.add_song(self)        ### calling add_song method from the Genre class
 			end
 		end
 
@@ -83,7 +83,7 @@ is the same as
 			end             
 		end
 
-Note that we are calling size on rappers, but we have not defined any method called size in our Artist class. The reason we have access to the size method is because it is one of the many methods within the class Array.
+Note that we are calling size on rappers, but we have not defined any method called size in our Artist class. The reason we have access to the size method is because it is one of the many methods within the class Array. 
 		
 		class Array
 			def size
@@ -91,5 +91,5 @@ Note that we are calling size on rappers, but we have not defined any method cal
 			end
 		end
 
-This is really no different than the first example of the Artist, Genre and Song classes. As long as the method's parameter is an instance of a particular class, we will always be able to reach into that class.
+Rappers is an instance of the class Array; therefore, methods within that class can be called on the rappers array. This is really no different than the first example of the Artist, Genre and Song classes. Within the Artist class, the add_song method is being passed a parameter that is an instance of the Song class. This allows us to then call methods from the Song class on that instance. Similarly, in the Song class we can access the Genre class method by passing in an instance of Genre. As long as the method's parameter is an instance of a particular class, we will always be able to reach into that class.
 

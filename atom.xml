@@ -4,7 +4,7 @@
   <title><![CDATA[My Octopress Blog]]></title>
   <link href="http://joshuabamboo.github.io/atom.xml" rel="self"/>
   <link href="http://joshuabamboo.github.io/"/>
-  <updated>2014-10-15T07:41:56-04:00</updated>
+  <updated>2014-10-15T08:59:12-04:00</updated>
   <id>http://joshuabamboo.github.io/</id>
   <author>
     <name><![CDATA[Josh Owens]]></name>
@@ -30,11 +30,11 @@
         @@artists &lt;&lt; self
         end
 
-        def add_song(song)
+        def add_song(song)                           ### passing in a parameter that's an instance of the Song class
             @songs &lt;&lt; song
-        @genres &lt;&lt; song.genre          ### calling genre method
+        @genres &lt;&lt; song.genre          ### calling genre method from the Song class
         if song.genre                  
-          song.genre.add_artist(self)  ### calling add_artist method
+          song.genre.add_artist(self)
         end
         end
     end
@@ -43,9 +43,9 @@
     class Song
         attr_accessor :name, :artist, :genre
 
-        def genre=(genre)
+        def genre=(genre)                           ### passing in a parameter that's an instance of the Genre class
             @genre = genre
-            genre.add_song(self)        ### calling add_song method
+            genre.add_song(self)        ### calling add_song method from the Genre class
         end
     end
 
@@ -114,7 +114,7 @@
     end
 </code></pre>
 
-<p>This is really no different than the first example of the Artist, Genre and Song classes. As long as the method&rsquo;s parameter is an instance of a particular class, we will always be able to reach into that class.</p>
+<p>Rappers is an instance of the class Array; therefore, methods within that class can be called on the rappers array. This is really no different than the first example of the Artist, Genre and Song classes. Within the Artist class, the add_song method is being passed a parameter that is an instance of the Song class. This allows us to then call methods from the Song class on that instance. Similarly, in the Song class we can access the Genre class method by passing in an instance of Genre. As long as the method&rsquo;s parameter is an instance of a particular class, we will always be able to reach into that class.</p>
 ]]></content>
   </entry>
   

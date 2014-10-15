@@ -4,7 +4,7 @@
   <title><![CDATA[My Octopress Blog]]></title>
   <link href="http://joshuabamboo.github.io/atom.xml" rel="self"/>
   <link href="http://joshuabamboo.github.io/"/>
-  <updated>2014-10-15T08:59:12-04:00</updated>
+  <updated>2014-10-15T09:04:45-04:00</updated>
   <id>http://joshuabamboo.github.io/</id>
   <author>
     <name><![CDATA[Josh Owens]]></name>
@@ -20,101 +20,161 @@
     <id>http://joshuabamboo.github.io/blog/2014/10/14/communicating-with-other-classes</id>
     <content type="html"><![CDATA[<p>When creating multiple classes, I noticed I was having a hard time wrapping my head around calling methods that weren&rsquo;t defined in my class. If you&rsquo;re like me, you had a hard time understanding how you could access methods from other classes. Here&rsquo;s an example of what I mean:</p>
 
-<pre><code>    class Artist
-        @@artists = []
-        attr_accessor :name, :songs, :genres
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="k">class</span> <span class="nc">Artist</span>
+</span><span class='line'>      <span class="vc">@@artists</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>      <span class="kp">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:songs</span><span class="p">,</span> <span class="ss">:genres</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">def</span> <span class="nf">initialize</span>
+</span><span class='line'>          <span class="vi">@songs</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>      <span class="vi">@genres</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>      <span class="vc">@@artists</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">def</span> <span class="nf">add_song</span><span class="p">(</span><span class="n">song</span><span class="p">)</span>                           <span class="c1">### passing in a parameter that&#39;s an instance of the Song class</span>
+</span><span class='line'>          <span class="vi">@songs</span> <span class="o">&lt;&lt;</span> <span class="n">song</span>
+</span><span class='line'>      <span class="vi">@genres</span> <span class="o">&lt;&lt;</span> <span class="n">song</span><span class="o">.</span><span class="n">genre</span>          <span class="c1">### calling genre method from the Song class</span>
+</span><span class='line'>      <span class="k">if</span> <span class="n">song</span><span class="o">.</span><span class="n">genre</span>
+</span><span class='line'>        <span class="n">song</span><span class="o">.</span><span class="n">genre</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">class</span> <span class="nc">Song</span>
+</span><span class='line'>      <span class="kp">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:artist</span><span class="p">,</span> <span class="ss">:genre</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">def</span> <span class="nf">genre</span><span class="o">=</span><span class="p">(</span><span class="n">genre</span><span class="p">)</span>                            <span class="c1">### passing in a parameter that&#39;s an instance of the Genre class</span>
+</span><span class='line'>          <span class="vi">@genre</span> <span class="o">=</span> <span class="n">genre</span>
+</span><span class='line'>          <span class="n">genre</span><span class="o">.</span><span class="n">add_song</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span>        <span class="c1">### calling add_song method from the Genre class</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">class</span> <span class="nc">Genre</span>
+</span><span class='line'>          <span class="kp">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:songs</span><span class="p">,</span> <span class="ss">:artists</span>
+</span><span class='line'>          <span class="vc">@@genres</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">def</span> <span class="nf">initialize</span>
+</span><span class='line'>              <span class="vi">@songs</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>              <span class="vi">@artists</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>              <span class="vc">@@genres</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">def</span> <span class="nf">add_song</span><span class="p">(</span><span class="n">song</span><span class="p">)</span>
+</span><span class='line'>              <span class="vi">@songs</span> <span class="o">&lt;&lt;</span> <span class="n">song</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">def</span> <span class="nf">add_artist</span><span class="p">(</span><span class="n">artist</span><span class="p">)</span>
+</span><span class='line'>              <span class="vi">@artists</span> <span class="o">&lt;&lt;</span> <span class="n">artist</span>
+</span><span class='line'>              <span class="vi">@artists</span><span class="o">.</span><span class="n">uniq!</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
 
-        def initialize
-            @songs = []
-        @genres = []
-        @@artists &lt;&lt; self
-        end
-
-        def add_song(song)                           ### passing in a parameter that's an instance of the Song class
-            @songs &lt;&lt; song
-        @genres &lt;&lt; song.genre          ### calling genre method from the Song class
-        if song.genre                  
-          song.genre.add_artist(self)
-        end
-        end
-    end
-
-
-    class Song
-        attr_accessor :name, :artist, :genre
-
-        def genre=(genre)                           ### passing in a parameter that's an instance of the Genre class
-            @genre = genre
-            genre.add_song(self)        ### calling add_song method from the Genre class
-        end
-    end
-
-
-    class Genre
-            attr_accessor :name, :songs, :artists
-            @@genres = []
-
-        def initialize
-                @songs = [] 
-                @artists = []
-                @@genres &lt;&lt; self
-        end
-
-
-        def add_song(song)
-                @songs &lt;&lt; song
-        end
-
-
-        def add_artist(artist)
-                @artists &lt;&lt; artist
-                @artists.uniq!
-        end
-    end
-</code></pre>
 
 <p>Here we have three classes (Artist, Song, Genre). Notice the comments (###). These classes are calling methods that do not exist in their class. This can be confusing, especially if you&rsquo;re thinking about the concept of <a href="http://www.techotopia.com/index.php/Ruby_Variable_Scope">scope</a>. The method isn&rsquo;t defined. How could I possibly use it, right?! Wrong.</p>
 
 <p>A simple step back helped me finally wrap my head around it. Think about a class that already exists that we use all the time, like arrays.</p>
 
-<h5>Array is a class</h5>
+<h5>Array is a class (Just like the ones we created above)</h5>
 
-<h6>Just like the ones we created above</h6>
-
-<pre><code>    class Array
+<pre><code>    ```ruby
+    class Array
         ...
     end
 </code></pre>
 
-<h5>A new array is an instance within the class Array</h5>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#####A new array is an instance within the class Array</span>
+</span><span class='line'>      <span class="sb">`rappers = []`</span>
+</span><span class='line'><span class="n">is</span> <span class="n">the</span> <span class="n">same</span> <span class="n">as</span>
+</span><span class='line'>
+</span><span class='line'>     <span class="sb">`rappers = Array.new`</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#####Now we can pass our rappers array as an argument into another class&#39; method</span>
+</span><span class='line'>      <span class="sb">```ruby</span>
+</span><span class='line'><span class="sb">     class Artist</span>
+</span><span class='line'><span class="sb">         def count_rappers(rappers)</span>
+</span><span class='line'><span class="sb">             rappers.size                    ### calling size method on rappers array</span>
+</span><span class='line'><span class="sb">         end             </span>
+</span><span class='line'><span class="sb">     end</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<pre><code>    rappers = []
-</code></pre>
 
-<p>is the same as</p>
-
-<pre><code> rappers = Array.new
-</code></pre>
-
-<h5>Now we can pass our rappers array as an argument into another class&#8217; method</h5>
-
-<pre><code>    class Artist
-        def count_rappers(rappers)
-            rappers.size                    ### calling size method on rappers array
-        end             
-    end
-</code></pre>
-
-<p>Note that we are calling size on rappers, but we have not defined any method called size in our Artist class. The reason we have access to the size method is because it is one of the many methods within the class Array.</p>
-
-<pre><code>    class Array
-        def size
-            ...
+<p>Note that we are calling size on rappers, but we have not defined any method called size in our Artist class. The reason we have access to the size method is because it is one of the many methods within the class Array.
+    <code>ruby
+        class Array
+            def size
+                ...
+            end
         end
-    end
-</code></pre>
-
-<p>Rappers is an instance of the class Array; therefore, methods within that class can be called on the rappers array. This is really no different than the first example of the Artist, Genre and Song classes. Within the Artist class, the add_song method is being passed a parameter that is an instance of the Song class. This allows us to then call methods from the Song class on that instance. Similarly, in the Song class we can access the Genre class method by passing in an instance of Genre. As long as the method&rsquo;s parameter is an instance of a particular class, we will always be able to reach into that class.</p>
+</code>
+Rappers is an instance of the class Array; therefore, methods within that class can be called on the rappers array. This is really no different than the first example of the Artist, Genre and Song classes. Within the Artist class, the add_song method is being passed a parameter that is an instance of the Song class. This allows us to then call methods from the Song class on that instance. Similarly, in the Song class we can access the Genre class method by passing in an instance of Genre. As long as the method&rsquo;s parameter is an instance of a particular class, we will always be able to reach into that class.</p>
 ]]></content>
   </entry>
   

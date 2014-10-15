@@ -18,9 +18,9 @@ When creating multiple classes, I noticed I was having a hard time wrapping my h
 		    @@artists << self
 			end
 
-			def add_song(song)						### passing in a parameter that's an instance of the Song class
+			def add_song(song)		### passing in a parameter that's an instance of the Song class
 				@songs << song
-		    @genres << song.genre       ### calling genre method from the Song class
+		    @genres << song.genre    ### calling genre method from the Song class
 		    if song.genre                  
 		      song.genre.add_artist(self)
 		    end
@@ -31,9 +31,9 @@ When creating multiple classes, I noticed I was having a hard time wrapping my h
 		class Song
 			attr_accessor :name, :artist, :genre
 
-			def genre=(genre)							### passing in a parameter that's an instance of the Genre class
+			def genre=(genre)		### passing in a parameter that's an instance of the Genre class
 				@genre = genre
-				genre.add_song(self)        ### calling add_song method from the Genre class
+				genre.add_song(self)  ### calling add_song method from the Genre class
 			end
 		end
 
@@ -87,11 +87,11 @@ is the same as
 ```ruby
 		class Artist
 			def count_rappers(rappers)
-				rappers.size 					### calling size method on rappers array
+				rappers.size 	  ### calling size method on rappers array
 			end             
 		end
 ```
-Note that we are calling size on rappers, but we have not defined any method called size in our Artist class. The reason we have access to the size method is because it is one of the many methods within the class Array. 
+Note that we are calling size on rappers, but we have not defined any method called size in our Artist class. The reason we have access to the size method is because it is [one of the many methods within the class Array](http://www.ruby-doc.org/core-2.1.3/Array.html). 
 
 ```ruby	
 		class Array

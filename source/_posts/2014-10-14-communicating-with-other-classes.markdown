@@ -38,24 +38,24 @@ When creating multiple classes, I noticed I was having a hard time wrapping my h
 
 
 		class Genre
-			attr_accessor :name, :songs, :artists
-			@@genres = []
+				attr_accessor :name, :songs, :artists
+				@@genres = []
 
 			def initialize
-				@songs = [] 
-				@artists = []
-				@@genres << self
+					@songs = [] 
+					@artists = []
+					@@genres << self
 			end
 
 
 			def add_song(song)
-				@songs << song
+					@songs << song
 			end
 
 
 			def add_artist(artist)
-				@artists << artist
-				@artists.uniq!
+					@artists << artist
+					@artists.uniq!
 			end
 		end
 
@@ -83,7 +83,7 @@ is the same as
 			end             
 		end
 
-Note that we are calling size on rappers, but we have not defined anything method called size in our Artist class. The reason we have access to the size method is because it is one of the many methods within the class Array.
+Note that we are calling size on rappers, but we have not defined any method called size in our Artist class. The reason we have access to the size method is because it is one of the many methods within the class Array.
 		
 		class Array
 			def size

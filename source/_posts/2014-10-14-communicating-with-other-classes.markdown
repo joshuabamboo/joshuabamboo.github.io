@@ -76,10 +76,11 @@ A simple step back helped me finally wrap my head around it. Think about a class
 
 #####A new array is an instance within the class Array
 
-		`rappers = []`
+`rappers = []`
+
 is the same as 
      
-     `rappers = Array.new`
+`rappers = Array.new`
 
 #####Now we can pass our rappers array as an argument into another class' method
 

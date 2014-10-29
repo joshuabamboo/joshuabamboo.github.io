@@ -4,7 +4,7 @@
   <title><![CDATA[My Octopress Blog]]></title>
   <link href="http://joshuabamboo.github.io/atom.xml" rel="self"/>
   <link href="http://joshuabamboo.github.io/"/>
-  <updated>2014-10-27T23:52:20-04:00</updated>
+  <updated>2014-10-29T00:37:35-04:00</updated>
   <id>http://joshuabamboo.github.io/</id>
   <author>
     <name><![CDATA[Josh Owens]]></name>
@@ -18,9 +18,11 @@
     <link href="http://joshuabamboo.github.io/blog/2014/10/27/til-konstantin-haase-rebuilt-sinatra-dot-dot-dot-in-6-lines/"/>
     <updated>2014-10-27T20:44:47-04:00</updated>
     <id>http://joshuabamboo.github.io/blog/2014/10/27/til-konstantin-haase-rebuilt-sinatra-dot-dot-dot-in-6-lines</id>
-    <content type="html"><![CDATA[<p>That&rsquo;s right - 6 Lines. Sinatra is known for being lightweight and flexible.</p>
+    <content type="html"><![CDATA[<p>That&rsquo;s right - 6 Lines.</p>
 
-<p><a href="https://github.com/rkh/almost-sinatra">https://github.com/rkh/almost-sinatra</a></p>
+<p>Sinatra, a stripped-down alternative to Ruby frameworks like Rails, is known for being lightweight and flexible. It&rsquo;s not a framework and doesn&rsquo;t require using the Model-View-Controller architecture pattern. Even still, a simple DSL like Sinatra has a lot going on behind the scenes. Sinatra is just under 2,000 lines of code (LOC). Rails, by comparison, is ??,???.</p>
+
+<p>Konstantin Haase managed to create a Sinatra clone called <a href="https://github.com/rkh/almost-sinatra">Almost Sinatra</a> using just 6 lines of code. Here&rsquo;s it is:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -37,7 +39,11 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p><a href="http://vimeo.com/61087285">http://vimeo.com/61087285</a></p>
+<p><img src="https://p.gr-assets.com/540x540/fit/hostedimages/1383924783/6705751.gif" alt="Mind Blown" /></p>
+
+<p>This is obviously just a fun exercize. As he explains in <a href="http://vimeo.com/61087285">this video</a>, this was just &ldquo;an interesting project I did on the weekend.&rdquo; <a href="http://oi39.tinypic.com/14b6nmu.jpg">#NoBigDeal</a></p>
+
+<p>Give the video a look and check him out of twitter <a href="https://twitter.com/konstantinhaase">@konstantinhaase</a>. Not only is the content interesting, he&rsquo;s a really funny guy.</p>
 ]]></content>
   </entry>
   

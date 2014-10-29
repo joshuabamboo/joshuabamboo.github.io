@@ -22,6 +22,6 @@ Konstantin Haase managed to create a Sinatra clone called [Almost Sinatra](https
 
 ![Mind Blown](https://p.gr-assets.com/540x540/fit/hostedimages/1383924783/6705751.gif)
 
-This is obviously just a fun exercize. As he explains in [this video](http://vimeo.com/61087285), this was just "an interesting project I did on the weekend." [#NoBigDeal](http://oi39.tinypic.com/14b6nmu.jpg)
+This is obviously just a fun exercize. As he explains in [this video on obfuscation](http://vimeo.com/61087285), this was just "an interesting project I did on the weekend." [#NoBigDeal](http://oi39.tinypic.com/14b6nmu.jpg)
 
 Give the video a look and check him out of twitter [@konstantinhaase](https://twitter.com/konstantinhaase). Not only is the content interesting, he's a really funny guy. 

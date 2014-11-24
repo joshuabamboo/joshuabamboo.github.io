@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Flatiron | My Octopress Blog]]></title>
-  <link href="http://joshuabamboo.github.io/blog/categories/flatiron/atom.xml" rel="self"/>
+  <title><![CDATA[Category: The | My Octopress Blog]]></title>
+  <link href="http://joshuabamboo.github.io/blog/categories/the/atom.xml" rel="self"/>
   <link href="http://joshuabamboo.github.io/"/>
   <updated>2014-11-24T09:24:47-05:00</updated>
   <id>http://joshuabamboo.github.io/</id>

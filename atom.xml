@@ -4,7 +4,7 @@
   <title><![CDATA[My Octopress Blog]]></title>
   <link href="http://joshuabamboo.github.io/atom.xml" rel="self"/>
   <link href="http://joshuabamboo.github.io/"/>
-  <updated>2014-10-29T00:50:52-04:00</updated>
+  <updated>2014-11-24T09:24:47-05:00</updated>
   <id>http://joshuabamboo.github.io/</id>
   <author>
     <name><![CDATA[Josh Owens]]></name>
@@ -12,6 +12,94 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[A Javascript Weekend]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2014/11/24/a-javascript-weekend/"/>
+    <updated>2014-11-24T09:21:01-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2014/11/24/a-javascript-weekend</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[The Secret Project: Day 2]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-2/"/>
+    <updated>2014-11-24T09:20:48-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-2</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[The Secret Project: Day 1]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-1/"/>
+    <updated>2014-11-24T09:20:28-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-1</id>
+    <content type="html"><![CDATA[<p>Make it work.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Lessons From My First Meetup Presentation]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2014/11/24/lessons-from-my-first-meetup-presentation/"/>
+    <updated>2014-11-24T09:19:56-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2014/11/24/lessons-from-my-first-meetup-presentation</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Top 10 Life-changing Keyboard Shortcuts]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2014/11/24/top-10-life-changing-keyboard-shortcuts/"/>
+    <updated>2014-11-24T09:18:16-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2014/11/24/top-10-life-changing-keyboard-shortcuts</id>
+    <content type="html"><![CDATA[<p>Coming soon
+<a href="http://support.apple.com/en-us/HT201236">http://support.apple.com/en-us/HT201236</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[The Developers Keyboard]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2014/11/12/test/"/>
+    <updated>2014-11-12T09:15:51-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2014/11/12/test</id>
+    <content type="html"><![CDATA[<p>As a developer you&rsquo;ll spend a lot of time working with your keyboard, and consequently you&rsquo;ll start to learn all the shortcuts to optimize your workflow. One of the most useful hacks I&rsquo;ve found is to replace the caps lock functionality for another control button.</p>
+
+<p>If you&rsquo;re using OS X v.10.9 (Mavericks), just follow these simple steps:</p>
+
+<p>1.) Open your keyboard settings found in System Preferences
+<img src="../images/modify-keyboard-1.png" alt="Finding Keyboard in System Preferences" /></p>
+
+<p>2.) Make sure the &lsquo;keyboard&rsquo; tab is selected and click the &lsquo;Modifier keys&hellip;&rsquo; button
+<img src="../images/modify-keyboard-2.png" alt="Select" /></p>
+
+<p>3.) Here is where the magic happens. Just select &lsquo;^ Control&rsquo; from the Caps Lock dropdown, and apply the changes.
+<img src="../images/modify-keyboard-3.png" alt="Change" /></p>
+
+<p>Simple as that. Congrats on stepping your keyboard game up.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Your Title in There]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2014/11/05/your-title-in-there/"/>
+    <updated>2014-11-05T19:31:56-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2014/11/05/your-title-in-there</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Computer Man]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2014/11/03/computer-man/"/>
+    <updated>2014-11-03T09:25:06-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2014/11/03/computer-man</id>
+    <content type="html"><![CDATA[<p><a href="http://www.youtube.com/watch?feature=player_embedded&v=NWD7iqtOJSE
+" target="_blank"><img src="http://img.youtube.com/vi/NWD7iqtOJSE/0.jpg"
+alt="Computer Man" width="240" height="180" border="10" /></a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[TIL Konstantin Haase Rebuilt Sinatra... In 6 Lines!]]></title>

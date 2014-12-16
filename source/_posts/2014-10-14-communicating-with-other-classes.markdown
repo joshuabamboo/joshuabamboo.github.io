@@ -3,7 +3,7 @@ layout: post
 title: "Communicating With Other Classes"
 date: 2014-10-14 22:15:57 -0400
 comments: true
-categories: Flatiron School
+categories: The Flatiron School
 ---
 When creating multiple classes, I noticed I was having a hard time wrapping my head around calling methods that weren't defined in my class. If you're like me, you had a hard time understanding how you could access methods from other classes. Here's an example of what I mean:
 

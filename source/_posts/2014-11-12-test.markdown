@@ -1,0 +1,21 @@
+---
+layout: post
+title: "The Developers Keyboard"
+date: 2014-11-12 09:15:51 -0500
+comments: true
+categories: The Flatiron School, Control, Caps Lock
+---
+As a developer you'll spend a lot of time working with your keyboard, and consequently you'll start to learn all the shortcuts to optimize your workflow. One of the most useful hacks I've found is to replace the caps lock functionality for another control button.
+
+If you're using OS X v.10.9 (Mavericks), just follow these simple steps:
+
+1.) Open your keyboard settings found in System Preferences
+![Finding Keyboard in System Preferences](../images/modify-keyboard-1.png)
+
+2.) Make sure the 'keyboard' tab is selected and click the 'Modifier keys...' button
+![Select](../images/modify-keyboard-2.png)
+
+3.) Here is where the magic happens. Just select '^ Control' from the Caps Lock dropdown, and apply the changes.
+![Change](../images/modify-keyboard-3.png)
+
+Simple as that. Congrats on stepping your keyboard game up.

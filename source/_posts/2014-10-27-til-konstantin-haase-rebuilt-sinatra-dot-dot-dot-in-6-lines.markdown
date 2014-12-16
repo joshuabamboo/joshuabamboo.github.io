@@ -3,7 +3,7 @@ layout: post
 title: "TIL Konstantin Haase Rebuilt Sinatra... in 6 lines!"
 date: 2014-10-27 20:44:47 -0400
 comments: true
-categories: Flatiron School, TIL
+categories: The Flatiron School, TIL
 ---
 That's right - 6 Lines. 
 

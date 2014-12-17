@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Top 5 Keyboard Shortcuts You Can Use Constantly"
+title: "Top 6 Keyboard Shortcuts You Can Use Constantly"
 date: 2014-11-24 09:18:16 -0500
 comments: true
 categories: The Flatiron School, pro tip

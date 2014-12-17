@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Pro | My Octopress Blog]]></title>
   <link href="http://joshuabamboo.github.io/blog/categories/pro/atom.xml" rel="self"/>
   <link href="http://joshuabamboo.github.io/"/>
-  <updated>2014-12-16T18:44:40-05:00</updated>
+  <updated>2014-12-16T19:58:19-05:00</updated>
   <id>http://joshuabamboo.github.io/</id>
   <author>
     <name><![CDATA[Josh Owens]]></name>
@@ -20,7 +20,7 @@
     <id>http://joshuabamboo.github.io/blog/2014/11/24/top-10-life-changing-keyboard-shortcuts</id>
     <content type="html"><![CDATA[<p>Okay, so you&rsquo;ve <a href="http://joshuabamboo.github.io/blog/2014/11/12/test/">modified your keyboard to make the Caps Lock a more useful button</a>. Now, let&rsquo;s actually put that new Control(^) button to use.</p>
 
-<p>Here are my top 5 time-saving shortcuts I use constantly:</p>
+<h2>Here are my top 5 time-saving shortcuts I use constantly:</h2>
 
 <ol>
 <li>Control-a - Jumps to the beginning of a line</li>
@@ -33,7 +33,7 @@
 
 <p>Although the benefits are marginal, marginal benefits add up quickly.</p>
 
-<p>Let&rsquo;s make some (conservative) assumptions:</p>
+<h3>Let&rsquo;s make some (conservative) assumptions:</h3>
 
 <ul>
 <li>As a programmer, you&rsquo;re on your computer 8 hours/day</li>

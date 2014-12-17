@@ -8,7 +8,7 @@ categories: The Flatiron School, pro tip
 
 Okay, so you've [modified your keyboard to make the Caps Lock a more useful button](http://joshuabamboo.github.io/blog/2014/11/12/test/). Now, let's actually put that new Control(^) button to use.
 
-Here are my top 5 time-saving shortcuts I use constantly:
+##Here are my top 5 time-saving shortcuts I use constantly:
 
 1. Control-a - Jumps to the beginning of a line
 2. Control-e - Jumps to the end of a line
@@ -18,7 +18,7 @@ Here are my top 5 time-saving shortcuts I use constantly:
 
 Although the benefits are marginal, marginal benefits add up quickly. 
 
-Let's make some (conservative) assumptions:
+###Let's make some (conservative) assumptions:
 
 * As a programmer, you're on your computer 8 hours/day
 * You probably use 5 keyboard shortcuts per hour

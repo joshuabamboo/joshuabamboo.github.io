@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Flatiron | Irrationally Coded]]></title>
   <link href="http://joshuabamboo.github.io/blog/categories/flatiron/atom.xml" rel="self"/>
   <link href="http://joshuabamboo.github.io/"/>
-  <updated>2014-12-16T21:00:44-05:00</updated>
+  <updated>2014-12-16T21:27:59-05:00</updated>
   <id>http://joshuabamboo.github.io/</id>
   <author>
     <name><![CDATA[Josh Owens]]></name>
@@ -54,12 +54,21 @@
     <link href="http://joshuabamboo.github.io/blog/2014/11/24/lessons-from-my-first-meetup-presentation/"/>
     <updated>2014-11-24T09:19:56-05:00</updated>
     <id>http://joshuabamboo.github.io/blog/2014/11/24/lessons-from-my-first-meetup-presentation</id>
-    <content type="html"><![CDATA[<p>1.) Only build what you need.
-My partner and I spent the beginning of the week building out a user model. It was beautiful.</p>
+    <content type="html"><![CDATA[<h2>1. Only build what you need.</h2>
 
-<p>2.) Fake it &lsquo;til you make it.</p>
+<p>My partner and I spent the beginning of the week building out a user model, controller, and view. It was beautiful. You could make a user profile, and edit it. It was styled nicely. Only problem was: we weren&rsquo;t demoing user signup, and we definitely weren&rsquo;t editing a user&rsquo;s profile. Stick with what you need.</p>
 
-<p>3.)</p>
+<h2>2. Fake it &lsquo;til you make it.</h2>
+
+<p>You&rsquo;re demoing your project locally. You&rsquo;re controlling what gets clicked. This is extremely convient for building an MVP. It doesn&rsquo;t have to be perfect. All the features don&rsquo;t have to be added. Build your cool feature, demo it, and polish it later.</p>
+
+<h2>3. Don&rsquo;t frown on a tech talk</h2>
+
+<p>You don&rsquo;t have to build an app. Tech talks are extremely valuable for the audience. Also, as the presenter, it gives you the opportunity for a deeper understanding into a topic.</p>
+
+<h2>4. Pre-record your demo</h2>
+
+<p>You won&rsquo;t need it (hopefully). But there will be sometime in your life when your app crashes. That time may be on a presenter stage. Be prepared.</p>
 ]]></content>
   </entry>
   

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Pro | My Octopress Blog]]></title>
+  <title><![CDATA[Category: Pro | Irrationally Coded]]></title>
   <link href="http://joshuabamboo.github.io/blog/categories/pro/atom.xml" rel="self"/>
   <link href="http://joshuabamboo.github.io/"/>
-  <updated>2014-12-16T20:44:23-05:00</updated>
+  <updated>2014-12-16T21:00:44-05:00</updated>
   <id>http://joshuabamboo.github.io/</id>
   <author>
     <name><![CDATA[Josh Owens]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Top 5 Keyboard Shortcuts I Use Constantly]]></title>
+    <title type="html"><![CDATA[Top 5 Keyboard Shortcuts You Can Use Constantly]]></title>
     <link href="http://joshuabamboo.github.io/blog/2014/11/24/top-10-life-changing-keyboard-shortcuts/"/>
     <updated>2014-11-24T09:18:16-05:00</updated>
     <id>http://joshuabamboo.github.io/blog/2014/11/24/top-10-life-changing-keyboard-shortcuts</id>

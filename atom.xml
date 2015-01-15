@@ -4,7 +4,7 @@
   <title><![CDATA[Irrationally Coded]]></title>
   <link href="http://joshuabamboo.github.io/atom.xml" rel="self"/>
   <link href="http://joshuabamboo.github.io/"/>
-  <updated>2015-01-15T15:27:20-05:00</updated>
+  <updated>2015-01-15T15:29:05-05:00</updated>
   <id>http://joshuabamboo.github.io/</id>
   <author>
     <name><![CDATA[Josh Owens]]></name>
@@ -33,7 +33,7 @@
 <ul>
 <li><p>&ldquo;Active Record is the M in MVC - the model - which is the layer of the system responsible for representing business data and logic.&rdquo;</p>
 
-<blockquote><p>This is obviously assuming some basic knowlege of the MVC paradigm. Essentially the biggest takeaway is that AR deals with the database and the data being stored inside it. AR is responsible for handling all database interaction from the application level.</p></blockquote></li>
+<blockquote><p>This is obviously assuming some basic knowledge of the MVC paradigm. Essentially the biggest takeaway is that AR deals with the database and the data being stored inside it. AR is responsible for handling all database interaction from the application level.</p></blockquote></li>
 <li><p>&ldquo;Active Record facilitates the creation and use of business objects whose data requires persistent storage to a database. It is an implementation of the Active Record pattern which itself is a description of an Object Relational Mapping system.&rdquo;</p>
 
 <blockquote><p>What makes AR so special is that it interacts with the database in a simple and intuitive way (Read: not SQL). The way it does this is by creating Ruby objects that come with all the benefits of being objects (like methods). AR then translates between those objects and the database, so you don&rsquo;t have to.</p></blockquote></li>

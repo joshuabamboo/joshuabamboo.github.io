@@ -4,7 +4,7 @@
   <title><![CDATA[Irrationally Coded]]></title>
   <link href="http://joshuabamboo.github.io/atom.xml" rel="self"/>
   <link href="http://joshuabamboo.github.io/"/>
-  <updated>2015-01-15T12:06:49-05:00</updated>
+  <updated>2015-01-15T15:19:00-05:00</updated>
   <id>http://joshuabamboo.github.io/</id>
   <author>
     <name><![CDATA[Josh Owens]]></name>
@@ -12,6 +12,53 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Explaining Active Record]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2015/01/15/explaining-active-record/"/>
+    <updated>2015-01-15T14:27:31-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2015/01/15/explaining-active-record</id>
+    <content type="html"><![CDATA[<blockquote class="twitter-tweet" lang="en"><p>ActiveRecord is the shit. <a href="https://twitter.com/hashtag/coding?src=hash">#coding</a> <a href="https://twitter.com/hashtag/justsayin?src=hash">#justsayin</a> <a href="https://twitter.com/hashtag/rails?src=hash">#rails</a></p>&mdash; Logan Hasson (@loganhasson) <a href="https://twitter.com/loganhasson/status/396801652399030273">November 3, 2013</a></blockquote>
+
+
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+<p>Indeed, it is, but why? The Rails Guides &ndash; while normally crystal clear &ndash; can be a bit confusing to understand with regard to AR. Below is a sample excerpt from their answer to &ldquo;What is Active Record.&rdquo;</p>
+
+<blockquote><p>Active Record is the M in MVC - the model - which is the layer of the system responsible for representing business data and logic. Active Record facilitates the creation and use of business objects whose data requires persistent storage to a database. It is an implementation of the Active Record pattern which itself is a description of an Object Relational Mapping system.</p></blockquote>
+
+<p>While this is all technically precise, I remember this sounding like complete gibberish my first time reading it. In light of this, allow me to try to translate:</p>
+
+<ul>
+<li><p>&ldquo;Active Record is the M in MVC - the model - which is the layer of the system responsible for representing business data and logic.&rdquo;</p>
+
+<blockquote><p>This is obviously assuming some basic knowlege of the MVC paradigm. Essentially the biggest takeaway is that AR deals with the database and the data being stored inside it. AR is responsible for handling all database interaction from the application level.</p></blockquote></li>
+<li><p>&ldquo;Active Record facilitates the creation and use of business objects whose data requires persistent storage to a database. It is an implementation of the Active Record pattern which itself is a description of an Object Relational Mapping system.&rdquo;</p>
+
+<blockquote><p>What makes AR so special is that it interacts with the database in a simple and intuitive way (Read: not SQL). The way it does this is by creating Ruby objects that come with all the benefits of being objects (like methods). AR then translates between those objects and the database, so you don&rsquo;t have to.</p></blockquote></li>
+</ul>
+
+
+<h2>Why not use SQL?</h2>
+
+<p>Let&rsquo;s compare SQL and AR by using a simple use case. Imagine you want to find the last item in one of the tables in your database. In SQL it will look something like this:</p>
+
+<p>&lsquo;&rsquo;&lsquo;&#8217;SQL
+SELECT /* FROM table_name ORDER BY date DESC limit 1
+&rsquo;&lsquo;&rsquo;&#8217;</p>
+
+<p>In Ruby, it&rsquo;s one method &lsquo;.last&rsquo;:</p>
+
+<p>&lsquo;&rsquo;&lsquo;&#8217;Ruby
+table_name.last
+&rsquo;&lsquo;&rsquo;&#8217;</p>
+
+<p>Even though this is a very simple query, the difference is stark. It only gets worse as the queries become more complex.</p>
+
+<p>To summarize: AR composes SQL, submits the SQL, parses the output, and puts it in a Ruby object&ndash;all in one fell swoop. Now you can retweet Logan with confidence and let the world know that Active Record is, indeed, the shit.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[JavaScript Semicolons: When to Use Them;]]></title>

@@ -4,7 +4,7 @@
   <title><![CDATA[Irrationally Coded]]></title>
   <link href="http://joshuabamboo.github.io/atom.xml" rel="self"/>
   <link href="http://joshuabamboo.github.io/"/>
-  <updated>2014-12-16T21:30:10-05:00</updated>
+  <updated>2015-01-15T10:58:18-05:00</updated>
   <id>http://joshuabamboo.github.io/</id>
   <author>
     <name><![CDATA[Josh Owens]]></name>
@@ -23,11 +23,28 @@
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[A Javascript Weekend]]></title>
+    <title type="html"><![CDATA[JavaScript Semicolons: When to Use Them;]]></title>
     <link href="http://joshuabamboo.github.io/blog/2014/11/24/a-javascript-weekend/"/>
     <updated>2014-11-24T09:21:01-05:00</updated>
     <id>http://joshuabamboo.github.io/blog/2014/11/24/a-javascript-weekend</id>
-    <content type="html"><![CDATA[
+    <content type="html"><![CDATA[<p>For someone making the switch from Ruby to JavaScript, the first thing you may notice is JavaScript&rsquo;s ineligant obsession with semicolons. They&rsquo;re everywhere!</p>
+
+<p>Here are some quick and dirty tips to determine whether or not that line should have a semicolon.</p>
+
+<p>DO use semicolons:
+1. After you assign something
+2. After you call a function
+3. After you return something</p>
+
+<p>DO NOT use semicolons:
+1. After an if statement
+2. After a function expression</p>
+
+<p>The good <a href="news:">news:</a> The browser will intelligently place semicolons if you forget one here and there.</p>
+
+<p>The bad <a href="news:">news:</a> You can&rsquo;t rely on this.</p>
+
+<p>Still having problems wrapping your head around it? Pair program with a semicolon pro.</p>
 ]]></content>
   </entry>
   

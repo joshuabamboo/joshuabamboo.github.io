@@ -31,7 +31,7 @@ ORDER BY date DESC
 LIMIT 1
 ```
 
-In Ruby, it's one method '.last':
+In Ruby, it's one method `last`:
 
 ```ruby
 table_name.last

@@ -110,15 +110,23 @@
 
 <p>Let&rsquo;s compare SQL and AR by using a simple use case. Imagine you want to find the last item in one of the tables in your database. In SQL it will look something like this:</p>
 
-<p>&lsquo;&rsquo;&lsquo;&#8217;SQL
-SELECT /* FROM table_name ORDER BY date DESC limit 1
-&rsquo;&lsquo;&rsquo;&#8217;</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">SELECT</span> <span class="o">*</span>
+</span><span class='line'><span class="k">FROM</span> <span class="k">table_name</span>
+</span><span class='line'><span class="k">ORDER</span> <span class="k">BY</span> <span class="nb">date</span> <span class="k">DESC</span>
+</span><span class='line'><span class="k">LIMIT</span> <span class="mi">1</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>In Ruby, it&rsquo;s one method &lsquo;.last&rsquo;:</p>
 
-<p>&lsquo;&rsquo;&lsquo;&#8217;Ruby
-table_name.last
-&rsquo;&lsquo;&rsquo;&#8217;</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">table_name</span><span class="o">.</span><span class="n">last</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>Even though this is a very simple query, the difference is stark. It only gets worse as the queries become more complex.</p>
 

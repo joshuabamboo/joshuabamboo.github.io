@@ -24,15 +24,18 @@ While this is all technically precise, I remember this sounding like complete gi
 ##Why not use SQL?
 Let's compare SQL and AR by using a simple use case. Imagine you want to find the last item in one of the tables in your database. In SQL it will look something like this:
 
-''''SQL 
-SELECT /* FROM table_name ORDER BY date DESC limit 1
-''''
+```sql
+SELECT * 
+FROM table_name 
+ORDER BY date DESC 
+LIMIT 1
+```
 
 In Ruby, it's one method '.last':
 
-''''Ruby
+```ruby
 table_name.last
-''''
+```
 
 Even though this is a very simple query, the difference is stark. It only gets worse as the queries become more complex.
 

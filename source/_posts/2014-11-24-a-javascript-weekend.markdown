@@ -10,14 +10,14 @@ For someone making the switch from Ruby to JavaScript, the first thing you may n
 
 Here are some quick and dirty tips to determine whether or not that line should have a semicolon.
 
-DO use semicolons:
-1. After you assign something
-2. After you call a function
-3. After you return something
+####DO use semicolons: 
+   * After you assign something
+   * After you call a function
+   * After you return something
 
-DO NOT use semicolons:
-1. After an if statement
-2. After a function expression
+####DO NOT use semicolons: 
+   * After an if statement
+   * After a function expression
 
 The good news: The browser will intelligently place semicolons if you forget one here and there.
 

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Flatiron | Irrationally Coded]]></title>
   <link href="http://joshuabamboo.github.io/blog/categories/flatiron/atom.xml" rel="self"/>
   <link href="http://joshuabamboo.github.io/"/>
-  <updated>2015-01-15T11:11:56-05:00</updated>
+  <updated>2015-01-15T12:06:49-05:00</updated>
   <id>http://joshuabamboo.github.io/</id>
   <author>
     <name><![CDATA[Josh Owens]]></name>
@@ -14,19 +14,10 @@
 
   
   <entry>
-    <title type="html"><![CDATA[The Secret Project: Day 3]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-3/"/>
-    <updated>2014-11-24T21:46:45-05:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-3</id>
-    <content type="html"><![CDATA[<p>Integration with Soundcloud</p>
-]]></content>
-  </entry>
-  
-  <entry>
     <title type="html"><![CDATA[JavaScript Semicolons: When to Use Them;]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2014/11/24/a-javascript-weekend/"/>
-    <updated>2014-11-24T09:21:01-05:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2014/11/24/a-javascript-weekend</id>
+    <link href="http://joshuabamboo.github.io/blog/2014/12/01/a-javascript-weekend/"/>
+    <updated>2014-12-01T09:21:01-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2014/12/01/a-javascript-weekend</id>
     <content type="html"><![CDATA[<p>For someone making the switch from Ruby to JavaScript, the first thing you may notice is JavaScript&rsquo;s ineligant obsession with semicolons. They&rsquo;re everywhere!</p>
 
 <p>Here are some quick and dirty tips to determine whether or not that line should have a semicolon.</p>
@@ -53,6 +44,15 @@
 <p>The bad <a href="news:">news:</a> You can&rsquo;t rely on this.</p>
 
 <p>Still having problems wrapping your head around it? Pair program with a semicolon pro.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[The Secret Project: Day 3]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-3/"/>
+    <updated>2014-11-24T21:46:45-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-3</id>
+    <content type="html"><![CDATA[<p>Integration with Soundcloud</p>
 ]]></content>
   </entry>
   

@@ -16,7 +16,7 @@ Indeed, it is, but why? The Rails Guides -- while normally crystal clear -- can 
 While this is all technically precise, I remember this sounding like complete gibberish my first time reading it. In light of this, allow me to try to translate:
 
 * "Active Record is the M in MVC - the model - which is the layer of the system responsible for representing business data and logic." 
-> This is obviously assuming some basic knowlege of the MVC paradigm. Essentially the biggest takeaway is that AR deals with the database and the data being stored inside it. AR is responsible for handling all database interaction from the application level.
+> This is obviously assuming some basic knowledge of the MVC paradigm. Essentially the biggest takeaway is that AR deals with the database and the data being stored inside it. AR is responsible for handling all database interaction from the application level.
 
 * "Active Record facilitates the creation and use of business objects whose data requires persistent storage to a database. It is an implementation of the Active Record pattern which itself is a description of an Object Relational Mapping system." 
 > What makes AR so special is that it interacts with the database in a simple and intuitive way (Read: not SQL). The way it does this is by creating Ruby objects that come with all the benefits of being objects (like methods). AR then translates between those objects and the database, so you don't have to.

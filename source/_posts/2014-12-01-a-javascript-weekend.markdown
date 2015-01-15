@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "JavaScript Semicolons: When to use them;"
-date: 2014-11-24 09:21:01 -0500
+date: 2014-12-01 09:21:01 -0500
 comments: true
 categories: The Flatiron School
 ---

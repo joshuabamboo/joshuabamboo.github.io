@@ -9,7 +9,7 @@ categories:
 <blockquote class="twitter-tweet" lang="en"><p>ActiveRecord is the shit. <a href="https://twitter.com/hashtag/coding?src=hash">#coding</a> <a href="https://twitter.com/hashtag/justsayin?src=hash">#justsayin</a> <a href="https://twitter.com/hashtag/rails?src=hash">#rails</a></p>&mdash; Logan Hasson (@loganhasson) <a href="https://twitter.com/loganhasson/status/396801652399030273">November 3, 2013</a></blockquote>
 <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-Indeed, it is, but why? The Rails Guides -- while normally crystal clear -- can be a bit confusing to understand with regard to AR. Below is a sample excerpt from their answer to "What is Active Record."
+Indeed, it is, but why? The Rails Guides -- while normally crystal clear -- can be a bit confusing to understand with regard to AR. Below is a sample excerpt from their answer to "What is Active Record?"
 
 > Active Record is the M in MVC - the model - which is the layer of the system responsible for representing business data and logic. Active Record facilitates the creation and use of business objects whose data requires persistent storage to a database. It is an implementation of the Active Record pattern which itself is a description of an Object Relational Mapping system.
 

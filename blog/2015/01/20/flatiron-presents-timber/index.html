@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Irrationally Coded</title>
+  <title>Flatiron Students Present - Timber - Irrationally Coded</title>
   <meta name="author" content="Josh Owens">
 
   
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://joshuabamboo.github.io">
+  <link rel="canonical" href="http://joshuabamboo.github.io/blog/2015/01/20/flatiron-presents-timber">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Irrationally Coded" type="application/atom+xml">
@@ -63,15 +63,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="entry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2015/01/20/flatiron-presents-timber/">Flatiron Students Present - Timber</a></h1>
+      <h1 class="entry-title">Flatiron Students Present - Timber</h1>
     
     
       <p class="meta">
@@ -87,7 +84,7 @@
   </header>
 
 
-  <div class="entry-content"><p><img src="../images/timber-home.png" alt="Timber homepage" /></p>
+<div class="entry-content"><p><img src="../images/timber-home.png" alt="Timber homepage" /></p>
 
 <p>Timber is an application my partner and I built and presented at Flatiron Students Present Meetup. We wanted to create a fun application that we&rsquo;d enjoy making and presenting. We wanted to dive pretty heavily into relational databases. And we wanted a good way to really get a grasp of Active Record. Behold, Timber was born.</p>
 
@@ -196,416 +193,46 @@
 </span></code></pre></td></tr></table></div></figure>
 
 </div>
-  
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/01/15/explaining-active-record/">Explaining Active Record</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-01-15T14:27:31-05:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>15</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>2:27 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><blockquote class="twitter-tweet" lang="en"><p>ActiveRecord is the shit. <a href="https://twitter.com/hashtag/coding?src=hash">#coding</a> <a href="https://twitter.com/hashtag/justsayin?src=hash">#justsayin</a> <a href="https://twitter.com/hashtag/rails?src=hash">#rails</a></p>&mdash; Logan Hasson (@loganhasson) <a href="https://twitter.com/loganhasson/status/396801652399030273">November 3, 2013</a></blockquote>
-
-
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-
-<p>Indeed, it is, but why? The Rails Guides &ndash; while normally crystal clear &ndash; can be a bit confusing to understand with regard to AR. Below is a sample excerpt from their answer to &ldquo;What is Active Record?&rdquo;</p>
-
-<blockquote><p>Active Record is the M in MVC - the model - which is the layer of the system responsible for representing business data and logic. Active Record facilitates the creation and use of business objects whose data requires persistent storage to a database. It is an implementation of the Active Record pattern which itself is a description of an Object Relational Mapping system.</p></blockquote>
-
-<p>While this is all technically precise, I remember this sounding like complete gibberish my first time reading it. In light of this, allow me to try to translate:</p>
-
-<ul>
-<li><p>&ldquo;Active Record is the M in MVC - the model - which is the layer of the system responsible for representing business data and logic.&rdquo;</p>
-
-<blockquote><p>This is obviously assuming some basic knowledge of the MVC paradigm. Essentially the biggest takeaway is that AR deals with the database and the data being stored inside it. AR is responsible for handling all database interaction from the application level.</p></blockquote></li>
-<li><p>&ldquo;Active Record facilitates the creation and use of business objects whose data requires persistent storage to a database. It is an implementation of the Active Record pattern which itself is a description of an Object Relational Mapping system.&rdquo;</p>
-
-<blockquote><p>What makes AR so special is that it interacts with the database in a simple and intuitive way (Read: not SQL). The way it does this is by creating Ruby objects that come with all the benefits of being objects (like methods). AR then translates between those objects and the database, so you don&rsquo;t have to.</p></blockquote></li>
-</ul>
-
-
-<h2>Why not use SQL?</h2>
-
-<p>Let&rsquo;s compare SQL and AR by using a simple use case. Imagine you want to find the last item in one of the tables in your database. In SQL it will look something like this:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">SELECT</span> <span class="o">*</span>
-</span><span class='line'><span class="k">FROM</span> <span class="k">table_name</span>
-</span><span class='line'><span class="k">ORDER</span> <span class="k">BY</span> <span class="nb">date</span> <span class="k">DESC</span>
-</span><span class='line'><span class="k">LIMIT</span> <span class="mi">1</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>In Ruby, it&rsquo;s one method <code>last</code>:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">table_name</span><span class="o">.</span><span class="n">last</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Even though this is a very simple query, the difference is stark. It only gets worse as the queries become more complex.</p>
-
-<p>To summarize: AR composes SQL, submits the SQL, parses the output, and puts it in a Ruby object&ndash;all in one fell swoop. Now you can retweet Logan with confidence and let the world know that Active Record is, indeed, the shit.</p>
-</div>
-  
   
 
+<span class="byline author vcard">Posted by <span class="fn">Josh Owens</span></span>
 
-    </article>
-  
-  
-    <article>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/12/01/a-javascript-weekend/">JavaScript Semicolons: When to Use Them;</a></h1>
-    
-    
-      <p class="meta">
-        
 
 
 
 
-<time class='entry-date' datetime='2014-12-01T09:21:01-05:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2014</span></span> <span class='time'>9:21 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>For someone making the switch from Ruby to JavaScript, the first thing you may notice is JavaScript&rsquo;s ineligant obsession with semicolons. They&rsquo;re everywhere!</p>
-
-<p>Here are some quick and dirty tips to determine whether or not that line should have a semicolon.</p>
-
-<h4>DO use semicolons:</h4>
-
-<ul>
-<li> After you assign something</li>
-<li> After you call a function</li>
-<li> After you return something</li>
-</ul>
-
-
-<h4>DO NOT use semicolons:</h4>
-
-<ul>
-<li> After an if statement</li>
-<li> After a function expression</li>
-</ul>
-
-
-<p>The good <a href="news:">news:</a> The browser will intelligently place semicolons if you forget one here and there.</p>
-
-<p>The bad <a href="news:">news:</a> You can&rsquo;t rely on this.</p>
-
-<p>Still having problems wrapping your head around it? Pair program with a semicolon pro.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
+<time class='entry-date' datetime='2015-01-20T15:00:28-05:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>20</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>3:00 pm</span></time>
       
-  <header>
+
+
+    </p>
     
-      <h1 class="entry-title"><a href="/blog/2014/11/24/the-secret-project-day-3/">The Secret Project: Day 3</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-11-24T21:46:45-05:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>9:46 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Integration with Soundcloud</p>
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://joshuabamboo.github.io/blog/2015/01/20/flatiron-presents-timber/" data-via="joshuabamboo" data-counturl="http://joshuabamboo.github.io/blog/2015/01/20/flatiron-presents-timber/" >Tweet</a>
+  
+  
+  
 </div>
-  
-  
 
-
-    </article>
-  
-  
-    <article>
+    
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/11/24/the-secret-project-day-2/">The Secret Project: Day 2</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-11-24T09:20:48-05:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>9:20 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Event Handlers</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
+        <a class="basic-alignment left" href="/blog/2015/01/15/explaining-active-record/" title="Previous Post: Explaining Active Record">&laquo; Explaining Active Record</a>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/11/24/the-secret-project-day-1/">The Secret Project: Day 1</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-11-24T09:20:28-05:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>9:20 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Make it work.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/11/24/lessons-from-my-first-meetup-presentation/">Lessons From My First Meetup Presentation</a></h1>
-    
-    
-      <p class="meta">
-        
+    </p>
+  </footer>
+</article>
 
-
-
-
-<time class='entry-date' datetime='2014-11-24T09:19:56-05:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>9:19 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>1. Only build what you need.</h2>
-
-<p>My partner and I spent the beginning of the week building out a user model, controller, and view. It was beautiful. You could make a user profile, and edit it. It was styled nicely. Only problem was: we weren&rsquo;t demoing user signup, and we definitely weren&rsquo;t editing a user&rsquo;s profile. Stick with what you need.</p>
-
-<h2>2. Fake it &lsquo;til you make it.</h2>
-
-<p>You&rsquo;re demoing your project locally. You&rsquo;re controlling what gets clicked. This is extremely convient for building an MVP. It doesn&rsquo;t have to be perfect. All the features don&rsquo;t have to be added. Build your cool feature, demo it, and polish it later.</p>
-
-<h2>3. Don&rsquo;t frown on a tech talk</h2>
-
-<p>You don&rsquo;t have to build an app. Tech talks are extremely valuable for the audience. Also, as the presenter, it gives you the opportunity for a deeper understanding into a topic.</p>
-
-<h2>4. Pre-record your demo</h2>
-
-<p>You won&rsquo;t need it (hopefully). But there will be sometime in your life when your app crashes. That time may be on a presenter stage. Be prepared.</p>
 </div>
-  
-  
 
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/11/24/top-10-life-changing-keyboard-shortcuts/">Top 6 Keyboard Shortcuts You Can Use Constantly</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-11-24T09:18:16-05:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>9:18 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Okay, so you&rsquo;ve <a href="http://joshuabamboo.github.io/blog/2014/11/12/test/">modified your keyboard to make the Caps Lock a more useful button</a>. Now, let&rsquo;s actually put that new Control(^) button to use.</p>
-
-<h2>Here are my top 6 time-saving shortcuts I use constantly:</h2>
-
-<blockquote><ol>
-<li>Control-a - Jumps to the beginning of a line. (Similarly, Control-e jumps to the end)</li>
-<li>Shift-Command- ←or→ - Highlight the text to the left or right of your curser. This is particularly helpful when trying to delete, cut, or copy a line.</li>
-<li>Control-r (in the Terminal) - Allows you to search your previous commands. Sort of like pressing the up arrow, but using a keyword search instead.</li>
-<li>Function-Delete - Forward delete. When I switched from PC to Mac, this was the only thing I missed until I realized Macs (of course) have it, too.</li>
-<li>Command-Control-Shift-4 - Copy screen grab to your clipboard. Before this trick, my Desktop was littered with random screenshots I saved to my computer only to drop them in an email or website.</li>
-<li>Command-Tab - To switch between running programs. Tapping tab allows you to loop through (The directional pad serves the same function). Make your selection by releasing Command.</li>
-</ol>
-</blockquote>
-
-<p>Although the benefits are marginal, marginal benefits add up quickly.</p>
-
-<h3>Let&rsquo;s make some (conservative) assumptions:</h3>
-
-<blockquote><ul>
-<li>As a programmer, you&rsquo;re on your computer 8 hours/day</li>
-<li>You probably use 5 keyboard shortcuts per hour</li>
-<li>Each keyboard shortcut nets 2 saved seconds</li>
-</ul>
-</blockquote>
-
-<p>That&rsquo;s 29,200 seconds per year &ndash; The equivalent of an entire work day!</p>
-
-<p>(((10 seconds per hour * 8 hours * 365 days)/60)/60) = 8.11 hours</p>
-
-<p>Additional resources:
-<a href="https://www.macupdate.com/app/mac/44454/hotkey-eve">Eve</a> is a great learning tool that notifies you of the keyboard shortcut every time you do something with the curser.</p>
-
-<p>Apple&rsquo;s documentation provides a comprehensive overview of emacs shortcuts: <a href="http://support.apple.com/en-us/HT201236">http://support.apple.com/en-us/HT201236</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/11/12/test/">The Developers Keyboard</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-11-12T09:15:51-05:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>9:15 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>As a developer you&rsquo;ll spend a lot of time working with your keyboard, and consequently you&rsquo;ll start to learn all the shortcuts to optimize your workflow. One of the most useful hacks I&rsquo;ve found is to replace the caps lock functionality for another control button.</p>
-
-<p>If you&rsquo;re using OS X v.10.9 (Mavericks), just follow these simple steps:</p>
-
-<p>1.) Open your keyboard settings found in System Preferences
-<img src="../images/modify-keyboard-1.png" alt="Finding Keyboard in System Preferences" /></p>
-
-<p>2.) Make sure the &lsquo;keyboard&rsquo; tab is selected and click the &lsquo;Modifier keys&hellip;&rsquo; button
-<img src="../images/modify-keyboard-2.png" alt="Select" /></p>
-
-<p>3.) Here is where the magic happens. Just select &lsquo;^ Control&rsquo; from the Caps Lock dropdown, and apply the changes.
-<img src="../images/modify-keyboard-3.png" alt="Change" /></p>
-
-<p>Simple as that. Congrats on stepping your keyboard game up.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/11/05/your-title-in-there/">Best Flatiron Food</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-11-05T19:31:56-05:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>7:31 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Dear future Flatiron colleagues,</p>
-
-<p>Chipotle, The Korean food at the deli in the basement, Indian food cart, GoGo Grill, Murphy&rsquo;s Tavern, Tres Carnes, Chop&rsquo;t, Hale and Hearty, Kungfu Tea.</p>
-
-<p>Sincerely,
-Ruby-006</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  <div class="pagination">
-    
-      <a class="prev" href="/posts/2">&larr; Older</a>
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
-</div>
 <aside class="sidebar">
   
     <section>
@@ -670,6 +297,7 @@ Ruby-006</p>
 
   
 </aside>
+
 
     </div>
   </div>

@@ -4,7 +4,7 @@
   <title><![CDATA[Irrationally Coded]]></title>
   <link href="http://joshuabamboo.github.io/atom.xml" rel="self"/>
   <link href="http://joshuabamboo.github.io/"/>
-  <updated>2015-01-15T15:29:05-05:00</updated>
+  <updated>2015-01-20T16:48:30-05:00</updated>
   <id>http://joshuabamboo.github.io/</id>
   <author>
     <name><![CDATA[Josh Owens]]></name>
@@ -12,6 +12,122 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Flatiron Students Present - Timber]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2015/01/20/flatiron-presents-timber/"/>
+    <updated>2015-01-20T15:00:28-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2015/01/20/flatiron-presents-timber</id>
+    <content type="html"><![CDATA[<p><img src="../images/timber-home.png" alt="Timber homepage" /></p>
+
+<p>Timber is an application my partner and I built and presented at Flatiron Students Present Meetup. We wanted to create a fun application that we&rsquo;d enjoy making and presenting. We wanted to dive pretty heavily into relational databases. And we wanted a good way to really get a grasp of Active Record. Behold, Timber was born.</p>
+
+<h3>What is Timber?</h3>
+
+<p>Timber is a web app clone of Tinder built in Rails. The twist being that it is specifically targeted at users that recently ended a relationship and were still living with their significant other. In essence, Timber is the Tinder for cohabitation breakups.</p>
+
+<h3>How does it work?</h3>
+
+<p>For our demo, we used two obvious test users, Pitbull and Ke$ha (<a href="http://open.spotify.com/track/3cHyrEgdyYRjgJKSOiOtcS">You know the song</a>).</p>
+
+<p>Pitbull recently broke up with his girlfriend, and he was looking for a place to move. Ke$ha recently broke up with her boyfriend, and she was looking for someone to help defray the cost of her now much more expensive apartment.</p>
+
+<p>From here, the UX resembles Tinder. Pitbull will see heterosexual females with apartments. Ke$ha will see heterosexual males looking for a place to stay. If they like each other, they will match and can send messages back and forth.</p>
+
+<h3>The tech</h3>
+
+<p>This project relies heavily on database interaction. In a way, our database queries were a little more complex than a Tinder-style checking for reciprical likes. Our models were more similar to an Airbnb model, in that each user could be a guest or a host. In order to filter the users properly, we check gender, orientation, and the sex they&rsquo;re looking for. Once we have our <code>@user</code> variable set, we then must check to see if the user is a guest or a host. We do all this with smaller helper methods such as <code>not_have_apts</code> vs <code>have_apts</code> and <code>women_seeking_men</code> vs <code>men_seeking_women</code>. The goal is that ultimately the methods start to read like conversational English.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">filtered_users</span>
+</span><span class='line'>  <span class="k">if</span> <span class="nb">self</span><span class="o">.</span><span class="n">gender</span> <span class="o">==</span> <span class="s2">&quot;male&quot;</span> <span class="o">&amp;&amp;</span> <span class="nb">self</span><span class="o">.</span><span class="n">orientation</span> <span class="o">==</span> <span class="s2">&quot;straight&quot;</span> <span class="o">&amp;&amp;</span> <span class="nb">self</span><span class="o">.</span><span class="n">looking_for</span> <span class="o">==</span> <span class="s2">&quot;women&quot;</span>
+</span><span class='line'>    <span class="vi">@users</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">women_seeking_men</span>
+</span><span class='line'>  <span class="k">elsif</span> <span class="nb">self</span><span class="o">.</span><span class="n">gender</span> <span class="o">==</span> <span class="s2">&quot;female&quot;</span> <span class="o">&amp;&amp;</span> <span class="nb">self</span><span class="o">.</span><span class="n">orientation</span> <span class="o">==</span> <span class="s2">&quot;straight&quot;</span> <span class="o">&amp;&amp;</span> <span class="nb">self</span><span class="o">.</span><span class="n">looking_for</span> <span class="o">==</span> <span class="s2">&quot;men&quot;</span>
+</span><span class='line'>    <span class="vi">@users</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">men_seeking_women</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="vi">@users</span> <span class="o">=</span> <span class="s2">&quot;error&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="nb">self</span><span class="o">.</span><span class="n">host?</span> <span class="p">?</span> <span class="vi">@users</span><span class="o">.</span><span class="n">not_have_apts</span> <span class="p">:</span> <span class="vi">@users</span><span class="o">.</span><span class="n">have_apts</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Another important component of database interaction was making sure that users were only viewing users they hadn&rsquo;t seen before. To do this, we will go through the <code>Like</code> and <code>Dislike</code> tables to look for users where neither a like nor dislike is persisted.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">unviewed_users</span>
+</span><span class='line'>  <span class="n">users</span> <span class="o">=</span> <span class="nb">self</span><span class="o">.</span><span class="n">filtered_users</span>
+</span><span class='line'>  <span class="k">if</span> <span class="nb">self</span><span class="o">.</span><span class="n">has_liked?</span>
+</span><span class='line'>    <span class="no">Like</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="ss">:liker_id</span> <span class="o">=&gt;</span> <span class="nb">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">find_each</span> <span class="k">do</span> <span class="o">|</span><span class="n">like</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">users</span> <span class="o">=</span> <span class="n">users</span><span class="o">.</span><span class="n">where</span><span class="o">.</span><span class="n">not</span><span class="p">(</span><span class="ss">:id</span> <span class="o">=&gt;</span> <span class="n">like</span><span class="o">.</span><span class="n">likee_id</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="k">if</span> <span class="nb">self</span><span class="o">.</span><span class="n">has_disliked?</span>
+</span><span class='line'>    <span class="no">Dislike</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="ss">:disliker_id</span> <span class="o">=&gt;</span> <span class="nb">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">find_each</span> <span class="k">do</span> <span class="o">|</span><span class="n">dislike</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">users</span> <span class="o">=</span> <span class="n">users</span><span class="o">.</span><span class="n">where</span><span class="o">.</span><span class="n">not</span><span class="p">(</span><span class="ss">:id</span> <span class="o">=&gt;</span> <span class="n">dislike</span><span class="o">.</span><span class="n">dislikee_id</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="n">users</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Lastly, it&rsquo;s worthwhile to take a look into the Message model to examine the query for displaying user messages. Here, we grab messages based on a <code>to_id</code> and <code>from_id</code>, grab the reciprocal messages, concatenate them, and sort by date and time.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Message</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>  <span class="n">belongs_to</span> <span class="ss">:to</span><span class="p">,</span> <span class="ss">:class_name</span> <span class="o">=&gt;</span> <span class="ss">:user</span>
+</span><span class='line'>  <span class="n">belongs_to</span> <span class="ss">:from</span><span class="p">,</span> <span class="ss">:class_name</span> <span class="o">=&gt;</span> <span class="ss">:user</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">messages</span><span class="p">(</span><span class="n">to_id</span><span class="p">,</span> <span class="n">from_id</span><span class="p">)</span>
+</span><span class='line'>    <span class="no">Message</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;to_id = ? AND from_id = ?&quot;</span><span class="p">,</span> <span class="n">to_id</span><span class="p">,</span> <span class="n">from_id</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">conversation_with</span><span class="p">(</span><span class="n">recipient_id</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">current_user_messages</span> <span class="o">=</span> <span class="no">Message</span><span class="o">.</span><span class="n">messages</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">recipient_id</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">recipient_messages</span> <span class="o">=</span> <span class="no">Message</span><span class="o">.</span><span class="n">messages</span><span class="p">(</span><span class="n">recipient_id</span><span class="p">,</span> <span class="nb">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">conversation</span> <span class="o">=</span> <span class="p">(</span><span class="n">current_user_messages</span> <span class="o">+</span> <span class="n">recipient_messages</span><span class="p">)</span><span class="o">.</span><span class="n">sort_by</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:created_at</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Explaining Active Record]]></title>
@@ -24,7 +140,7 @@
 <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 
-<p>Indeed, it is, but why? The Rails Guides &ndash; while normally crystal clear &ndash; can be a bit confusing to understand with regard to AR. Below is a sample excerpt from their answer to &ldquo;What is Active Record.&rdquo;</p>
+<p>Indeed, it is, but why? The Rails Guides &ndash; while normally crystal clear &ndash; can be a bit confusing to understand with regard to AR. Below is a sample excerpt from their answer to &ldquo;What is Active Record?&rdquo;</p>
 
 <blockquote><p>Active Record is the M in MVC - the model - which is the layer of the system responsible for representing business data and logic. Active Record facilitates the creation and use of business objects whose data requires persistent storage to a database. It is an implementation of the Active Record pattern which itself is a description of an Object Relational Mapping system.</p></blockquote>
 
@@ -55,7 +171,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>In Ruby, it&rsquo;s one method &lsquo;.last&rsquo;:</p>
+<p>In Ruby, it&rsquo;s one method <code>last</code>:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">table_name</span><span class="o">.</span><span class="n">last</span>

@@ -6,7 +6,7 @@ comments: true
 categories: 
 ---
 
-![Timber homepage](../images/timber-home.png)
+![Timber homepage](../images/timber-home.png =650x)
 
 Timber is an application my partner and I built and presented at Flatiron Students Present Meetup. We wanted to create a fun application that we'd enjoy making and presenting. We wanted to dive pretty heavily into relational databases. And we wanted a good way to really get a grasp of Active Record. Behold, Timber was born.
 

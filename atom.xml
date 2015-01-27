@@ -4,7 +4,7 @@
   <title><![CDATA[Irrationally Coded]]></title>
   <link href="http://joshuabamboo.github.io/atom.xml" rel="self"/>
   <link href="http://joshuabamboo.github.io/"/>
-  <updated>2015-01-20T16:48:30-05:00</updated>
+  <updated>2015-01-27T13:27:08-05:00</updated>
   <id>http://joshuabamboo.github.io/</id>
   <author>
     <name><![CDATA[Josh Owens]]></name>
@@ -18,7 +18,7 @@
     <link href="http://joshuabamboo.github.io/blog/2015/01/20/flatiron-presents-timber/"/>
     <updated>2015-01-20T15:00:28-05:00</updated>
     <id>http://joshuabamboo.github.io/blog/2015/01/20/flatiron-presents-timber</id>
-    <content type="html"><![CDATA[<p><img src="../images/timber-home.png" alt="Timber homepage" /></p>
+    <content type="html"><![CDATA[<p><img src="../images/timber-home.png" width="650" alt="Timber homepage" /></p>
 
 <p>Timber is an application my partner and I built and presented at Flatiron Students Present Meetup. We wanted to create a fun application that we&rsquo;d enjoy making and presenting. We wanted to dive pretty heavily into relational databases. And we wanted a good way to really get a grasp of Active Record. Behold, Timber was born.</p>
 
@@ -185,7 +185,7 @@
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[JavaScript Semicolons: When to Use Them;]]></title>
+    <title type="html"><![CDATA[JavaScript Semicolons: When to use them;]]></title>
     <link href="http://joshuabamboo.github.io/blog/2014/12/01/a-javascript-weekend/"/>
     <updated>2014-12-01T09:21:01-05:00</updated>
     <id>http://joshuabamboo.github.io/blog/2014/12/01/a-javascript-weekend</id>
@@ -246,7 +246,7 @@
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Lessons From My First Meetup Presentation]]></title>
+    <title type="html"><![CDATA[Lessons from My First Meetup Presentation]]></title>
     <link href="http://joshuabamboo.github.io/blog/2014/11/24/lessons-from-my-first-meetup-presentation/"/>
     <updated>2014-11-24T09:19:56-05:00</updated>
     <id>http://joshuabamboo.github.io/blog/2014/11/24/lessons-from-my-first-meetup-presentation</id>
@@ -357,7 +357,7 @@ alt="Computer Man" width="240" height="180" border="10" /></a></p>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[TIL Konstantin Haase Rebuilt Sinatra... In 6 Lines!]]></title>
+    <title type="html"><![CDATA[TIL Konstantin Haase Rebuilt Sinatra... in 6 lines!]]></title>
     <link href="http://joshuabamboo.github.io/blog/2014/10/27/til-konstantin-haase-rebuilt-sinatra-dot-dot-dot-in-6-lines/"/>
     <updated>2014-10-27T20:44:47-04:00</updated>
     <id>http://joshuabamboo.github.io/blog/2014/10/27/til-konstantin-haase-rebuilt-sinatra-dot-dot-dot-in-6-lines</id>
@@ -560,7 +560,7 @@ alt="Computer Man" width="240" height="180" border="10" /></a></p>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[My First Post on Octopress]]></title>
+    <title type="html"><![CDATA[My First Post On Octopress]]></title>
     <link href="http://joshuabamboo.github.io/blog/2014/10/14/my-first-post-on-octopress/"/>
     <updated>2014-10-14T20:09:45-04:00</updated>
     <id>http://joshuabamboo.github.io/blog/2014/10/14/my-first-post-on-octopress</id>

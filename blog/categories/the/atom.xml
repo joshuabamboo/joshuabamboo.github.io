@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: The | Irrationally Coded]]></title>
+  <title><![CDATA[Category: the | Irrationally Coded]]></title>
   <link href="http://joshuabamboo.github.io/blog/categories/the/atom.xml" rel="self"/>
   <link href="http://joshuabamboo.github.io/"/>
-  <updated>2015-01-20T16:48:30-05:00</updated>
+  <updated>2015-01-27T13:27:08-05:00</updated>
   <id>http://joshuabamboo.github.io/</id>
   <author>
     <name><![CDATA[Josh Owens]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[JavaScript Semicolons: When to Use Them;]]></title>
+    <title type="html"><![CDATA[JavaScript Semicolons: When to use them;]]></title>
     <link href="http://joshuabamboo.github.io/blog/2014/12/01/a-javascript-weekend/"/>
     <updated>2014-12-01T09:21:01-05:00</updated>
     <id>http://joshuabamboo.github.io/blog/2014/12/01/a-javascript-weekend</id>
@@ -75,7 +75,7 @@
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Lessons From My First Meetup Presentation]]></title>
+    <title type="html"><![CDATA[Lessons from My First Meetup Presentation]]></title>
     <link href="http://joshuabamboo.github.io/blog/2014/11/24/lessons-from-my-first-meetup-presentation/"/>
     <updated>2014-11-24T09:19:56-05:00</updated>
     <id>http://joshuabamboo.github.io/blog/2014/11/24/lessons-from-my-first-meetup-presentation</id>

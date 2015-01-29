@@ -1,0 +1,145 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta charset="utf-8">
+	<title>Hacking RewardsGold.com: Part 1 | Irrationally Coded</title>
+
+	<meta name="author" content="Josh Owens">
+	
+	<meta name="description" content="Irrationally Coded 25 Jan 2015 Hacking RewardsGold.com: Part 1 Rewards Gold is one of those sites where you earn points, and the points then act as &hellip;">
+
+	<meta name="HandheldFriendly" content="True" />
+	<meta name="MobileOptimized" content="320" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+	<link href="/atom.xml" rel="alternate" title="Irrationally Coded" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic|Open+Sans:700,400" />
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/.min.css" />
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+
+<body class="post-template">
+  <main class="content" role="main"><article class="post">
+  
+	<header class="post-header">
+		<a id="blog-logo" href="/">Irrationally Coded</a>
+	</header>
+	<span class="post-meta">25 Jan 2015</span>
+	<h1 class="post-title">Hacking RewardsGold.com: Part 1</h1>
+
+	<section class="post-content">
+		<p><a href="http://www.rewardsgold.com/">Rewards Gold</a> is one of those sites where you earn points, and the points then act as currency for products in the Rewards Gold store. There are several ways to earn points, but the one that caught my attention was the &ldquo;Invite Friends&rdquo; option. Simple enough: 250 points for each friend you refer.</p>
+
+<p>At this point I should mention that their store consists almost entirely of magazine and newspaper subscriptions. One of which caught my eye - The Economist. A year of The Economist can set you back anywhere from $350-$120 (i.e. well worth my time).</p>
+
+<p>At a price of 8,600 points, The Economist would&rsquo;ve cost me 35 friends&#8217; names and emails. Not terrible, but I was looking for something scalable.</p>
+
+<p>Naturally, I began writing a script. <a href="https://github.com/joshuabamboo/rewards-gold">Here it is on GitHub</a></p>
+
+<p>I created a class called <code>FriendGenerator</code> where the user could pass in their Rewards Gold username, email, and number of points they needed. Using the Mechanize gem, the script logs the user in and then submits the &ldquo;Invite Friends&rdquo; form until the specified number of points are reach. It turns out the emails aren&rsquo;t vetted in any way. As you can see from the <code>submit_friend_form</code> method, all of the form data is randomly generated.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">submit_friend_form</span>
+</span><span class='line'>  <span class="n">page</span> <span class="o">=</span> <span class="vi">@mechanize</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;http://www.rewardsgold.com/surv/referfriend.php&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">form</span> <span class="o">=</span> <span class="vi">@mechanize</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">form_with</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;theform&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">form</span><span class="o">.</span><span class="n">FriendName1</span> <span class="o">=</span> <span class="no">Random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1000000000</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">form</span><span class="o">.</span><span class="n">FriendEmail1</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="no">Random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1000000000</span><span class="p">)</span><span class="si">}</span><span class="s2">@</span><span class="si">#{</span><span class="no">Random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1000000000</span><span class="p">)</span><span class="si">}</span><span class="s2">.com&quot;</span>
+</span><span class='line'>  <span class="n">form</span><span class="o">.</span><span class="n">FriendName2</span> <span class="o">=</span> <span class="no">Random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1000000000</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">form</span><span class="o">.</span><span class="n">FriendEmail2</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="no">Random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1000000000</span><span class="p">)</span><span class="si">}</span><span class="s2">@</span><span class="si">#{</span><span class="no">Random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1000000000</span><span class="p">)</span><span class="si">}</span><span class="s2">.com&quot;</span>
+</span><span class='line'>  <span class="n">button</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">button_with</span><span class="p">(</span><span class="ss">:value</span> <span class="o">=&gt;</span> <span class="s2">&quot;Submit&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="vi">@mechanize</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">button</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This works. By simply creating a new instance of the class, passing in the arguments, and calling the <code>get_points</code> method, you can get all the points you want.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">f</span> <span class="o">=</span> <span class="no">FriendGenerator</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;youremail@example.com&quot;</span><span class="p">,</span> <span class="s2">&quot;PASSWORD&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">f</span><span class="o">.</span><span class="n">get_points</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Bam! Go get yourself The Economist. We could stop here, but there is an even simpler way I discovered. To be continued&hellip;</p>
+
+	</section>
+
+  <footer class="post-footer">
+  <section class="author">
+    <h4>Josh Owens</h4>
+    <p></p>
+  </section>
+  <section class="share">
+    <h4>Share this post</h4>
+    <a class="icon-twitter" href="http://twitter.com/share?text=Hacking RewardsGold.com: Part 1&amp;url=http://joshuabamboo.github.io/blog/2015/01/25/hacking-rewardsgold-dot-com/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+      <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://joshuabamboo.github.io/blog/2015/01/25/hacking-rewardsgold-dot-com/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+      <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=http://joshuabamboo.github.io/blog/2015/01/25/hacking-rewardsgold-dot-com/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+      <span class="hidden">Google+</span>
+    </a>
+  </section>
+</footer>
+  <hr>
+  
+    <div class="share">
+</div>
+
+  
+  
+</article></main>
+  <footer class="site-footer"><a class="subscribe icon-feed" href="http://joshuabamboo.github.io/atom.xml"><span class="tooltip">Subscribe!</span></a>
+
+
+<div class="inner">
+
+
+Follow me on
+
+
+
+<a class="social twitter" href="http://twitter.com/joshuabamboo" title="Twitter">Twitter</a>
+
+
+
+<a class="social github" href="http://github.com/joshuabamboo" title="GitHub">GitHub</a>
+
+
+
+
+<section class="copyright">All content copyright <a href="/">Josh Owens</a> © 2015 • All rights reserved.</section>
+
+<section class="poweredby">Casper theme by <a class="icon-ghost" href="http://tryghost.org">Ghost</a> &amp; Published with <a href="http://octopress.org">Octopress</a></section>
+
+</div>
+</footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+
+
+
+
+
+
+</body>
+</html>

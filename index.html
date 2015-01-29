@@ -9,7 +9,7 @@
 
 	<meta name="author" content="Josh Owens">
 	
-	<meta name="description" content="20 Jan 2015 Flatiron Students Present - Timber Timber is an application my partner and I built and presented at Flatiron Students Present Meetup. We &hellip;">
+	<meta name="description" content="25 Jan 2015 Hacking RewardsGold.com: Part 1 Rewards Gold is one of those sites where you earn points, and the points then act as currency for &hellip;">
 
 	<meta name="HandheldFriendly" content="True" />
 	<meta name="MobileOptimized" content="320" />
@@ -44,6 +44,68 @@
       
 	
 		
+	
+	<header class="post-header">
+		<span class="post-meta">25 Jan 2015</span>
+		<h2 class="post-title">
+			
+			<a href="/blog/2015/01/25/hacking-rewardsgold-dot-com/">
+			
+				Hacking RewardsGold.com: Part 1</a>
+		</h2>
+	</header>
+	<section class="post-excerpt">
+		<p><a href="http://www.rewardsgold.com/">Rewards Gold</a> is one of those sites where you earn points, and the points then act as currency for products in the Rewards Gold store. There are several ways to earn points, but the one that caught my attention was the &ldquo;Invite Friends&rdquo; option. Simple enough: 250 points for each friend you refer.</p>
+
+<p>At this point I should mention that their store consists almost entirely of magazine and newspaper subscriptions. One of which caught my eye - The Economist. A year of The Economist can set you back anywhere from $350-$120 (i.e. well worth my time).</p>
+
+<p>At a price of 8,600 points, The Economist would&rsquo;ve cost me 35 friends&#8217; names and emails. Not terrible, but I was looking for something scalable.</p>
+
+<p>Naturally, I began writing a script. <a href="https://github.com/joshuabamboo/rewards-gold">Here it is on GitHub</a></p>
+
+<p>I created a class called <code>FriendGenerator</code> where the user could pass in their Rewards Gold username, email, and number of points they needed. Using the Mechanize gem, the script logs the user in and then submits the &ldquo;Invite Friends&rdquo; form until the specified number of points are reach. It turns out the emails aren&rsquo;t vetted in any way. As you can see from the <code>submit_friend_form</code> method, all of the form data is randomly generated.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">submit_friend_form</span>
+</span><span class='line'>  <span class="n">page</span> <span class="o">=</span> <span class="vi">@mechanize</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;http://www.rewardsgold.com/surv/referfriend.php&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">form</span> <span class="o">=</span> <span class="vi">@mechanize</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">form_with</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;theform&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">form</span><span class="o">.</span><span class="n">FriendName1</span> <span class="o">=</span> <span class="no">Random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1000000000</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">form</span><span class="o">.</span><span class="n">FriendEmail1</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="no">Random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1000000000</span><span class="p">)</span><span class="si">}</span><span class="s2">@</span><span class="si">#{</span><span class="no">Random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1000000000</span><span class="p">)</span><span class="si">}</span><span class="s2">.com&quot;</span>
+</span><span class='line'>  <span class="n">form</span><span class="o">.</span><span class="n">FriendName2</span> <span class="o">=</span> <span class="no">Random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1000000000</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">form</span><span class="o">.</span><span class="n">FriendEmail2</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="no">Random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1000000000</span><span class="p">)</span><span class="si">}</span><span class="s2">@</span><span class="si">#{</span><span class="no">Random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1000000000</span><span class="p">)</span><span class="si">}</span><span class="s2">.com&quot;</span>
+</span><span class='line'>  <span class="n">button</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">button_with</span><span class="p">(</span><span class="ss">:value</span> <span class="o">=&gt;</span> <span class="s2">&quot;Submit&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="vi">@mechanize</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">button</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This works. By simply creating a new instance of the class, passing in the arguments, and calling the <code>get_points</code> method, you can get all the points you want.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">f</span> <span class="o">=</span> <span class="no">FriendGenerator</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;youremail@example.com&quot;</span><span class="p">,</span> <span class="s2">&quot;PASSWORD&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">f</span><span class="o">.</span><span class="n">get_points</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Bam! Go get yourself The Economist. We could stop here, but there is an even simpler way I discovered. To be continued&hellip;</p>
+
+	</section>
+
+    </article>
+
+  
+    <article class="post">
+      
 	
 	<header class="post-header">
 		<span class="post-meta">20 Jan 2015</span>
@@ -453,31 +515,6 @@
 <img src="../images/modify-keyboard-3.png" alt="Change" /></p>
 
 <p>Simple as that. Congrats on stepping your keyboard game up.</p>
-
-	</section>
-
-    </article>
-
-  
-    <article class="post">
-      
-	
-	<header class="post-header">
-		<span class="post-meta">05 Nov 2014</span>
-		<h2 class="post-title">
-			
-			<a href="/blog/2014/11/05/your-title-in-there/">
-			
-				Best Flatiron Food</a>
-		</h2>
-	</header>
-	<section class="post-excerpt">
-		<p>Dear future Flatiron colleagues,</p>
-
-<p>Chipotle, The Korean food at the deli in the basement, Indian food cart, GoGo Grill, Murphy&rsquo;s Tavern, Tres Carnes, Chop&rsquo;t, Hale and Hearty, Kungfu Tea.</p>
-
-<p>Sincerely,
-Ruby-006</p>
 
 	</section>
 

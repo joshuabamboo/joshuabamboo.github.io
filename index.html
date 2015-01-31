@@ -9,7 +9,7 @@
 
 	<meta name="author" content="Josh Owens">
 	
-	<meta name="description" content="25 Jan 2015 Hacking RewardsGold.com: Part 1 Rewards Gold is one of those sites where you earn points, and the points then act as currency for &hellip;">
+	<meta name="description" content="30 Jan 2015 Hacking RewardsGold.com: Part 2 If you haven&rsquo;t read part one, you can find it here. If you have, you&rsquo;ll recall that I wrote &hellip;">
 
 	<meta name="HandheldFriendly" content="True" />
 	<meta name="MobileOptimized" content="320" />
@@ -44,6 +44,35 @@
       
 	
 		
+	
+	<header class="post-header">
+		<span class="post-meta">30 Jan 2015</span>
+		<h2 class="post-title">
+			
+			<a href="/blog/2015/01/30/hacking-rewardsgold-dot-com-part-2/">
+			
+				Hacking RewardsGold.com: Part 2</a>
+		</h2>
+	</header>
+	<section class="post-excerpt">
+		<p>If you haven&rsquo;t read part one, you can find it <a href="http://joshuabamboo.github.io/blog/2015/01/25/hacking-rewardsgold-dot-com/">here</a>. If you have, you&rsquo;ll recall that I wrote a script to submit the invite form for points on rewardsgold.com. This works perfectly fine; however, while tinkering with their form I discovered a flaw.</p>
+
+<p>Beware of form data. This one line of code left Rewards Gold vulnerable:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;hidden&quot;</span> <span class="na">name=</span><span class="s">&quot;points&quot;</span> <span class="na">value=</span><span class="s">&quot;500&quot;</span><span class="nt">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>They actually keep their point value as a hidden input in their form. By simply inspecting the element in Chrome, you can alter that &ldquo;500&rdquo; to any number you like. And just like that, when you submit the form your point count will increase by whatever number you choose. Pro tip: The Economist is 8600 points. :)</p>
+
+	</section>
+
+    </article>
+
+  
+    <article class="post">
+      
 	
 	<header class="post-header">
 		<span class="post-meta">25 Jan 2015</span>
@@ -482,39 +511,6 @@
 <a href="https://www.macupdate.com/app/mac/44454/hotkey-eve">Eve</a> is a great learning tool that notifies you of the keyboard shortcut every time you do something with the curser.</p>
 
 <p>Apple&rsquo;s documentation provides a comprehensive overview of emacs shortcuts: <a href="http://support.apple.com/en-us/HT201236">http://support.apple.com/en-us/HT201236</a></p>
-
-	</section>
-
-    </article>
-
-  
-    <article class="post">
-      
-	
-	<header class="post-header">
-		<span class="post-meta">12 Nov 2014</span>
-		<h2 class="post-title">
-			
-			<a href="/blog/2014/11/12/test/">
-			
-				The Developers Keyboard</a>
-		</h2>
-	</header>
-	<section class="post-excerpt">
-		<p>As a developer you&rsquo;ll spend a lot of time working with your keyboard, and consequently you&rsquo;ll start to learn all the shortcuts to optimize your workflow. One of the most useful hacks I&rsquo;ve found is to replace the caps lock functionality for another control button.</p>
-
-<p>If you&rsquo;re using OS X v.10.9 (Mavericks), just follow these simple steps:</p>
-
-<p>1.) Open your keyboard settings found in System Preferences
-<img src="../images/modify-keyboard-1.png" alt="Finding Keyboard in System Preferences" /></p>
-
-<p>2.) Make sure the &lsquo;keyboard&rsquo; tab is selected and click the &lsquo;Modifier keys&hellip;&rsquo; button
-<img src="../images/modify-keyboard-2.png" alt="Select" /></p>
-
-<p>3.) Here is where the magic happens. Just select &lsquo;^ Control&rsquo; from the Caps Lock dropdown, and apply the changes.
-<img src="../images/modify-keyboard-3.png" alt="Change" /></p>
-
-<p>Simple as that. Congrats on stepping your keyboard game up.</p>
 
 	</section>
 

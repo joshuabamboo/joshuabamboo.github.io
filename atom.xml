@@ -4,7 +4,7 @@
   <title><![CDATA[Irrationally Coded]]></title>
   <link href="http://joshuabamboo.github.io/atom.xml" rel="self"/>
   <link href="http://joshuabamboo.github.io/"/>
-  <updated>2015-01-28T22:39:52-05:00</updated>
+  <updated>2015-01-30T23:49:51-05:00</updated>
   <id>http://joshuabamboo.github.io/</id>
   <author>
     <name><![CDATA[Josh Owens]]></name>
@@ -12,6 +12,24 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Hacking RewardsGold.com: Part 2]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2015/01/30/hacking-rewardsgold-dot-com-part-2/"/>
+    <updated>2015-01-30T23:22:05-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2015/01/30/hacking-rewardsgold-dot-com-part-2</id>
+    <content type="html"><![CDATA[<p>If you haven&rsquo;t read part one, you can find it <a href="http://joshuabamboo.github.io/blog/2015/01/25/hacking-rewardsgold-dot-com/">here</a>. If you have, you&rsquo;ll recall that I wrote a script to submit the invite form for points on rewardsgold.com. This works perfectly fine; however, while tinkering with their form I discovered a flaw.</p>
+
+<p>Beware of form data. This one line of code left Rewards Gold vulnerable:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;hidden&quot;</span> <span class="na">name=</span><span class="s">&quot;points&quot;</span> <span class="na">value=</span><span class="s">&quot;500&quot;</span><span class="nt">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>They actually keep their point value as a hidden input in their form. By simply inspecting the element in Chrome, you can alter that &ldquo;500&rdquo; to any number you like. And just like that, when you submit the form your point count will increase by whatever number you choose. Pro tip: The Economist is 8600 points. :)</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Hacking RewardsGold.com: Part 1]]></title>

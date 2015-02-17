@@ -1,0 +1,272 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta charset="utf-8">
+	<title>Refactoring Tic Tac Toe | Irrationally Coded</title>
+
+	<meta name="author" content="Josh Owens">
+	
+	<meta name="description" content="Irrationally Coded 16 Feb 2015 Refactoring Tic Tac Toe Oh, how far I&rsquo;ve come since I began this coding journey. So much of our journey as code &hellip;">
+
+	<meta name="HandheldFriendly" content="True" />
+	<meta name="MobileOptimized" content="320" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+	<link href="/atom.xml" rel="alternate" title="Irrationally Coded" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic|Open+Sans:700,400" />
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/.min.css" />
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+
+<body class="post-template">
+  <main class="content" role="main"><article class="post">
+  
+	<header class="post-header">
+		<a id="blog-logo" href="/">Irrationally Coded</a>
+	</header>
+	<span class="post-meta">16 Feb 2015</span>
+	<h1 class="post-title">Refactoring Tic Tac Toe</h1>
+
+	<section class="post-content">
+		<p>Oh, how far I&rsquo;ve come since I began this coding journey. So much of our journey as code newbies is focused on how much we still have to learn, but it&rsquo;s a good exercise to reflect on how far you&rsquo;ve come. For me, this came in the form of refactoring a game of tic tac toe.</p>
+
+<p>As much as it makes me cringe, I&rsquo;m sharing my first ever attempt at coding something in Ruby:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">puts</span> <span class="s2">&quot;Welcome to beginner Tic Tac Toe.</span><span class="se">\n</span><span class="s2">You are X. The computer is O. You go first.&quot;</span>
+</span><span class='line'><span class="nb">puts</span> <span class="s2">&quot;Enter the number of the box you would like to occupy:</span><span class="se">\n</span><span class="s2"> &quot;</span>
+</span><span class='line'><span class="n">currentBoard</span> <span class="o">=</span> <span class="s2">&quot;1|2|3</span><span class="se">\n</span><span class="s2">4|5|6</span><span class="se">\n</span><span class="s2">7|8|9&quot;</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">currentBoard</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> &quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">remainingSpaces</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="o">]</span>  <span class="c1">#available positions to choose   </span>
+</span><span class='line'><span class="n">location</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># set to 0, so the default is outside remainingSpaces range</span>
+</span><span class='line'><span class="n">locationsX</span> <span class="o">=</span> <span class="o">[]</span>  <span class="c1"># array of player&#39;s selected locations</span>
+</span><span class='line'><span class="n">locationsO</span> <span class="o">=</span> <span class="o">[]</span>  <span class="c1"># array of computer&#39;s selected locations</span>
+</span><span class='line'><span class="n">winningCombinations</span> <span class="o">=</span> <span class="o">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">]</span><span class="p">,</span> <span class="o">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="o">]</span><span class="p">,</span> <span class="o">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="o">]</span><span class="p">,</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="o">]</span><span class="p">,</span>
+</span><span class='line'>  <span class="o">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="o">]</span><span class="p">,</span> <span class="o">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="o">]</span><span class="p">,</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="o">]</span><span class="p">,</span> <span class="o">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="o">]]</span>  <span class="c1"># all possible winning sequences  </span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">until</span> <span class="n">remainingSpaces</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">==</span> <span class="kp">nil</span> <span class="c1"># loop until we&#39;ve run out of tic tac toe spaces</span>
+</span><span class='line'>  <span class="c1">#user makes a move</span>
+</span><span class='line'>  <span class="n">location</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span><span class="p">()</span><span class="o">.</span><span class="n">to_i</span>  <span class="c1"># user input converted to integer</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">remainingSpaces</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>  <span class="c1"># is the input a valid choice from remainingSpaces</span>
+</span><span class='line'>    <span class="n">currentBoard</span><span class="o">[</span><span class="n">location</span><span class="o">.</span><span class="n">to_s</span><span class="o">]</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">)</span>  <span class="c1"># updating the board to show &#39;X&#39; instead of num</span>
+</span><span class='line'>    <span class="n">remainingSpaces</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>  <span class="c1">#removes the chosen number from the array  </span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">currentBoard</span>
+</span><span class='line'>    <span class="n">locationsX</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>  <span class="c1"># adds selection to array containing all player X selections</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">#check for winner</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">combination</span> <span class="k">in</span> <span class="n">winningCombinations</span> <span class="c1"># need to look at each array in the parent array</span>
+</span><span class='line'>      <span class="k">if</span> <span class="n">locationsX</span><span class="o">.</span><span class="n">sort</span> <span class="o">&amp;</span> <span class="n">combination</span> <span class="o">==</span> <span class="n">combination</span> <span class="c1">#does array of previous moves match winner</span>
+</span><span class='line'>      <span class="nb">abort</span><span class="p">(</span><span class="s2">&quot;Tic Tac Toe! You win!&quot;</span><span class="p">)</span> <span class="c1"># if yes, game over</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">else</span> <span class="c1">#  in case the user selects any char != 1-9</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s1">&#39;Available positions are: &#39;</span>
+</span><span class='line'>      <span class="n">remainingSpaces</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
+</span><span class='line'>          <span class="nb">puts</span> <span class="n">i</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;Select a number...&quot;</span>
+</span><span class='line'>    <span class="k">redo</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>   <span class="c1">#computer makes a move </span>
+</span><span class='line'>
+</span><span class='line'>   <span class="c1">#for combination in winningCombinations</span>
+</span><span class='line'>   <span class="c1">## Tie game locator</span>
+</span><span class='line'>    <span class="k">if</span> <span class="n">remainingSpaces</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">==</span> <span class="kp">nil</span>  <span class="c1"># breaks loop on the last iteration to avoid unnecessary final turn for O</span>
+</span><span class='line'>      <span class="nb">abort</span><span class="p">(</span><span class="s2">&quot;Cat game! Game over.&quot;</span><span class="p">)</span> <span class="c1"># if we made it here, it&#39;s a tie</span>
+</span><span class='line'>   <span class="c1">## offensive move -&gt; if there&#39;s 2/3 combination, select the third</span>
+</span><span class='line'>    <span class="c1">#elsif (combination &amp; locationsO).length == 2 #do both arrays have 2 locations in common?</span>
+</span><span class='line'>    <span class="c1"># space = combination - locationsO # if yes, what&#39;s the the third space that&#39;s missing</span>
+</span><span class='line'>    <span class="c1"># if remainingSpaces.include? space # has that space been selected already by player O?</span>
+</span><span class='line'>    <span class="c1">#   location = space # if no, pick that space</span>
+</span><span class='line'>    <span class="c1"># end </span>
+</span><span class='line'>   <span class="c1">## defensive move -&gt; if opponent has 2/3 combination, select the third</span>
+</span><span class='line'>    <span class="c1">#elsif (combination &amp; locationsX).length == 2 #same as offensive</span>
+</span><span class='line'>    <span class="c1"># space = combination - locationsX # same as offensive</span>
+</span><span class='line'>    <span class="c1"># if remainingSpaces.include? space # has that space been selected already by player X?</span>
+</span><span class='line'>    <span class="c1">#   location = space # same as offensive</span>
+</span><span class='line'>    <span class="c1"># end</span>
+</span><span class='line'>   <span class="c1">## work-around</span>
+</span><span class='line'>    <span class="k">elsif</span> <span class="n">remainingSpaces</span><span class="o">.</span><span class="n">include?</span> <span class="mi">5</span>  <span class="c1"># included this as a rudimentary work-around to the commented code above</span>
+</span><span class='line'>      <span class="n">location</span> <span class="o">=</span> <span class="mi">5</span>                  <span class="c1"># taking the middle square gives player O a better statistical chance of a tie</span>
+</span><span class='line'>   <span class="c1">## pick a random location  </span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="n">location</span> <span class="o">=</span> <span class="n">remainingSpaces</span><span class="o">.</span><span class="n">sample</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">currentBoard</span><span class="o">[</span><span class="n">location</span><span class="o">.</span><span class="n">to_s</span><span class="o">]</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;O&#39;</span><span class="p">)</span>  <span class="c1"># updating board to show &#39;O&#39; instead of the chosen number</span>
+</span><span class='line'>    <span class="n">remainingSpaces</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>  <span class="c1">#removes the chosen number from the array</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">The computer is making its move...&quot;</span>
+</span><span class='line'>    <span class="nb">sleep</span><span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># added delay for a more natural flow</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">currentBoard</span>
+</span><span class='line'>    <span class="n">locationsO</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">#check for winner</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">combination</span> <span class="k">in</span> <span class="n">winningCombinations</span>
+</span><span class='line'>      <span class="k">if</span> <span class="n">locationsO</span><span class="o">.</span><span class="n">sort</span> <span class="o">&amp;</span> <span class="n">combination</span> <span class="o">==</span> <span class="n">combination</span>
+</span><span class='line'>      <span class="nb">abort</span><span class="p">(</span><span class="s2">&quot;Tic Tac Toe! The computer wins!&quot;</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">The computer chose %d. Your turn...&quot;</span> <span class="o">%</span> <span class="n">location</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, compare this with <a href="https://github.com/joshuabamboo/tic-tac-toe-cli">my recently refactored version</a>. It&rsquo;s good to glance back at where you&rsquo;ve come from while moving full speed ahead.</p>
+
+	</section>
+
+  <footer class="post-footer">
+  <section class="author">
+    <h4>Josh Owens</h4>
+    <p></p>
+  </section>
+  <section class="share">
+    <h4>Share this post</h4>
+    <a class="icon-twitter" href="http://twitter.com/share?text=Refactoring Tic Tac Toe&amp;url=http://joshuabamboo.github.io/blog/2015/02/16/refactoring-tic-tac-toe/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+      <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://joshuabamboo.github.io/blog/2015/02/16/refactoring-tic-tac-toe/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+      <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=http://joshuabamboo.github.io/blog/2015/02/16/refactoring-tic-tac-toe/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+      <span class="hidden">Google+</span>
+    </a>
+  </section>
+</footer>
+  <hr>
+  
+    <div class="share">
+</div>
+
+  
+  
+</article></main>
+  <footer class="site-footer"><a class="subscribe icon-feed" href="http://joshuabamboo.github.io/atom.xml"><span class="tooltip">Subscribe!</span></a>
+
+
+<div class="inner">
+
+
+Follow me on
+
+
+
+<a class="social twitter" href="http://twitter.com/joshuabamboo" title="Twitter">Twitter</a>
+
+
+
+<a class="social github" href="http://github.com/joshuabamboo" title="GitHub">GitHub</a>
+
+
+
+
+<section class="copyright">All content copyright <a href="/">Josh Owens</a> © 2015 • All rights reserved.</section>
+
+<section class="poweredby">Casper theme by <a class="icon-ghost" href="http://tryghost.org">Ghost</a> &amp; Published with <a href="http://octopress.org">Octopress</a></section>
+
+</div>
+</footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+
+
+
+
+
+
+</body>
+</html>

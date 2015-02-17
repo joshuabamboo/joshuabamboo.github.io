@@ -9,7 +9,7 @@
 
 	<meta name="author" content="Josh Owens">
 	
-	<meta name="description" content="30 Jan 2015 Hacking RewardsGold.com: Part 2 If you haven&rsquo;t read part one, you can find it here. If you have, you&rsquo;ll recall that I wrote &hellip;">
+	<meta name="description" content="16 Feb 2015 Refactoring Tic Tac Toe Oh, how far I&rsquo;ve come since I began this coding journey. So much of our journey as code newbies is focused &hellip;">
 
 	<meta name="HandheldFriendly" content="True" />
 	<meta name="MobileOptimized" content="320" />
@@ -44,6 +44,195 @@
       
 	
 		
+	
+	<header class="post-header">
+		<span class="post-meta">16 Feb 2015</span>
+		<h2 class="post-title">
+			
+			<a href="/blog/2015/02/16/refactoring-tic-tac-toe/">
+			
+				Refactoring Tic Tac Toe</a>
+		</h2>
+	</header>
+	<section class="post-excerpt">
+		<p>Oh, how far I&rsquo;ve come since I began this coding journey. So much of our journey as code newbies is focused on how much we still have to learn, but it&rsquo;s a good exercise to reflect on how far you&rsquo;ve come. For me, this came in the form of refactoring a game of tic tac toe.</p>
+
+<p>As much as it makes me cringe, I&rsquo;m sharing my first ever attempt at coding something in Ruby:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">puts</span> <span class="s2">&quot;Welcome to beginner Tic Tac Toe.</span><span class="se">\n</span><span class="s2">You are X. The computer is O. You go first.&quot;</span>
+</span><span class='line'><span class="nb">puts</span> <span class="s2">&quot;Enter the number of the box you would like to occupy:</span><span class="se">\n</span><span class="s2"> &quot;</span>
+</span><span class='line'><span class="n">currentBoard</span> <span class="o">=</span> <span class="s2">&quot;1|2|3</span><span class="se">\n</span><span class="s2">4|5|6</span><span class="se">\n</span><span class="s2">7|8|9&quot;</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">currentBoard</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> &quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">remainingSpaces</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="o">]</span>  <span class="c1">#available positions to choose   </span>
+</span><span class='line'><span class="n">location</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># set to 0, so the default is outside remainingSpaces range</span>
+</span><span class='line'><span class="n">locationsX</span> <span class="o">=</span> <span class="o">[]</span>  <span class="c1"># array of player&#39;s selected locations</span>
+</span><span class='line'><span class="n">locationsO</span> <span class="o">=</span> <span class="o">[]</span>  <span class="c1"># array of computer&#39;s selected locations</span>
+</span><span class='line'><span class="n">winningCombinations</span> <span class="o">=</span> <span class="o">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">]</span><span class="p">,</span> <span class="o">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="o">]</span><span class="p">,</span> <span class="o">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="o">]</span><span class="p">,</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="o">]</span><span class="p">,</span>
+</span><span class='line'>  <span class="o">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="o">]</span><span class="p">,</span> <span class="o">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="o">]</span><span class="p">,</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="o">]</span><span class="p">,</span> <span class="o">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="o">]]</span>  <span class="c1"># all possible winning sequences  </span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">until</span> <span class="n">remainingSpaces</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">==</span> <span class="kp">nil</span> <span class="c1"># loop until we&#39;ve run out of tic tac toe spaces</span>
+</span><span class='line'>  <span class="c1">#user makes a move</span>
+</span><span class='line'>  <span class="n">location</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span><span class="p">()</span><span class="o">.</span><span class="n">to_i</span>  <span class="c1"># user input converted to integer</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">remainingSpaces</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>  <span class="c1"># is the input a valid choice from remainingSpaces</span>
+</span><span class='line'>    <span class="n">currentBoard</span><span class="o">[</span><span class="n">location</span><span class="o">.</span><span class="n">to_s</span><span class="o">]</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">)</span>  <span class="c1"># updating the board to show &#39;X&#39; instead of num</span>
+</span><span class='line'>    <span class="n">remainingSpaces</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>  <span class="c1">#removes the chosen number from the array  </span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">currentBoard</span>
+</span><span class='line'>    <span class="n">locationsX</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>  <span class="c1"># adds selection to array containing all player X selections</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">#check for winner</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">combination</span> <span class="k">in</span> <span class="n">winningCombinations</span> <span class="c1"># need to look at each array in the parent array</span>
+</span><span class='line'>      <span class="k">if</span> <span class="n">locationsX</span><span class="o">.</span><span class="n">sort</span> <span class="o">&amp;</span> <span class="n">combination</span> <span class="o">==</span> <span class="n">combination</span> <span class="c1">#does array of previous moves match winner</span>
+</span><span class='line'>      <span class="nb">abort</span><span class="p">(</span><span class="s2">&quot;Tic Tac Toe! You win!&quot;</span><span class="p">)</span> <span class="c1"># if yes, game over</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">else</span> <span class="c1">#  in case the user selects any char != 1-9</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s1">&#39;Available positions are: &#39;</span>
+</span><span class='line'>      <span class="n">remainingSpaces</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
+</span><span class='line'>          <span class="nb">puts</span> <span class="n">i</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;Select a number...&quot;</span>
+</span><span class='line'>    <span class="k">redo</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>   <span class="c1">#computer makes a move </span>
+</span><span class='line'>
+</span><span class='line'>   <span class="c1">#for combination in winningCombinations</span>
+</span><span class='line'>   <span class="c1">## Tie game locator</span>
+</span><span class='line'>    <span class="k">if</span> <span class="n">remainingSpaces</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">==</span> <span class="kp">nil</span>  <span class="c1"># breaks loop on the last iteration to avoid unnecessary final turn for O</span>
+</span><span class='line'>      <span class="nb">abort</span><span class="p">(</span><span class="s2">&quot;Cat game! Game over.&quot;</span><span class="p">)</span> <span class="c1"># if we made it here, it&#39;s a tie</span>
+</span><span class='line'>   <span class="c1">## offensive move -&gt; if there&#39;s 2/3 combination, select the third</span>
+</span><span class='line'>    <span class="c1">#elsif (combination &amp; locationsO).length == 2 #do both arrays have 2 locations in common?</span>
+</span><span class='line'>    <span class="c1"># space = combination - locationsO # if yes, what&#39;s the the third space that&#39;s missing</span>
+</span><span class='line'>    <span class="c1"># if remainingSpaces.include? space # has that space been selected already by player O?</span>
+</span><span class='line'>    <span class="c1">#   location = space # if no, pick that space</span>
+</span><span class='line'>    <span class="c1"># end </span>
+</span><span class='line'>   <span class="c1">## defensive move -&gt; if opponent has 2/3 combination, select the third</span>
+</span><span class='line'>    <span class="c1">#elsif (combination &amp; locationsX).length == 2 #same as offensive</span>
+</span><span class='line'>    <span class="c1"># space = combination - locationsX # same as offensive</span>
+</span><span class='line'>    <span class="c1"># if remainingSpaces.include? space # has that space been selected already by player X?</span>
+</span><span class='line'>    <span class="c1">#   location = space # same as offensive</span>
+</span><span class='line'>    <span class="c1"># end</span>
+</span><span class='line'>   <span class="c1">## work-around</span>
+</span><span class='line'>    <span class="k">elsif</span> <span class="n">remainingSpaces</span><span class="o">.</span><span class="n">include?</span> <span class="mi">5</span>  <span class="c1"># included this as a rudimentary work-around to the commented code above</span>
+</span><span class='line'>      <span class="n">location</span> <span class="o">=</span> <span class="mi">5</span>                  <span class="c1"># taking the middle square gives player O a better statistical chance of a tie</span>
+</span><span class='line'>   <span class="c1">## pick a random location  </span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="n">location</span> <span class="o">=</span> <span class="n">remainingSpaces</span><span class="o">.</span><span class="n">sample</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">currentBoard</span><span class="o">[</span><span class="n">location</span><span class="o">.</span><span class="n">to_s</span><span class="o">]</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;O&#39;</span><span class="p">)</span>  <span class="c1"># updating board to show &#39;O&#39; instead of the chosen number</span>
+</span><span class='line'>    <span class="n">remainingSpaces</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>  <span class="c1">#removes the chosen number from the array</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">The computer is making its move...&quot;</span>
+</span><span class='line'>    <span class="nb">sleep</span><span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># added delay for a more natural flow</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">currentBoard</span>
+</span><span class='line'>    <span class="n">locationsO</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">#check for winner</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">combination</span> <span class="k">in</span> <span class="n">winningCombinations</span>
+</span><span class='line'>      <span class="k">if</span> <span class="n">locationsO</span><span class="o">.</span><span class="n">sort</span> <span class="o">&amp;</span> <span class="n">combination</span> <span class="o">==</span> <span class="n">combination</span>
+</span><span class='line'>      <span class="nb">abort</span><span class="p">(</span><span class="s2">&quot;Tic Tac Toe! The computer wins!&quot;</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">The computer chose %d. Your turn...&quot;</span> <span class="o">%</span> <span class="n">location</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, compare this with <a href="https://github.com/joshuabamboo/tic-tac-toe-cli">my recently refactored version</a>. It&rsquo;s good to glance back at where you&rsquo;ve come from while moving full speed ahead.</p>
+
+	</section>
+
+    </article>
+
+  
+    <article class="post">
+      
 	
 	<header class="post-header">
 		<span class="post-meta">30 Jan 2015</span>
@@ -459,58 +648,6 @@
 <h2>4. Pre-record your demo</h2>
 
 <p>You won&rsquo;t need it (hopefully). But there will be sometime in your life when your app crashes. That time may be on a presenter stage. Be prepared.</p>
-
-	</section>
-
-    </article>
-
-  
-    <article class="post">
-      
-	
-	<header class="post-header">
-		<span class="post-meta">24 Nov 2014</span>
-		<h2 class="post-title">
-			
-			<a href="/blog/2014/11/24/top-10-life-changing-keyboard-shortcuts/">
-			
-				Top 6 Keyboard Shortcuts You Can Use Constantly</a>
-		</h2>
-	</header>
-	<section class="post-excerpt">
-		<p>Okay, so you&rsquo;ve <a href="http://joshuabamboo.github.io/blog/2014/11/12/test/">modified your keyboard to make the Caps Lock a more useful button</a>. Now, let&rsquo;s actually put that new Control(^) button to use.</p>
-
-<h2>Here are my top 6 time-saving shortcuts I use constantly:</h2>
-
-<blockquote><ol>
-<li>Control-a - Jumps to the beginning of a line. (Similarly, Control-e jumps to the end)</li>
-<li>Shift-Command- ←or→ - Highlight the text to the left or right of your curser. This is particularly helpful when trying to delete, cut, or copy a line.</li>
-<li>Control-r (in the Terminal) - Allows you to search your previous commands. Sort of like pressing the up arrow, but using a keyword search instead.</li>
-<li>Function-Delete - Forward delete. When I switched from PC to Mac, this was the only thing I missed until I realized Macs (of course) have it, too.</li>
-<li>Command-Control-Shift-4 - Copy screen grab to your clipboard. Before this trick, my Desktop was littered with random screenshots I saved to my computer only to drop them in an email or website.</li>
-<li>Command-Tab - To switch between running programs. Tapping tab allows you to loop through (The directional pad serves the same function). Make your selection by releasing Command.</li>
-</ol>
-</blockquote>
-
-<p>Although the benefits are marginal, marginal benefits add up quickly.</p>
-
-<h3>Let&rsquo;s make some (conservative) assumptions:</h3>
-
-<blockquote><ul>
-<li>As a programmer, you&rsquo;re on your computer 8 hours/day</li>
-<li>You probably use 5 keyboard shortcuts per hour</li>
-<li>Each keyboard shortcut nets 2 saved seconds</li>
-</ul>
-</blockquote>
-
-<p>That&rsquo;s 29,200 seconds per year &ndash; The equivalent of an entire work day!</p>
-
-<p>(((10 seconds per hour * 8 hours * 365 days)/60)/60) = 8.11 hours</p>
-
-<p>Additional resources:
-<a href="https://www.macupdate.com/app/mac/44454/hotkey-eve">Eve</a> is a great learning tool that notifies you of the keyboard shortcut every time you do something with the curser.</p>
-
-<p>Apple&rsquo;s documentation provides a comprehensive overview of emacs shortcuts: <a href="http://support.apple.com/en-us/HT201236">http://support.apple.com/en-us/HT201236</a></p>
 
 	</section>
 

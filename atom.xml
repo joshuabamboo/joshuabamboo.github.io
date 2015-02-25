@@ -4,7 +4,7 @@
   <title><![CDATA[Irrationally Coded]]></title>
   <link href="http://joshuabamboo.github.io/atom.xml" rel="self"/>
   <link href="http://joshuabamboo.github.io/"/>
-  <updated>2015-02-23T23:50:41-05:00</updated>
+  <updated>2015-02-24T23:59:02-05:00</updated>
   <id>http://joshuabamboo.github.io/</id>
   <author>
     <name><![CDATA[Josh Owens]]></name>
@@ -19,6 +19,8 @@
     <updated>2015-02-23T23:39:02-05:00</updated>
     <id>http://joshuabamboo.github.io/blog/2015/02/23/hacking-rewards-gold-part-3</id>
     <content type="html"><![CDATA[<p>One of the mantras of behavioral economics is &ldquo;make it simple.&rdquo; In the spirit of simplifying my series on revealing vulnerabilities at RewardsGold.com, I decided to throw together a web app. Running a script or even manipulating a form field in the Chrome console can be too complex. I wanted something I could send to my mom, and she would have no problem understanding and walking through the process.</p>
+
+<p><a href="#">Protect your forms</a></p>
 ]]></content>
   </entry>
   

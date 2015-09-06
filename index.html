@@ -9,7 +9,7 @@
 
 	<meta name="author" content="Josh Owens">
 	
-	<meta name="description" content="23 Feb 2015 Hacking RewardsGold.com: Part 3 One of the mantras of behavioral economics is &ldquo;make it simple.&rdquo; In the spirit of simplifying &hellip;">
+	<meta name="description" content="06 Sep 2015 We're Programmers, Dammit This is a phrase I borrowed from programmer extraordinaire Steven Nunez. I love this sentiment. I love the &hellip;">
 
 	<meta name="HandheldFriendly" content="True" />
 	<meta name="MobileOptimized" content="320" />
@@ -44,6 +44,124 @@
       
 	
 		
+	
+	<header class="post-header">
+		<span class="post-meta">06 Sep 2015</span>
+		<h2 class="post-title">
+			
+			<a href="/blog/2015/09/06/were-programmers-dammit/">
+			
+				We&#8217;re Programmers, Dammit</a>
+		</h2>
+	</header>
+	<section class="post-excerpt">
+		<p>This is a phrase I borrowed from <a href="http://hostiledeveloper.com/">programmer extraordinaire Steven Nunez</a>. I love this sentiment. I love the idea that we aren&rsquo;t limited to consuming the Internet. We can be an active participant.</p>
+
+<p>In this edition of &ldquo;We&rsquo;re Programmers, Dammit&rdquo;, I&rsquo;ll walk through how I used a Chrome Extension to change the functionality of an unwanted feature of a website. I will walk through the basic steps for getting a Chrome Extension up and running. The project lives at <a href="https://github.com/joshuabamboo/fias">this Github repository</a>.</p>
+
+<h4>1. Create a <code>manifest.json</code> file</h4>
+
+<p>Inside a directory that will contain extension, create a <code>manifest.json</code>. This file is what Chrome will look for first. It supplies Chrome with all the metadata about the extension (e.g. <code>manifest_version</code>, <code>name</code>, <code>version</code>). These are the only things <em>required</em> to make a chrome extention, so let&rsquo;s do the basics and come back later.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'>  <span class="p">{</span>
+</span><span class='line'>    <span class="nt">&quot;manifest_version&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;extenion_name&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;myExtensionVersion&quot;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>2. Connect your local directory to Chrome</h4>
+
+<p>Now we have the following directory:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'>  <span class="err">extension_name/</span>
+</span><span class='line'>  <span class="err">└──</span> <span class="err">manifest.json</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To get the directory into Chrome, we must first go to <code>chrome://extensions/</code> in your Chrome browser. Next, click the <code>Developer Mode</code> checkbox at the top right. It should look like this:
+<img src="/images/chrome-ext.png" /></p>
+
+<p>Next, locate the directory in your finder, and drag the entire folder into the browser opened to <code>chrome://extensions/</code>. Chrome allows you to drop the entire folder to load it into Chrome. It&rsquo;s as simple as that. You&rsquo;ll only have to do this step once. Any changes you make to the files will now be available in Chrome one you reload (<code>cmd + r</code>) the page. Click the <code>Enable</code> checkbox, and you&rsquo;ve got yourself a Chrome Extension.</p>
+
+<p><img src="/images/chrome-drag.png" /></p>
+
+<p>Protip: If you get an error at this phase, more than likely you have a syntax error. Check your json formatting (check your commas) and try again.</p>
+
+<h4>3. Now make it do something</h4>
+
+<p>Congrats! You officially have a Chrome Extension. The downside is, it doesn&rsquo;t do anything. Let&rsquo;s fix that. In my case, I wanted to remove a social feature on <a href="http://learn.co">Learn.co</a>. The site looks like this. I&rsquo;m feeling particularly antisocial today, so I want to get rid of everything in the red box.</p>
+
+<p><img src="/images/chrome-ext-learn-before.png" /></p>
+
+<p>Back to <code>manifest.json</code>. We&rsquo;ll need to add some <code>content_scripts</code> to the manifest.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'>  <span class="p">{</span>
+</span><span class='line'>    <span class="nt">&quot;manifest_version&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;extenion_name&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;myExtensionVersion&quot;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="s2">&quot;content_scripts&quot;</span><span class="p">:</span> <span class="p">[</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>        <span class="nt">&quot;matches&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;https://learn.co/*&quot;</span><span class="p">],</span>
+</span><span class='line'>        <span class="nt">&quot;css&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;fias.css&quot;</span><span class="p">]</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="p">]</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>matches</code> refers to the URLs we want to the Chrome Extension to change. In our case, we want it to work on every URL that starts with <code>https://learn.co/</code>.</p>
+
+<p><code>css</code> is where we link the css files in the directory. Go ahead and create the css file at the root of the directory.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'>  <span class="err">extension_name/</span>
+</span><span class='line'>  <span class="err">└──</span> <span class="err">manifest.json</span>
+</span><span class='line'>  <span class="err">└──</span> <span class="err">fias.css</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>fias.css</code> is where we will add the css to remove the elements on the page that we do not want to see. That is as simple as adding <code>display: none</code> to the id of the divs. In our case it looks like this:</p>
+
+<pre><code class="`css">  #students-working-container {
+    display: none;
+  }
+</code></pre>
+
+<p><img src="/images/chrome-ext-learn-after.png" /></p>
+
+<p>It&rsquo;s as simple as that. With a few lines of code we&rsquo;ve completely removed an unwanted feature because we&rsquo;re programmers, dammit!</p>
+
+	</section>
+
+    </article>
+
+  
+    <article class="post">
+      
 	
 	<header class="post-header">
 		<span class="post-meta">23 Feb 2015</span>
@@ -616,26 +734,6 @@
 	</header>
 	<section class="post-excerpt">
 		<p>Event Handlers</p>
-
-	</section>
-
-    </article>
-
-  
-    <article class="post">
-      
-	
-	<header class="post-header">
-		<span class="post-meta">24 Nov 2014</span>
-		<h2 class="post-title">
-			
-			<a href="/blog/2014/11/24/the-secret-project-day-1/">
-			
-				The Secret Project: Day 1</a>
-		</h2>
-	</header>
-	<section class="post-excerpt">
-		<p>Make it work.</p>
 
 	</section>
 

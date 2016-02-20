@@ -15,5 +15,5 @@ categories:
 
 ## Look at terminal output
 <video controls loop width="800" autoplay>
-  <source src="{{ root_url }}/images/api-hell.mp4" type="video/mp4">
+  <source src="{{ root_url }}/images/twitter-api/api-hell.mp4" type="video/mp4">
 </video>

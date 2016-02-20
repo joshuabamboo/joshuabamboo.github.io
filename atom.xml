@@ -4,7 +4,7 @@
   <title><![CDATA[Irrationally Coded]]></title>
   <link href="http://joshuabamboo.github.io/atom.xml" rel="self"/>
   <link href="http://joshuabamboo.github.io/"/>
-  <updated>2016-02-20T14:06:16-05:00</updated>
+  <updated>2016-02-20T17:07:53-05:00</updated>
   <id>http://joshuabamboo.github.io/</id>
   <author>
     <name><![CDATA[Josh Owens]]></name>
@@ -102,6 +102,38 @@
 
 <iframe src="//giphy.com/embed/eoxomXXVL2S0E?hideSocial=true" width="480" height="360" frameborder="0" class="giphy-embed" allowfullscreen=""></iframe>
 
+
+<p>Not so fast, cool guy. We&rsquo;ve taken a major step forward, but there&rsquo;s still more work to do. The application doesn&rsquo;t blow up. That&rsquo;s good news.</p>
+
+<p>The bad <a href="news:">news:</a> Our test case is still make 38 API calls for just one user. At that rate, just four searches within 15 minutes will blow up the app.</p>
+
+<h3>Double calls</h3>
+
+<p>In the terminal out, our program hits <code>"!!! TwitterDirt#initialize_twitter_client"</code> three times. That&rsquo;s a red flag because <code>TwitterDirt#initialize_twitter_client</code> is only called when a new instance of <code>TwitterDirt</code> is created. We should only be dealing with one Twitter account i.e. one instance of <code>TwitterDirt</code>.</p>
+
+<p>This gets into application design (I could do a whole other blog post on refactoring this app). Notice in the controller a new <code>User</code> instance is created. And all the <code>TwitterDirt</code> is called on that <code>@user</code>.</p>
+
+<p><img src="http://joshuabamboo.github.io/images/twitter-api/user-trouble.png" /></p>
+
+<p>Let&rsquo;s take a look at the <code>User</code> model.</p>
+
+<p><img src="http://joshuabamboo.github.io/images/twitter-api/user-model-trouble.png" /></p>
+
+<p>Aha! Three new instances. Bad. Bad. Bad. Let&rsquo;s refactor the controller to interact directly with one instance of <code>TwitterDirt</code>.</p>
+
+<p><img src="http://joshuabamboo.github.io/images/twitter-api/refactored-controller.png" /></p>
+
+<p>That should do it. We&rsquo;ve gone from >180 API calls per request to 19.</p>
+
+<h3><strong>19 API calls!</strong></h3>
+
+<iframe src="//giphy.com/embed/xpoFzS3z0QujK" width="480" height="264" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+
+
+<p><a href="http://giphy.com/gifs/dancing-drake-young-xpoFzS3z0QujK">via GIPHY</a></p>
+
+
+<p>This allows us 9 worst-case requests every 15 minutes. This is the best we can do without having a user sign in with twitter (or iterating through API keys. Shhh, don&rsquo;t tell Twitter.).</p>
 ]]></content>
   </entry>
   

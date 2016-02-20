@@ -14,19 +14,19 @@ The ruby method `p` (`puts` works fine too. The only difference between the two 
 
 ><img src="{{ root_url }}/images/twitter-api/controller.png" />
 
--
+----------
 >### `p` in the Model
 >Put `p "Model#method_name"` at the top of each method in the model where the API is called.
 
 ><img src="{{ root_url }}/images/twitter-api/model.png" />
 
--
+----------
 >### `p` in the Loops
 >Loops are the primary suspect for too many API calls, so we'll want to pay special attention to them. `p "Model#method_name loop"`
 
 ><img src="{{ root_url }}/images/twitter-api/model-loop.png" />
 
--
+----------
 >### `p` in the Client Connection
 >Last but not least, the most important place to monitor is the API calls themselves. I like to use `!`s, so the calls stand out in the terminal output.  
 

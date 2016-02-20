@@ -9,22 +9,25 @@ categories:
 ## Step 1: `p` All Over the Code
 The ruby method `p` (`puts` works fine too. The only difference between the two is their return values. We don't care about return values in this case.) allows you to put strings to the console. We will use this as a tool to track the flow of our program by putting them in key places and describing where we are/what is happening in the code. Keep in mind that the purpose of these `p` statements is to read them later in the terminal to assess what code is being run and when. These will go everywhere: `p "<<where we are/what is happening in the code>>"`
 
-### `p` in the Controller
+>### `p` in the Controller
 >Put `p "Controller#action line number"` *on each line* of the triggered `Controller#Action`.
 
 ><img src="{{ root_url }}/images/twitter-api/controller.png" />
 
-### `p` in the Model
+-
+>### `p` in the Model
 >Put `p "Model#method_name"` at the top of each method in the model where the API is called.
 
 ><img src="{{ root_url }}/images/twitter-api/model.png" />
 
-### `p` in the Loops
+-
+>### `p` in the Loops
 >Loops are the primary suspect for too many API calls, so we'll want to pay special attention to them. `p "Model#method_name loop"`
 
 ><img src="{{ root_url }}/images/twitter-api/model-loop.png" />
 
-### `p` in the Client Connection
+-
+>### `p` in the Client Connection
 >Last but not least, the most important place to monitor is the API calls themselves. I like to use `!`s, so the calls stand out in the terminal output.  
 
 >* Put a `p "!!! initialize client"` where the connection is first established to the API client.

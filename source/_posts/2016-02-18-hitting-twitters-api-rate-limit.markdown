@@ -7,56 +7,11 @@ categories:
 ---
 
 ## "p" All Over the Code
+<img src="{{ root_url }}/images/api-debug-p-in-controller.png" />
+<img src="{{ root_url }}/images/api-debug-p-in-model-methods-1.png" />
+<img src="{{ root_url }}/images/api-debug-p-in-model-loops.png" />
+<img src="{{ root_url }}/images/api-debug-p-in-model-twitter-client.png" />
 
-```ruby
-class TwitterDirt
-  attr_accessor :twitter_client, :timeline_size, :handle
-  
-  def initialize(handle)
-    @twitter_client = initialize_twitter_client; p "Hit the initialize"
-    @handle = handle
-    ...
-  end
-  
-  def twitter_client
-    p "! Request to Twitter API"
-    @twitter_client
-  end
 
-  def get_user_timeline
-    tweets = twitter_client.user_timeline(handle, :count => tweets_per_page); p 'Hit TwitterDirt#get_user_timeline'
-    (number_of_pages - 1).times do
-      puts 'Hit #get_user_timeline/loop'
-      ...
-    end
-    ...
-  end
-
-  def obscene_tweets
-    p 'TwitterDirt#obscene_tweets'
-    arr_of_tweets = []
-    loop_count = 0
-    get_user_timeline.each do |tweet|
-      if Obscenity.profane?(tweet.text)
-        arr_of_tweets << tweet
-      end
-      loop_count += 1
-    end
-    p "Hit #obscene_tweets loop: #{loop_count} times"
-    arr_of_tweets
-  end
-  
-  ...
-  
-  private
-    def initialize_twitter_client
-      p '!!! TwitterDirt#initialize_twitter_client'
-      client = Twitter::REST::Client.new do |config|
-        config.consumer_key        = ENV['CONSUMER_KEY']
-        config.consumer_secret     = ENV['CONSUMER_SECRET']
-        config.access_token        = ENV['ACCESS_TOKEN']
-        config.access_token_secret = ENV['ACCESS_SECRET']
-      end 
-    end
-end
-```
+## Look terminal output
+![Terminal Output](http://recordit.co/Uo9Dyvg0L3)

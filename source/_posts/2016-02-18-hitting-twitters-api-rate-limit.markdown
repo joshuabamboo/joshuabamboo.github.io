@@ -13,7 +13,7 @@ categories:
 <img src="{{ root_url }}/images/api-debug-p-in-model-twitter-client.png" />
 
 
-## Look terminal output
-<video width="600" autoplay>
+## Look at terminal output
+<video controls loop width="800" autoplay>
   <source src="https://s3.amazonaws.com/img0.recordit.co/Uo9Dyvg0L3.mp4?AWSAccessKeyId=AKIAINSRFOQXTN4DT46A&Expires=1455939924&Signature=YG81jC6H1YitfUOH2Xuhg9xWsso%3D" type="video/mp4">
 </video>

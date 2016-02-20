@@ -4,7 +4,7 @@
   <title><![CDATA[Irrationally Coded]]></title>
   <link href="http://joshuabamboo.github.io/atom.xml" rel="self"/>
   <link href="http://joshuabamboo.github.io/"/>
-  <updated>2016-02-20T14:04:12-05:00</updated>
+  <updated>2016-02-20T14:06:16-05:00</updated>
   <id>http://joshuabamboo.github.io/</id>
   <author>
     <name><![CDATA[Josh Owens]]></name>
@@ -28,7 +28,7 @@
 
 <p><img src="http://joshuabamboo.github.io/images/twitter-api/controller.png" /></p></blockquote>
 
-<p>-</p>
+<hr />
 
 <blockquote><h3><code>p</code> in the Model</h3>
 
@@ -36,7 +36,7 @@
 
 <p><img src="http://joshuabamboo.github.io/images/twitter-api/model.png" /></p></blockquote>
 
-<p>-</p>
+<hr />
 
 <blockquote><h3><code>p</code> in the Loops</h3>
 
@@ -44,7 +44,7 @@
 
 <p><img src="http://joshuabamboo.github.io/images/twitter-api/model-loop.png" /></p></blockquote>
 
-<p>-</p>
+<hr />
 
 <blockquote><h3><code>p</code> in the Client Connection</h3>
 

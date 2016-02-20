@@ -4,7 +4,7 @@
   <title><![CDATA[Irrationally Coded]]></title>
   <link href="http://joshuabamboo.github.io/atom.xml" rel="self"/>
   <link href="http://joshuabamboo.github.io/"/>
-  <updated>2016-02-20T11:18:26-05:00</updated>
+  <updated>2016-02-20T13:45:13-05:00</updated>
   <id>http://joshuabamboo.github.io/</id>
   <author>
     <name><![CDATA[Josh Owens]]></name>
@@ -18,18 +18,84 @@
     <link href="http://joshuabamboo.github.io/blog/2016/02/18/hitting-twitters-api-rate-limit/"/>
     <updated>2016-02-18T22:43:58-05:00</updated>
     <id>http://joshuabamboo.github.io/blog/2016/02/18/hitting-twitters-api-rate-limit</id>
-    <content type="html"><![CDATA[<h2>&ldquo;p&rdquo; All Over the Code</h2>
+    <content type="html"><![CDATA[<h2>Step 1: <code>p</code> All Over the Code</h2>
 
-<p><img src="http://joshuabamboo.github.io/images/twitter-api/controller.png" />
-<img src="http://joshuabamboo.github.io/images/twitter-api/model.png" />
-<img src="http://joshuabamboo.github.io/images/twitter-api/model-loop.png" />
-<img src="http://joshuabamboo.github.io/images/twitter-api/client.png" /></p>
+<p>The ruby method <code>p</code> (<code>puts</code> works fine too. The only difference between the two is their return values. We don&rsquo;t care about return values in this case.) allows you to put strings to the console. We will use this as a tool to track the flow of our program by putting them in key places and describing where we are/what is happening in the code. Keep in mind that the purpose of these <code>p</code> statements is to read them later in the terminal to assess what code is being run and when. These will go everywhere: <code>p "&lt;&lt;where we are/what is happening in the code&gt;&gt;"</code></p>
 
-<h2>Look at terminal output</h2>
+<h3><code>p</code> in the Controller</h3>
+
+<p>Put <code>p "Controller#action line number"</code> <em>on each line</em> of the triggered <code>Controller#Action</code>.</p>
+
+<p><img src="http://joshuabamboo.github.io/images/twitter-api/controller.png" /></p>
+
+<h3><code>p</code> in the Model</h3>
+
+<p>Put <code>p "Model#method_name"</code> at the top of each method in the model where the API is called.</p>
+
+<p><img src="http://joshuabamboo.github.io/images/twitter-api/model.png" /></p>
+
+<h3><code>p</code> in the Loops</h3>
+
+<p>Loops are the primary suspect for too many API calls, so we&rsquo;ll want to pay special attention to them. <code>p "Model#method_name loop"</code></p>
+
+<p><img src="http://joshuabamboo.github.io/images/twitter-api/model-loop.png" /></p>
+
+<h3><code>p</code> in the Client Connection</h3>
+
+<p>Last but not least, the most important place to monitor is the API calls themselves. I like to use <code>!</code>s, so the calls stand out in the terminal output.</p>
+
+<ul>
+<li>Put a <code>p "!!! initialize client"</code> where the connection is first established to the API client.</li>
+<li>Put a <code>p "! Hit the API"</code> in the method you&rsquo;re using the make calls to the API. This is likely an <code>attr_accessor</code>, so this step will require you to explicitly write out this method as well.</li>
+</ul>
+
+
+<p><img src="http://joshuabamboo.github.io/images/twitter-api/client.png" /></p>
+
+<h2>Step 2: Run the Code</h2>
+
+<p>Start your server and go through the actions in the browser that will trigger your API calls.</p>
+
+<h2>Step 3: Look at the Terminal Output</h2>
+
+<p>Here&rsquo;s the moment of truth. Go to the terminal where your server is running. Immediately following the request, you should see all of the <code>p</code> strings being put to the console as each line is run.</p>
 
 <p><video controls loop width="800" autoplay>
   <source src="http://joshuabamboo.github.io/images/twitter-api/api-hell.mp4" type="video/mp4">
 </video></p>
+
+<h2>Step 4: Detective Work</h2>
+
+<p>Let&rsquo;s do some detective work. If you placed <code>p</code> statements in the right places, this part should be relatively easy. Find the the place(s) where a bunch of API calls are being fired, and look at the lines just before it to see where to debug.</p>
+
+<p>In this particular case, notice that <code>TwitterDirt#get_user_timeline loop</code> is where it hits the rate limit.</p>
+
+<p><img src="http://joshuabamboo.github.io/images/twitter-api/terminal-output.png" /></p>
+
+<p>Let&rsquo;s take a closer look at that loop.</p>
+
+<p><img src="http://joshuabamboo.github.io/images/twitter-api/detective-work.png" /></p>
+
+<p>The number of times we iterate is determined by the <code>TwitterDirt#number_of_pages</code> method. Let&rsquo;s put a binding in there and see what&rsquo;s happening.</p>
+
+<p><img src="http://joshuabamboo.github.io/images/twitter-api/pry.png" /></p>
+
+<p>It looks like we found our problem (one of them, at least)! This particular user has 155 pages of tweets. We have to send a request to Twitter for each page of tweets we want to access. Twitter only allows <a href="https://dev.twitter.com/rest/public/rate-limiting">180 API calls every 15 minutes</a>. <strong>This one request uses ~90% of the allowed calls.</strong> There&rsquo;s nothing we can do about Twitter&rsquo;s decision to only allow 180 calls, so we have to limit the number of pages we search.</p>
+
+<h2>Step 5: Solve It</h2>
+
+<p>Luckily (I guess) for us. <a href="https://dev.twitter.com/rest/reference/get/statuses/user_timeline">Twitter only allows access to a user&rsquo;s 3200 most recent tweets</a>. This is true even if the user has 31,000 tweets (155 pages * 200 tweets per page) like in our current example.</p>
+
+<p><code>3200 tweets/200 tweets per page = 16 pages</code></p>
+
+<p>What this means is that 16 should be the max number of API calls to get a user&rsquo;s timeline. After the 16th call, Twitter stops sending back the intended response. Consequently, <code>TwitterDirt#number_of_pages</code> should return an integer no greater than 16.</p>
+
+<p><img src="http://joshuabamboo.github.io/images/twitter-api/number-of-pages.png" /></p>
+
+<p><strong>This single line of code just saved us 139 API calls!</strong></p>
+
+<iframe src="//giphy.com/embed/eoxomXXVL2S0E?hideSocial=true" width="480" height="360" frameborder="0" class="giphy-embed" allowfullscreen=""></iframe>
+
 ]]></content>
   </entry>
   

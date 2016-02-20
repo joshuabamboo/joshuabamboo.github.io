@@ -14,8 +14,6 @@ categories:
 
 
 ## Look terminal output
-![Terminal Output](https://s3.amazonaws.com/img0.recordit.co/Uo9Dyvg0L3.mp4?AWSAccessKeyId=AKIAINSRFOQXTN4DT46A&Expires=1455939924&Signature=YG81jC6H1YitfUOH2Xuhg9xWsso%3D)
-
-<video width="320" height="240" autoplay>
+<video width="600" autoplay>
   <source src="https://s3.amazonaws.com/img0.recordit.co/Uo9Dyvg0L3.mp4?AWSAccessKeyId=AKIAINSRFOQXTN4DT46A&Expires=1455939924&Signature=YG81jC6H1YitfUOH2Xuhg9xWsso%3D" type="video/mp4">
 </video>

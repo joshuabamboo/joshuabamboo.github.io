@@ -4,7 +4,7 @@
   <title><![CDATA[Irrationally Coded]]></title>
   <link href="http://joshuabamboo.github.io/atom.xml" rel="self"/>
   <link href="http://joshuabamboo.github.io/"/>
-  <updated>2015-09-06T16:27:30-04:00</updated>
+  <updated>2016-02-19T21:06:48-05:00</updated>
   <id>http://joshuabamboo.github.io/</id>
   <author>
     <name><![CDATA[Josh Owens]]></name>
@@ -12,6 +12,37 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Hitting Twitter's API Rate Limit]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2016/02/18/hitting-twitters-api-rate-limit/"/>
+    <updated>2016-02-18T22:43:58-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2016/02/18/hitting-twitters-api-rate-limit</id>
+    <content type="html"><![CDATA[<h2>&ldquo;p&rdquo; All Over the Code</h2>
+
+<p><img src="http://joshuabamboo.github.io/images/api-debug-p-in-controller.png" />
+<img src="http://joshuabamboo.github.io/images/api-debug-p-in-model-methods-1.png" />
+<img src="http://joshuabamboo.github.io/images/api-debug-p-in-model-loops.png" />
+<img src="http://joshuabamboo.github.io/images/api-debug-p-in-model-twitter-client.png" /></p>
+
+<h2>Look terminal output</h2>
+
+<p><img src="http://recordit.co/Uo9Dyvg0L3" alt="Terminal Output" /></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Manipulating Server Response Using Rails After Filters]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2015/12/19/manipulating-server-response-using-rails-after-filters/"/>
+    <updated>2015-12-19T19:39:25-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2015/12/19/manipulating-server-response-using-rails-after-filters</id>
+    <content type="html"><![CDATA[<p>I recently created a website for <a href="http://coreycambridge.com/">a musician friend</a>. As a music site, it naturally contained</p>
+
+<p><a href="http://guides.rubyonrails.org/action_controller_overview.html#after-filters-and-around-filters">After Filters</a></p>
+
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/X-Frame-Options">X-Frame-Options</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[We're Programmers, Dammit]]></title>
@@ -921,15 +952,6 @@ alt="Computer Man" width="240" height="180" border="10" /></a></p>
 
 
 <p>Rappers is an instance of the class Array; therefore, methods within that class can be called on the rappers array. This is really no different than the first example of the Artist, Genre and Song classes. Within the Artist class, the add_song method is being passed a parameter that is an instance of the Song class. This allows us to then call methods from the Song class on that instance. Similarly, in the Song class we can access the Genre class method by passing in an instance of Genre. As long as the method&rsquo;s parameter is an instance of a particular class, we will always be able to reach into that class.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[My First Post On Octopress]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2014/10/14/my-first-post-on-octopress/"/>
-    <updated>2014-10-14T20:09:45-04:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2014/10/14/my-first-post-on-octopress</id>
-    <content type="html"><![CDATA[<p><img src="http://www.gravity.com/wp-content/uploads/2010/10/635x282xhello-world.gif.pagespeed.ic.WhWgdjIQuE.png"></p>
 ]]></content>
   </entry>
   

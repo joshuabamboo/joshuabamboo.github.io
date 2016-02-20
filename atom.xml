@@ -4,7 +4,7 @@
   <title><![CDATA[Irrationally Coded]]></title>
   <link href="http://joshuabamboo.github.io/atom.xml" rel="self"/>
   <link href="http://joshuabamboo.github.io/"/>
-  <updated>2016-02-20T11:16:58-05:00</updated>
+  <updated>2016-02-20T11:18:26-05:00</updated>
   <id>http://joshuabamboo.github.io/</id>
   <author>
     <name><![CDATA[Josh Owens]]></name>
@@ -28,7 +28,7 @@
 <h2>Look at terminal output</h2>
 
 <p><video controls loop width="800" autoplay>
-  <source src="http://joshuabamboo.github.io/images/api-hell.mp4" type="video/mp4">
+  <source src="http://joshuabamboo.github.io/images/twitter-api/api-hell.mp4" type="video/mp4">
 </video></p>
 ]]></content>
   </entry>

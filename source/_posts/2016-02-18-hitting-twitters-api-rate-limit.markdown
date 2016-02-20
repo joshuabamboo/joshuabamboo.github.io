@@ -98,6 +98,6 @@ Aha! Three new instances. Bad. Bad. Bad. Let's refactor the controller to intera
 That should do it. We've gone from >180 API calls per request to 19.
 ###**19 API calls!**
 
-<iframe src="//giphy.com/embed/xpoFzS3z0QujK" width="480" height="264" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="http://giphy.com/gifs/dancing-drake-young-xpoFzS3z0QujK">via GIPHY</a></p>
+<iframe src="//giphy.com/embed/xpoFzS3z0QujK?html5=true&hideSocial=true" width="480" height="264" frameborder="0" class="giphy-embed" allowfullscreen=""></iframe>
 
 This allows us 9 worst-case requests every 15 minutes. This is the best we can do without having a user sign in with twitter (or iterating through API keys. Shhh, don't tell Twitter.).

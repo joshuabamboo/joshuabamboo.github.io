@@ -59,27 +59,33 @@
 
 <p>The ruby method <code>p</code> (<code>puts</code> works fine too. The only difference between the two is their return values. We don&rsquo;t care about return values in this case.) allows you to put strings to the console. We will use this as a tool to track the flow of our program by putting them in key places and describing where we are/what is happening in the code. Keep in mind that the purpose of these <code>p</code> statements is to read them later in the terminal to assess what code is being run and when. These will go everywhere: <code>p "&lt;&lt;where we are/what is happening in the code&gt;&gt;"</code></p>
 
-<h3><code>p</code> in the Controller</h3>
+<blockquote><h3><code>p</code> in the Controller</h3>
 
-<blockquote><p>Put <code>p "Controller#action line number"</code> <em>on each line</em> of the triggered <code>Controller#Action</code>.</p>
+<p>Put <code>p "Controller#action line number"</code> <em>on each line</em> of the triggered <code>Controller#Action</code>.</p>
 
 <p><img src="/images/twitter-api/controller.png" /></p></blockquote>
 
-<h3><code>p</code> in the Model</h3>
+<p>-</p>
 
-<blockquote><p>Put <code>p "Model#method_name"</code> at the top of each method in the model where the API is called.</p>
+<blockquote><h3><code>p</code> in the Model</h3>
+
+<p>Put <code>p "Model#method_name"</code> at the top of each method in the model where the API is called.</p>
 
 <p><img src="/images/twitter-api/model.png" /></p></blockquote>
 
-<h3><code>p</code> in the Loops</h3>
+<p>-</p>
 
-<blockquote><p>Loops are the primary suspect for too many API calls, so we&rsquo;ll want to pay special attention to them. <code>p "Model#method_name loop"</code></p>
+<blockquote><h3><code>p</code> in the Loops</h3>
+
+<p>Loops are the primary suspect for too many API calls, so we&rsquo;ll want to pay special attention to them. <code>p "Model#method_name loop"</code></p>
 
 <p><img src="/images/twitter-api/model-loop.png" /></p></blockquote>
 
-<h3><code>p</code> in the Client Connection</h3>
+<p>-</p>
 
-<blockquote><p>Last but not least, the most important place to monitor is the API calls themselves. I like to use <code>!</code>s, so the calls stand out in the terminal output.</p>
+<blockquote><h3><code>p</code> in the Client Connection</h3>
+
+<p>Last but not least, the most important place to monitor is the API calls themselves. I like to use <code>!</code>s, so the calls stand out in the terminal output.</p>
 
 <ul>
 <li>Put a <code>p "!!! initialize client"</code> where the connection is first established to the API client.</li>

@@ -75,3 +75,29 @@ What this means is that 16 should be the max number of API calls to get a user's
 **This single line of code just saved us 139 API calls!**
 
 <iframe src="//giphy.com/embed/eoxomXXVL2S0E?hideSocial=true" width="480" height="360" frameborder="0" class="giphy-embed" allowfullscreen=""></iframe>
+
+Not so fast, cool guy. We've taken a major step forward, but there's still more work to do. The application doesn't blow up. That's good news. 
+
+The bad news: Our test case is still make 38 API calls for just one user. At that rate, just four searches within 15 minutes will blow up the app.
+
+###Double calls
+In the terminal out, our program hits `"!!! TwitterDirt#initialize_twitter_client"` three times. That's a red flag because `TwitterDirt#initialize_twitter_client` is only called when a new instance of `TwitterDirt` is created. We should only be dealing with one Twitter account i.e. one instance of `TwitterDirt`.
+
+This gets into application design (I could do a whole other blog post on refactoring this app). Notice in the controller a new `User` instance is created. And all the `TwitterDirt` is called on that `@user`.
+
+<img src="{{ root_url }}/images/twitter-api/user-trouble.png" />
+
+Let's take a look at the `User` model.
+
+<img src="{{ root_url }}/images/twitter-api/user-model-trouble.png" />
+
+Aha! Three new instances. Bad. Bad. Bad. Let's refactor the controller to interact directly with one instance of `TwitterDirt`.
+
+<img src="{{ root_url }}/images/twitter-api/refactored-controller.png" />
+
+That should do it. We've gone from >180 API calls per request to 19.
+###**19 API calls!**
+
+<iframe src="//giphy.com/embed/xpoFzS3z0QujK" width="480" height="264" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="http://giphy.com/gifs/dancing-drake-young-xpoFzS3z0QujK">via GIPHY</a></p>
+
+This allows us 9 worst-case requests every 15 minutes. This is the best we can do without having a user sign in with twitter (or iterating through API keys. Shhh, don't tell Twitter.).

@@ -1,5 +1,5 @@
 # joshuabamboo.github.io
-This is the repository I maintain to publish content to my blog. View my blog at [joshuabamboo.github.io](joshuabamboo.github.io).
+This is the repository I maintain to publish content to my blog. View my blog at [joshuabamboo.github.io](http://joshuabamboo.github.io/).
 
 ## Contributing 
 ### If ghost writing is your thing :)

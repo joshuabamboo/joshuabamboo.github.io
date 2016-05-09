@@ -15,7 +15,7 @@ Imagine you have a 2X2 grid and three items (for example, an apple, a bottle, an
 
 The items must be placed in this exact pattern, and any other permutation will result in no prize.
 
-![](../images/whiteboard4.JPG)
+![](../images/whiteboard4.JPG =150x)
 
 
 ##Solution 1

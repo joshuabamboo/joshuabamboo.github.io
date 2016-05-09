@@ -1,6 +1,6 @@
 ---
 layout: post
-title: ""Post Mortem: Whiteboard Challenge""
+title: "Post Mortem: Whiteboard Challenge"
 date: 2016-05-09 02:10:45 -0400
 comments: true
 categories:

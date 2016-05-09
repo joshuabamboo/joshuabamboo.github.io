@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Irrationally Coded]]></title>
+  <title><![CDATA[Ride or Pry]]></title>
   <link href="http://joshuabamboo.github.io/atom.xml" rel="self"/>
   <link href="http://joshuabamboo.github.io/"/>
-  <updated>2016-02-20T17:10:16-05:00</updated>
+  <updated>2016-05-09T02:38:35-04:00</updated>
   <id>http://joshuabamboo.github.io/</id>
   <author>
     <name><![CDATA[Josh Owens]]></name>
@@ -12,6 +12,235 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Post Mortem: Whiteboard Challenge]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2016/05/09/post-mortem-whiteboard-challenge/"/>
+    <updated>2016-05-09T02:10:45-04:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2016/05/09/post-mortem-whiteboard-challenge</id>
+    <content type="html"><![CDATA[<h4>What I learned and how I would face the problem today</h4>
+
+<p>&ndash;</p>
+
+<p>During an interview with a large tech company, I was asked to solve the following problem:</p>
+
+<p>Imagine you have a 2X2 grid and three items (for example, an apple, a bottle, and a cd &ndash; referred to below as &ldquo;a&rdquo;, &ldquo;b&rdquo;, and &ldquo;c&rdquo;, respectively). If you place these items in a specific pattern on the grid, then you will unlock a prize (money, let&rsquo;s say).</p>
+
+<p>The items must be placed in this exact pattern, and any other permutation will result in no prize.</p>
+
+<p><img src="../images/whiteboard4.JPG" alt="" /></p>
+
+<h2>Solution 1</h2>
+
+<h3>The naive solution</h3>
+
+<p>My initial approach was to index each individual square in order to know the position of each item.</p>
+
+<p><img src="../images/whiteboard1.JPG" alt="" /></p>
+
+<p>Then use a hash to store the indexed location as the key and the item as the value:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">solution</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="o">=&gt;</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="o">=&gt;</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="o">=&gt;</span><span class="kp">nil</span> <span class="mi">4</span><span class="o">=&gt;</span><span class="s2">&quot;c&quot;</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>After storing the solution, we could then store that as the key of another hash where the value is the prize:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">solutions</span> <span class="o">=</span> <span class="p">{</span><span class="n">solution</span><span class="o">=&gt;</span><span class="s2">&quot;money&quot;</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This way we could check the locations of items on the board against the keys in our <code>solutions</code> hash. If the key exists, then it would return the value. If not, it would return <code>nil</code>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">solutions</span><span class="o">[</span><span class="p">{</span><span class="mi">1</span><span class="o">=&gt;</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="o">=&gt;</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="o">=&gt;</span><span class="kp">nil</span> <span class="mi">4</span><span class="o">=&gt;</span><span class="s2">&quot;c&quot;</span><span class="p">}</span><span class="o">]</span>
+</span><span class='line'>  <span class="c1">#=&gt; &quot;money&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">solutions</span><span class="o">[</span><span class="p">{</span><span class="mi">1</span><span class="o">=&gt;</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="o">=&gt;</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="o">=&gt;</span><span class="s2">&quot;a&quot;</span> <span class="mi">4</span><span class="o">=&gt;</span><span class="s2">&quot;c&quot;</span><span class="p">}</span><span class="o">]</span>
+</span><span class='line'>  <span class="c1">#=&gt; nil</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">solutions</span><span class="o">[</span><span class="p">{</span><span class="mi">1</span><span class="o">=&gt;</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="o">=&gt;</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="o">=&gt;</span><span class="kp">nil</span> <span class="mi">4</span><span class="o">=&gt;</span><span class="s2">&quot;b&quot;</span><span class="p">}</span><span class="o">]</span>
+</span><span class='line'>  <span class="c1">#=&gt; nil</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>What did I learn</h3>
+
+<p>This approach only works for a fixed grid size. As soon as the grid size changes, this solution does not work.</p>
+
+<h3>What should change</h3>
+
+<p>Grid size must be accounted for in some way, so that is what must be tackled in the next solution.</p>
+
+<p>-</p>
+
+<h2>Solution 2</h2>
+
+<h3>Accounting for variable grid sizes</h3>
+
+<p>There are actually two problems when the grid size increases:</p>
+
+<ol>
+<li>Scale - Now there is more than one potential set of locations for the pattern to fit on the board.</li>
+<li>Absolute locations - The 2X2 solutions hash now has the wrong indexed locations.</li>
+</ol>
+
+
+<p><img src="../images/whiteboard5.JPG" alt="" /></p>
+
+<p>Addressing problem 1: We could continue to build out the hash from the first solution, but that would quickly become complex and would not scale well. The pattern was unique when the grid was just 2X2; however, with a 3X3 grid, the pattern would match in 4 locations:</p>
+
+<p><img src="../images/whiteboard2.JPG" alt="" /></p>
+
+<p>The bigger problem here is problem 2: relying on the absolute location.</p>
+
+<p>I was running into a wall trying to approach these two problems at once, so I eventually asked if I could approach the problem as if I were setting up a relational database for a web app where the grid was a form being submitted by the user. The interviewer obliged. The following table was the result of that exchange:</p>
+
+<h3>Winning patterns</h3>
+
+<table>
+<thead>
+<tr>
+<th> id   </th>
+<th style="text-align:left;"> prize </th>
+<th style="text-align:right;"> dimensions </th>
+<th style="text-align:right;"> 1 </th>
+<th style="text-align:right;"> 2 </th>
+<th style="text-align:right;"> 3 </th>
+<th style="text-align:right;"> 4 </th>
+<th style="text-align:right;"> 5 </th>
+<th style="text-align:right;"> 6 </th>
+<th style="text-align:right;"> &hellip; </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> 1 </td>
+<td style="text-align:left;"> &ldquo;money&rdquo; </td>
+<td style="text-align:right;"> &ldquo;2x2&rdquo; </td>
+<td style="text-align:right;"> &ldquo;a&rdquo; </td>
+<td style="text-align:right;"> &ldquo;b&rdquo; </td>
+<td style="text-align:right;"> nil </td>
+<td style="text-align:right;"> &ldquo;c&rdquo; </td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td> 2 </td>
+<td style="text-align:left;"> &ldquo;money&rdquo; </td>
+<td style="text-align:right;"> &ldquo;3x3&rdquo; </td>
+<td style="text-align:right;"> &ldquo;a&rdquo; </td>
+<td style="text-align:right;"> &ldquo;b&rdquo; </td>
+<td style="text-align:right;"> nil </td>
+<td style="text-align:right;"> nil </td>
+<td style="text-align:right;"> &ldquo;c&rdquo; </td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td> 3 </td>
+<td style="text-align:left;"> &ldquo;money&rdquo; </td>
+<td style="text-align:right;"> &ldquo;4x4&rdquo; </td>
+<td style="text-align:right;"> &ldquo;a&rdquo; </td>
+<td style="text-align:right;"> &ldquo;b&rdquo; </td>
+<td style="text-align:right;"> nil </td>
+<td style="text-align:right;"> nil </td>
+<td style="text-align:right;"> nil </td>
+<td style="text-align:right;"> &ldquo;c&rdquo; </td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+
+<p>You&rsquo;ll notice that a pattern starts to emerge. If the user submits a pattern of &ldquo;a b nil nil c&rdquo; on a 3x3 grid, we can check the 3x3 winning patterns to see if it matches a pattern from our <code>winning patterns</code> table.</p>
+
+<p>This is obviously a bad way to design a table. Each block in the grid is represented by a column. As a consequence, as the grid grows, the table would need to grow horizontally. Nevertheless, it helped me wrap my head around the problem. A pattern begins to emerge. This pattern can be represented on three different dimensioned grids. As long as we know the dimensions of the board, we can check for the pattern by counting the number of empty spaces (<code>nils</code>) between the items.</p>
+
+<p>At this point we ran out of time in the interview.</p>
+
+<h3>What did I learn</h3>
+
+<ol>
+<li>As the grid grows, it is important to consider whether the solution will scale.</li>
+<li>The absolute position of the items is less important than their relative position to one another. Relative position should be the focus.</li>
+<li>Thinking about the problem in a new way can be clarifying. Approaching it from the perspective of creating a web app added a layer of familiarity that allowed me to be more comfortable and confident in problem-solving in uncharted territory.</li>
+</ol>
+
+
+<h3>What should change</h3>
+
+<p>Obviously the idea needs some finessing. A solution started to emerge, but I left the interview with the algorithm on my mind. A pattern was identified, but scaling was still an issue.</p>
+
+<h2>Post interview</h2>
+
+<p>I don&rsquo;t like the idea of needing to keep track of the size of the grid, which seems to be the source of our scaling problem. If we make the grid size irrelevant, scaling is no longer an issue.</p>
+
+<h3>Coordinates</h3>
+
+<p>Switching from integer addresses to coordinates was a real breakthrough. This went from assigning arbitrary integers to a location to communicating valuable location information.</p>
+
+<p><img src="../images/whiteboard3.JPG" alt="" /></p>
+
+<h3>&ldquo;A grid within the grid&rdquo; Solution</h3>
+
+<p>The other idea was this: if we have the coordinates of the items&#8217; locations, then we know the boundaries of that location. Consider the following grid:</p>
+
+<p><img src="../images/whiteboard6.JPG" alt="" /></p>
+
+<p>We can now draw a boundary box around the max and min <code>x</code> and <code>y</code> axis points, creating a more explicit box within the grid. Everything outside of that smaller box is empty space, and not relevant to solving the problem.</p>
+
+<p>Now that we have the smaller box, we can check it against a list of winning patterns more efficiently.</p>
+
+<p>During the interview, I kept coming back to the notion that this problem was solvable with a tree. We even discussed the possibility of using regular expressions. Now with the smaller box boundary, we can make use of either. In fact, we can revisit the initial naive solution. Modified slightly, this set up now works with our new solution:</p>
+
+<h4>Hash</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">pattern</span> <span class="o">=</span> <span class="o">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="kp">nil</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="o">]</span>
+</span><span class='line'><span class="n">patterns</span> <span class="o">=</span> <span class="p">{</span><span class="n">pattern</span> <span class="o">=&gt;</span> <span class="s2">&quot;money&quot;</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now that we have the pattern stored as a key in our <code>patterns</code> hash, we can simply pass in an array of the items from our &ldquo;grid within a grid.&rdquo; If the array of items matches one of the patterns stored in our hash, it will return the prize that is stored as the value. If not, it will return <code>nil</code>.</p>
+
+<p><img src="../images/patterns-hash.png" alt="" />
+<img src="../images/patterns-hash-nil.png" alt="" /></p>
+
+<h4>DB</h4>
+
+<p>If we stuck to the original database concept, the <code>patterns</code> table would simply be three columns, and would no longer grow horizontally depending on the size of the grid.</p>
+
+<table>
+<thead>
+<tr>
+<th> id   </th>
+<th style="text-align:left;"> prize </th>
+<th> pattern </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> 1 </td>
+<td style="text-align:left;"> &ldquo;money&rdquo; </td>
+<td> [&ldquo;a&rdquo;, &ldquo;b&rdquo;, nil, &ldquo;c&rdquo;] </td>
+</tr>
+</tbody>
+</table>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[How To Debug Hitting API Rate Limits]]></title>
@@ -886,175 +1115,6 @@ alt="Computer Man" width="240" height="180" border="10" /></a></p>
 <p>This is obviously just a fun exercize. As he explains in <a href="http://vimeo.com/61087285">this video on obfuscation</a>, this was just &ldquo;an interesting project I did on the weekend.&rdquo; <a href="http://oi39.tinypic.com/14b6nmu.jpg">#NoBigDeal</a></p>
 
 <p>Give the video a look and check him out of twitter <a href="https://twitter.com/konstantinhaase">@konstantinhaase</a>. Not only is the content interesting, he&rsquo;s a really funny guy.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Communicating With Other Classes]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2014/10/14/communicating-with-other-classes/"/>
-    <updated>2014-10-14T22:15:57-04:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2014/10/14/communicating-with-other-classes</id>
-    <content type="html"><![CDATA[<p>When creating multiple classes, I noticed I was having a hard time wrapping my head around calling methods that weren&rsquo;t defined in my class. If you&rsquo;re like me, you had a hard time understanding how you could access methods from other classes. Here&rsquo;s an example of what I mean:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="k">class</span> <span class="nc">Artist</span>
-</span><span class='line'>      <span class="vc">@@artists</span> <span class="o">=</span> <span class="o">[]</span>
-</span><span class='line'>      <span class="kp">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:songs</span><span class="p">,</span> <span class="ss">:genres</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="k">def</span> <span class="nf">initialize</span>
-</span><span class='line'>          <span class="vi">@songs</span> <span class="o">=</span> <span class="o">[]</span>
-</span><span class='line'>      <span class="vi">@genres</span> <span class="o">=</span> <span class="o">[]</span>
-</span><span class='line'>      <span class="vc">@@artists</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
-</span><span class='line'>      <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="k">def</span> <span class="nf">add_song</span><span class="p">(</span><span class="n">song</span><span class="p">)</span>      <span class="c1">### passing in a parameter that&#39;s an instance of the Song class</span>
-</span><span class='line'>          <span class="vi">@songs</span> <span class="o">&lt;&lt;</span> <span class="n">song</span>
-</span><span class='line'>      <span class="vi">@genres</span> <span class="o">&lt;&lt;</span> <span class="n">song</span><span class="o">.</span><span class="n">genre</span>    <span class="c1">### calling genre method from the Song class</span>
-</span><span class='line'>      <span class="k">if</span> <span class="n">song</span><span class="o">.</span><span class="n">genre</span>
-</span><span class='line'>        <span class="n">song</span><span class="o">.</span><span class="n">genre</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span>
-</span><span class='line'>      <span class="k">end</span>
-</span><span class='line'>      <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">class</span> <span class="nc">Song</span>
-</span><span class='line'>      <span class="kp">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:artist</span><span class="p">,</span> <span class="ss">:genre</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="k">def</span> <span class="nf">genre</span><span class="o">=</span><span class="p">(</span><span class="n">genre</span><span class="p">)</span>        <span class="c1">### passing in a parameter that&#39;s an instance of the Genre class</span>
-</span><span class='line'>          <span class="vi">@genre</span> <span class="o">=</span> <span class="n">genre</span>
-</span><span class='line'>          <span class="n">genre</span><span class="o">.</span><span class="n">add_song</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span>  <span class="c1">### calling add_song method from the Genre class</span>
-</span><span class='line'>      <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">class</span> <span class="nc">Genre</span>
-</span><span class='line'>          <span class="kp">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:songs</span><span class="p">,</span> <span class="ss">:artists</span>
-</span><span class='line'>          <span class="vc">@@genres</span> <span class="o">=</span> <span class="o">[]</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="k">def</span> <span class="nf">initialize</span>
-</span><span class='line'>              <span class="vi">@songs</span> <span class="o">=</span> <span class="o">[]</span>
-</span><span class='line'>              <span class="vi">@artists</span> <span class="o">=</span> <span class="o">[]</span>
-</span><span class='line'>              <span class="vc">@@genres</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
-</span><span class='line'>      <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>      <span class="k">def</span> <span class="nf">add_song</span><span class="p">(</span><span class="n">song</span><span class="p">)</span>
-</span><span class='line'>              <span class="vi">@songs</span> <span class="o">&lt;&lt;</span> <span class="n">song</span>
-</span><span class='line'>      <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>      <span class="k">def</span> <span class="nf">add_artist</span><span class="p">(</span><span class="n">artist</span><span class="p">)</span>
-</span><span class='line'>              <span class="vi">@artists</span> <span class="o">&lt;&lt;</span> <span class="n">artist</span>
-</span><span class='line'>              <span class="vi">@artists</span><span class="o">.</span><span class="n">uniq!</span>
-</span><span class='line'>      <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Here we have three classes (Artist, Song, Genre). Notice the comments (###). These classes are calling methods that do not exist in their class. This can be confusing, especially if you&rsquo;re thinking about the concept of <a href="http://www.techotopia.com/index.php/Ruby_Variable_Scope">scope</a>. The method isn&rsquo;t defined. How could I possibly use it, right?! Wrong.</p>
-
-<p>A simple step back helped me finally wrap my head around it. Think about a class that already exists that we use all the time, like arrays.</p>
-
-<h5>Array is a class (Just like the ones we created above)</h5>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="k">class</span> <span class="nc">Array</span>
-</span><span class='line'>      <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span><span class='line'>  <span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h5>A new array is an instance within the class Array</h5>
-
-<p><code>rappers = []</code></p>
-
-<p>is the same as</p>
-
-<p><code>rappers = Array.new</code></p>
-
-<h5>Now we can pass our rappers array as an argument into another class&#8217; method</h5>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="k">class</span> <span class="nc">Artist</span>
-</span><span class='line'>      <span class="k">def</span> <span class="nf">count_rappers</span><span class="p">(</span><span class="n">rappers</span><span class="p">)</span>
-</span><span class='line'>          <span class="n">rappers</span><span class="o">.</span><span class="n">size</span>     <span class="c1">### calling size method on rappers array</span>
-</span><span class='line'>      <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Note that we are calling size on rappers, but we have not defined any method called size in our Artist class. The reason we have access to the size method is because it is <a href="http://www.ruby-doc.org/core-2.1.3/Array.html">one of the many methods within the class Array</a>.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="k">class</span> <span class="nc">Array</span>
-</span><span class='line'>      <span class="k">def</span> <span class="nf">size</span>
-</span><span class='line'>          <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span><span class='line'>      <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Rappers is an instance of the class Array; therefore, methods within that class can be called on the rappers array. This is really no different than the first example of the Artist, Genre and Song classes. Within the Artist class, the add_song method is being passed a parameter that is an instance of the Song class. This allows us to then call methods from the Song class on that instance. Similarly, in the Song class we can access the Genre class method by passing in an instance of Genre. As long as the method&rsquo;s parameter is an instance of a particular class, we will always be able to reach into that class.</p>
 ]]></content>
   </entry>
   

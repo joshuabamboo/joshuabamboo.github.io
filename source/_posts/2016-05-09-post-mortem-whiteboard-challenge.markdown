@@ -15,7 +15,7 @@ Imagine you have a 2X2 grid and three items (for example, an apple, a bottle, an
 
 The items must be placed in this exact pattern, and any other permutation will result in no prize.
 
-![](../images/whiteboard4.JPG =150x)
+![](../images/whiteboard4.JPG =600x)
 
 
 ##Solution 1
@@ -23,7 +23,7 @@ The items must be placed in this exact pattern, and any other permutation will r
 
 My initial approach was to index each individual square in order to know the position of each item.
 
-![](../images/whiteboard1.JPG)
+![](../images/whiteboard1.JPG =600x)
 
 Then use a hash to store the indexed location as the key and the item as the value:
 
@@ -69,11 +69,11 @@ There are actually two problems when the grid size increases:
 1. Scale - Now there is more than one potential set of locations for the pattern to fit on the board.
 2. Absolute locations - The 2X2 solutions hash now has the wrong indexed locations.
 
-![](../images/whiteboard5.JPG)
+![](../images/whiteboard5.JPG =600x)
 
 Addressing problem 1: We could continue to build out the hash from the first solution, but that would quickly become complex and would not scale well. The pattern was unique when the grid was just 2X2; however, with a 3X3 grid, the pattern would match in 4 locations:
 
-![](../images/whiteboard2.JPG)
+![](../images/whiteboard2.JPG =600x)
 
 The bigger problem here is problem 2: relying on the absolute location.
 
@@ -110,13 +110,13 @@ I don't like the idea of needing to keep track of the size of the grid, which se
 ###Coordinates
 Switching from integer addresses to coordinates was a real breakthrough. This went from assigning arbitrary integers to a location to communicating valuable location information.
 
-![](../images/whiteboard3.JPG)
+![](../images/whiteboard3.JPG =600x)
 
 
 ###"A grid within the grid" Solution
 The other idea was this: if we have the coordinates of the items' locations, then we know the boundaries of that location. Consider the following grid:
 
-![](../images/whiteboard6.JPG)
+![](../images/whiteboard6.JPG =600x)
 
 We can now draw a boundary box around the max and min `x` and `y` axis points, creating a more explicit box within the grid. Everything outside of that smaller box is empty space, and not relevant to solving the problem.
 

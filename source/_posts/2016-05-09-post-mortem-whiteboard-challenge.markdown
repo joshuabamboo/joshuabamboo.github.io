@@ -5,6 +5,7 @@ date: 2016-05-09 02:10:45 -0400
 comments: true
 categories:
 ---
+
 ####What I learned and how I would face the problem today
 --
 

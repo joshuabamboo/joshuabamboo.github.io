@@ -4,7 +4,7 @@
   <title><![CDATA[Ride or Pry]]></title>
   <link href="http://joshuabamboo.github.io/atom.xml" rel="self"/>
   <link href="http://joshuabamboo.github.io/"/>
-  <updated>2016-05-09T02:42:04-04:00</updated>
+  <updated>2016-05-09T03:06:39-04:00</updated>
   <id>http://joshuabamboo.github.io/</id>
   <author>
     <name><![CDATA[Josh Owens]]></name>
@@ -14,13 +14,11 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Post Mortem: Whiteboard Challenge]]></title>
+    <title type="html"><![CDATA[Postmortem: Whiteboard Challenge]]></title>
     <link href="http://joshuabamboo.github.io/blog/2016/05/09/post-mortem-whiteboard-challenge/"/>
     <updated>2016-05-09T02:10:45-04:00</updated>
     <id>http://joshuabamboo.github.io/blog/2016/05/09/post-mortem-whiteboard-challenge</id>
-    <content type="html"><![CDATA[<h4>What I learned and how I would face the problem today</h4>
-
-<p>&ndash;</p>
+    <content type="html"><![CDATA[<h5>What I learned and how I would face the problem today</h5>
 
 <p>During an interview with a large tech company, I was asked to solve the following problem:</p>
 

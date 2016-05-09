@@ -1,0 +1,1061 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Irrationally Coded]]></title>
+  <link href="http://joshuabamboo.github.io/atom.xml" rel="self"/>
+  <link href="http://joshuabamboo.github.io/"/>
+  <updated>2016-02-20T17:10:16-05:00</updated>
+  <id>http://joshuabamboo.github.io/</id>
+  <author>
+    <name><![CDATA[Josh Owens]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[How To Debug Hitting API Rate Limits]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2016/02/18/hitting-twitters-api-rate-limit/"/>
+    <updated>2016-02-18T22:43:58-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2016/02/18/hitting-twitters-api-rate-limit</id>
+    <content type="html"><![CDATA[<h2>Step 1: <code>p</code> All Over the Code</h2>
+
+<p>The ruby method <code>p</code> (<code>puts</code> works fine too. The only difference between the two is their return values. We don&rsquo;t care about return values in this case.) allows you to put strings to the console. We will use this as a tool to track the flow of our program by putting them in key places and describing where we are/what is happening in the code. Keep in mind that the purpose of these <code>p</code> statements is to read them later in the terminal to assess what code is being run and when. These will go everywhere: <code>p "&lt;&lt;where we are/what is happening in the code&gt;&gt;"</code></p>
+
+<blockquote><h3><code>p</code> in the Controller</h3>
+
+<p>Put <code>p "Controller#action line number"</code> <em>on each line</em> of the triggered <code>Controller#Action</code>.</p>
+
+<p><img src="http://joshuabamboo.github.io/images/twitter-api/controller.png" /></p></blockquote>
+
+<hr />
+
+<blockquote><h3><code>p</code> in the Model</h3>
+
+<p>Put <code>p "Model#method_name"</code> at the top of each method in the model where the API is called.</p>
+
+<p><img src="http://joshuabamboo.github.io/images/twitter-api/model.png" /></p></blockquote>
+
+<hr />
+
+<blockquote><h3><code>p</code> in the Loops</h3>
+
+<p>Loops are the primary suspect for too many API calls, so we&rsquo;ll want to pay special attention to them. <code>p "Model#method_name loop"</code></p>
+
+<p><img src="http://joshuabamboo.github.io/images/twitter-api/model-loop.png" /></p></blockquote>
+
+<hr />
+
+<blockquote><h3><code>p</code> in the Client Connection</h3>
+
+<p>Last but not least, the most important place to monitor is the API calls themselves. I like to use <code>!</code>s, so the calls stand out in the terminal output.</p>
+
+<ul>
+<li>Put a <code>p "!!! initialize client"</code> where the connection is first established to the API client.</li>
+<li>Put a <code>p "! Hit the API"</code> in the method you&rsquo;re using the make calls to the API. This is likely an <code>attr_accessor</code>, so this step will require you to explicitly write out this method as well.</li>
+</ul>
+
+
+<p><img src="http://joshuabamboo.github.io/images/twitter-api/client.png" /></p></blockquote>
+
+<h2>Step 2: Run the Code</h2>
+
+<p>Start your server and go through the actions in the browser that will trigger your API calls.</p>
+
+<h2>Step 3: Look at the Terminal Output</h2>
+
+<p>Here&rsquo;s the moment of truth. Go to the terminal where your server is running. Immediately following the request, you should see all of the <code>p</code> strings being put to the console as each line is run.</p>
+
+<p><video controls loop width="800" autoplay>
+  <source src="http://joshuabamboo.github.io/images/twitter-api/api-hell.mp4" type="video/mp4">
+</video></p>
+
+<h2>Step 4: Detective Work</h2>
+
+<p>Let&rsquo;s do some detective work. If you placed <code>p</code> statements in the right places, this part should be relatively easy. Find the the place(s) where a bunch of API calls are being fired, and look at the lines just before it to see where to debug.</p>
+
+<p>In this particular case, notice that <code>TwitterDirt#get_user_timeline loop</code> is where it hits the rate limit.</p>
+
+<p><img src="http://joshuabamboo.github.io/images/twitter-api/terminal-output.png" /></p>
+
+<p>Let&rsquo;s take a closer look at that loop.</p>
+
+<p><img src="http://joshuabamboo.github.io/images/twitter-api/detective-work.png" /></p>
+
+<p>The number of times we iterate is determined by the <code>TwitterDirt#number_of_pages</code> method. Let&rsquo;s put a binding in there and see what&rsquo;s happening.</p>
+
+<p><img src="http://joshuabamboo.github.io/images/twitter-api/pry.png" /></p>
+
+<p>It looks like we found our problem (one of them, at least)! This particular user has 155 pages of tweets. We have to send a request to Twitter for each page of tweets we want to access. Twitter only allows <a href="https://dev.twitter.com/rest/public/rate-limiting">180 API calls every 15 minutes</a>. <strong>This one request uses ~90% of the allowed calls.</strong> There&rsquo;s nothing we can do about Twitter&rsquo;s decision to only allow 180 calls, so we have to limit the number of pages we search.</p>
+
+<h2>Step 5: Solve It</h2>
+
+<p>Luckily (I guess) for us. <a href="https://dev.twitter.com/rest/reference/get/statuses/user_timeline">Twitter only allows access to a user&rsquo;s 3200 most recent tweets</a>. This is true even if the user has 31,000 tweets (155 pages * 200 tweets per page) like in our current example.</p>
+
+<p><code>3200 tweets/200 tweets per page = 16 pages</code></p>
+
+<p>What this means is that 16 should be the max number of API calls to get a user&rsquo;s timeline. After the 16th call, Twitter stops sending back the intended response. Consequently, <code>TwitterDirt#number_of_pages</code> should return an integer no greater than 16.</p>
+
+<p><img src="http://joshuabamboo.github.io/images/twitter-api/number-of-pages.png" /></p>
+
+<p><strong>This single line of code just saved us 139 API calls!</strong></p>
+
+<iframe src="//giphy.com/embed/eoxomXXVL2S0E?hideSocial=true" width="480" height="360" frameborder="0" class="giphy-embed" allowfullscreen=""></iframe>
+
+
+<p>Not so fast, cool guy. We&rsquo;ve taken a major step forward, but there&rsquo;s still more work to do. The application doesn&rsquo;t blow up. That&rsquo;s good news.</p>
+
+<p>The bad <a href="news:">news:</a> Our test case is still make 38 API calls for just one user. At that rate, just four searches within 15 minutes will blow up the app.</p>
+
+<h3>Double calls</h3>
+
+<p>In the terminal out, our program hits <code>"!!! TwitterDirt#initialize_twitter_client"</code> three times. That&rsquo;s a red flag because <code>TwitterDirt#initialize_twitter_client</code> is only called when a new instance of <code>TwitterDirt</code> is created. We should only be dealing with one Twitter account i.e. one instance of <code>TwitterDirt</code>.</p>
+
+<p>This gets into application design (I could do a whole other blog post on refactoring this app). Notice in the controller a new <code>User</code> instance is created. And all the <code>TwitterDirt</code> is called on that <code>@user</code>.</p>
+
+<p><img src="http://joshuabamboo.github.io/images/twitter-api/user-trouble.png" /></p>
+
+<p>Let&rsquo;s take a look at the <code>User</code> model.</p>
+
+<p><img src="http://joshuabamboo.github.io/images/twitter-api/user-model-trouble.png" /></p>
+
+<p>Aha! Three new instances. Bad. Bad. Bad. Let&rsquo;s refactor the controller to interact directly with one instance of <code>TwitterDirt</code>.</p>
+
+<p><img src="http://joshuabamboo.github.io/images/twitter-api/refactored-controller.png" /></p>
+
+<p>That should do it. We&rsquo;ve gone from >180 API calls per request to 19.</p>
+
+<h3><strong>19 API calls!</strong></h3>
+
+<iframe src="//giphy.com/embed/xpoFzS3z0QujK?html5=true&hideSocial=true" width="480" height="264" frameborder="0" class="giphy-embed" allowfullscreen=""></iframe>
+
+
+<p>This allows us 9 worst-case requests every 15 minutes. This is the best we can do without having a user sign in with twitter (or iterating through API keys. Shhh, don&rsquo;t tell Twitter.).</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Manipulating Server Response Using Rails After Filters]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2015/12/19/manipulating-server-response-using-rails-after-filters/"/>
+    <updated>2015-12-19T19:39:25-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2015/12/19/manipulating-server-response-using-rails-after-filters</id>
+    <content type="html"><![CDATA[<p>I recently created a website for <a href="http://coreycambridge.com/">a musician friend</a>. As a music site, it naturally contained</p>
+
+<p><a href="http://guides.rubyonrails.org/action_controller_overview.html#after-filters-and-around-filters">After Filters</a></p>
+
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/X-Frame-Options">X-Frame-Options</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[We're Programmers, Dammit]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2015/09/06/were-programmers-dammit/"/>
+    <updated>2015-09-06T14:17:55-04:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2015/09/06/were-programmers-dammit</id>
+    <content type="html"><![CDATA[<p>This is a phrase I borrowed from <a href="http://hostiledeveloper.com/">programmer extraordinaire Steven Nunez</a>. I love this sentiment. I love the idea that we aren&rsquo;t limited to consuming the Internet. We can be an active participant.</p>
+
+<p>In this edition of &ldquo;We&rsquo;re Programmers, Dammit&rdquo;, I&rsquo;ll walk through how I used a Chrome Extension to change the functionality of an unwanted feature of a website. I will walk through the basic steps for getting a Chrome Extension up and running. The project lives at <a href="https://github.com/joshuabamboo/fias">this Github repository</a>.</p>
+
+<h4>1. Create a <code>manifest.json</code> file</h4>
+
+<p>Inside a directory that will contain extension, create a <code>manifest.json</code>. This file is what Chrome will look for first. It supplies Chrome with all the metadata about the extension (e.g. <code>manifest_version</code>, <code>name</code>, <code>version</code>). These are the only things <em>required</em> to make a chrome extention, so let&rsquo;s do the basics and come back later.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'>  <span class="p">{</span>
+</span><span class='line'>    <span class="nt">&quot;manifest_version&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;extenion_name&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;myExtensionVersion&quot;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>2. Connect your local directory to Chrome</h4>
+
+<p>Now we have the following directory:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'>  <span class="err">extension_name/</span>
+</span><span class='line'>  <span class="err">└──</span> <span class="err">manifest.json</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To get the directory into Chrome, we must first go to <code>chrome://extensions/</code> in your Chrome browser. Next, click the <code>Developer Mode</code> checkbox at the top right. It should look like this:
+<img src="http://joshuabamboo.github.io/images/chrome-ext.png" /></p>
+
+<p>Next, locate the directory in your finder, and drag the entire folder into the browser opened to <code>chrome://extensions/</code>. Chrome allows you to drop the entire folder to load it into Chrome. It&rsquo;s as simple as that. You&rsquo;ll only have to do this step once. Any changes you make to the files will now be available in Chrome one you reload (<code>cmd + r</code>) the page. Click the <code>Enable</code> checkbox, and you&rsquo;ve got yourself a Chrome Extension.</p>
+
+<p><img src="http://joshuabamboo.github.io/images/chrome-drag.png" /></p>
+
+<p>Protip: If you get an error at this phase, more than likely you have a syntax error. Check your json formatting (check your commas) and try again.</p>
+
+<h4>3. Now make it do something</h4>
+
+<p>Congrats! You officially have a Chrome Extension. The downside is, it doesn&rsquo;t do anything. Let&rsquo;s fix that. In my case, I wanted to remove a social feature on <a href="http://learn.co">Learn.co</a>. The site looks like this. I&rsquo;m feeling particularly antisocial today, so I want to get rid of everything in the red box.</p>
+
+<p><img src="http://joshuabamboo.github.io/images/chrome-ext-learn-before.png" /></p>
+
+<p>Back to <code>manifest.json</code>. We&rsquo;ll need to add some <code>content_scripts</code> to the manifest.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'>  <span class="p">{</span>
+</span><span class='line'>    <span class="nt">&quot;manifest_version&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;extenion_name&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;myExtensionVersion&quot;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="s2">&quot;content_scripts&quot;</span><span class="p">:</span> <span class="p">[</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>        <span class="nt">&quot;matches&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;https://learn.co/*&quot;</span><span class="p">],</span>
+</span><span class='line'>        <span class="nt">&quot;css&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;fias.css&quot;</span><span class="p">]</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="p">]</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>matches</code> refers to the URLs we want to the Chrome Extension to change. In our case, we want it to work on every URL that starts with <code>https://learn.co/</code>.</p>
+
+<p><code>css</code> is where we link the css files in the directory. Go ahead and create the css file at the root of the directory.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'>  <span class="err">extension_name/</span>
+</span><span class='line'>  <span class="err">└──</span> <span class="err">manifest.json</span>
+</span><span class='line'>  <span class="err">└──</span> <span class="err">fias.css</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>fias.css</code> is where we will add the css to remove the elements on the page that we do not want to see. That is as simple as adding <code>display: none</code> to the id of the divs. In our case it looks like this:</p>
+
+<pre><code class="`css">  #students-working-container {
+    display: none;
+  }
+</code></pre>
+
+<p><img src="http://joshuabamboo.github.io/images/chrome-ext-learn-after.png" /></p>
+
+<p>It&rsquo;s as simple as that. With a few lines of code we&rsquo;ve completely removed an unwanted feature because we&rsquo;re programmers, dammit!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Hacking RewardsGold.com: Part 3]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2015/02/23/hacking-rewards-gold-part-3/"/>
+    <updated>2015-02-23T23:39:02-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2015/02/23/hacking-rewards-gold-part-3</id>
+    <content type="html"><![CDATA[<p>One of the mantras of behavioral economics is &ldquo;make it simple.&rdquo; In the spirit of simplifying my series on revealing vulnerabilities at RewardsGold.com, I decided to throw together a web app. Running a script or even manipulating a form field in the Chrome console can be too complex. I wanted something I could send to my mom, and she would have no problem understanding and walking through the process.</p>
+
+<p><a href="#">Protect your forms</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Refactoring Tic Tac Toe]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2015/02/16/refactoring-tic-tac-toe/"/>
+    <updated>2015-02-16T23:43:50-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2015/02/16/refactoring-tic-tac-toe</id>
+    <content type="html"><![CDATA[<p>Oh, how far I&rsquo;ve come since I began this coding journey. So much of our journey as code newbies is focused on how much we still have to learn, but it&rsquo;s a good exercise to reflect on how far you&rsquo;ve come. For me, this came in the form of refactoring a game of tic tac toe.</p>
+
+<p>As much as it makes me cringe, I&rsquo;m sharing my first ever attempt at coding something in Ruby:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">puts</span> <span class="s2">&quot;Welcome to beginner Tic Tac Toe.</span><span class="se">\n</span><span class="s2">You are X. The computer is O. You go first.&quot;</span>
+</span><span class='line'><span class="nb">puts</span> <span class="s2">&quot;Enter the number of the box you would like to occupy:</span><span class="se">\n</span><span class="s2"> &quot;</span>
+</span><span class='line'><span class="n">currentBoard</span> <span class="o">=</span> <span class="s2">&quot;1|2|3</span><span class="se">\n</span><span class="s2">4|5|6</span><span class="se">\n</span><span class="s2">7|8|9&quot;</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">currentBoard</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> &quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">remainingSpaces</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="o">]</span>  <span class="c1">#available positions to choose   </span>
+</span><span class='line'><span class="n">location</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># set to 0, so the default is outside remainingSpaces range</span>
+</span><span class='line'><span class="n">locationsX</span> <span class="o">=</span> <span class="o">[]</span>  <span class="c1"># array of player&#39;s selected locations</span>
+</span><span class='line'><span class="n">locationsO</span> <span class="o">=</span> <span class="o">[]</span>  <span class="c1"># array of computer&#39;s selected locations</span>
+</span><span class='line'><span class="n">winningCombinations</span> <span class="o">=</span> <span class="o">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">]</span><span class="p">,</span> <span class="o">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="o">]</span><span class="p">,</span> <span class="o">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="o">]</span><span class="p">,</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="o">]</span><span class="p">,</span>
+</span><span class='line'>  <span class="o">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="o">]</span><span class="p">,</span> <span class="o">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="o">]</span><span class="p">,</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="o">]</span><span class="p">,</span> <span class="o">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="o">]]</span>  <span class="c1"># all possible winning sequences  </span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">until</span> <span class="n">remainingSpaces</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">==</span> <span class="kp">nil</span> <span class="c1"># loop until we&#39;ve run out of tic tac toe spaces</span>
+</span><span class='line'>  <span class="c1">#user makes a move</span>
+</span><span class='line'>  <span class="n">location</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span><span class="p">()</span><span class="o">.</span><span class="n">to_i</span>  <span class="c1"># user input converted to integer</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">remainingSpaces</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>  <span class="c1"># is the input a valid choice from remainingSpaces</span>
+</span><span class='line'>    <span class="n">currentBoard</span><span class="o">[</span><span class="n">location</span><span class="o">.</span><span class="n">to_s</span><span class="o">]</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">)</span>  <span class="c1"># updating the board to show &#39;X&#39; instead of num</span>
+</span><span class='line'>    <span class="n">remainingSpaces</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>  <span class="c1">#removes the chosen number from the array  </span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">currentBoard</span>
+</span><span class='line'>    <span class="n">locationsX</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>  <span class="c1"># adds selection to array containing all player X selections</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">#check for winner</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">combination</span> <span class="k">in</span> <span class="n">winningCombinations</span> <span class="c1"># need to look at each array in the parent array</span>
+</span><span class='line'>      <span class="k">if</span> <span class="n">locationsX</span><span class="o">.</span><span class="n">sort</span> <span class="o">&amp;</span> <span class="n">combination</span> <span class="o">==</span> <span class="n">combination</span> <span class="c1">#does array of previous moves match winner</span>
+</span><span class='line'>      <span class="nb">abort</span><span class="p">(</span><span class="s2">&quot;Tic Tac Toe! You win!&quot;</span><span class="p">)</span> <span class="c1"># if yes, game over</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">else</span> <span class="c1">#  in case the user selects any char != 1-9</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s1">&#39;Available positions are: &#39;</span>
+</span><span class='line'>      <span class="n">remainingSpaces</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
+</span><span class='line'>          <span class="nb">puts</span> <span class="n">i</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;Select a number...&quot;</span>
+</span><span class='line'>    <span class="k">redo</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>   <span class="c1">#computer makes a move </span>
+</span><span class='line'>
+</span><span class='line'>   <span class="c1">#for combination in winningCombinations</span>
+</span><span class='line'>   <span class="c1">## Tie game locator</span>
+</span><span class='line'>    <span class="k">if</span> <span class="n">remainingSpaces</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">==</span> <span class="kp">nil</span>  <span class="c1"># breaks loop on the last iteration to avoid unnecessary final turn for O</span>
+</span><span class='line'>      <span class="nb">abort</span><span class="p">(</span><span class="s2">&quot;Cat game! Game over.&quot;</span><span class="p">)</span> <span class="c1"># if we made it here, it&#39;s a tie</span>
+</span><span class='line'>   <span class="c1">## offensive move -&gt; if there&#39;s 2/3 combination, select the third</span>
+</span><span class='line'>    <span class="c1">#elsif (combination &amp; locationsO).length == 2 #do both arrays have 2 locations in common?</span>
+</span><span class='line'>    <span class="c1"># space = combination - locationsO # if yes, what&#39;s the the third space that&#39;s missing</span>
+</span><span class='line'>    <span class="c1"># if remainingSpaces.include? space # has that space been selected already by player O?</span>
+</span><span class='line'>    <span class="c1">#   location = space # if no, pick that space</span>
+</span><span class='line'>    <span class="c1"># end </span>
+</span><span class='line'>   <span class="c1">## defensive move -&gt; if opponent has 2/3 combination, select the third</span>
+</span><span class='line'>    <span class="c1">#elsif (combination &amp; locationsX).length == 2 #same as offensive</span>
+</span><span class='line'>    <span class="c1"># space = combination - locationsX # same as offensive</span>
+</span><span class='line'>    <span class="c1"># if remainingSpaces.include? space # has that space been selected already by player X?</span>
+</span><span class='line'>    <span class="c1">#   location = space # same as offensive</span>
+</span><span class='line'>    <span class="c1"># end</span>
+</span><span class='line'>   <span class="c1">## work-around</span>
+</span><span class='line'>    <span class="k">elsif</span> <span class="n">remainingSpaces</span><span class="o">.</span><span class="n">include?</span> <span class="mi">5</span>  <span class="c1"># included this as a rudimentary work-around to the commented code above</span>
+</span><span class='line'>      <span class="n">location</span> <span class="o">=</span> <span class="mi">5</span>                  <span class="c1"># taking the middle square gives player O a better statistical chance of a tie</span>
+</span><span class='line'>   <span class="c1">## pick a random location  </span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="n">location</span> <span class="o">=</span> <span class="n">remainingSpaces</span><span class="o">.</span><span class="n">sample</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">currentBoard</span><span class="o">[</span><span class="n">location</span><span class="o">.</span><span class="n">to_s</span><span class="o">]</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;O&#39;</span><span class="p">)</span>  <span class="c1"># updating board to show &#39;O&#39; instead of the chosen number</span>
+</span><span class='line'>    <span class="n">remainingSpaces</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>  <span class="c1">#removes the chosen number from the array</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">The computer is making its move...&quot;</span>
+</span><span class='line'>    <span class="nb">sleep</span><span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># added delay for a more natural flow</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">currentBoard</span>
+</span><span class='line'>    <span class="n">locationsO</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">#check for winner</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">combination</span> <span class="k">in</span> <span class="n">winningCombinations</span>
+</span><span class='line'>      <span class="k">if</span> <span class="n">locationsO</span><span class="o">.</span><span class="n">sort</span> <span class="o">&amp;</span> <span class="n">combination</span> <span class="o">==</span> <span class="n">combination</span>
+</span><span class='line'>      <span class="nb">abort</span><span class="p">(</span><span class="s2">&quot;Tic Tac Toe! The computer wins!&quot;</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">The computer chose %d. Your turn...&quot;</span> <span class="o">%</span> <span class="n">location</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, compare this with <a href="https://github.com/joshuabamboo/tic-tac-toe-cli">my recently refactored version</a>. It&rsquo;s good to glance back at where you&rsquo;ve come from while moving full speed ahead.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Hacking RewardsGold.com: Part 2]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2015/01/30/hacking-rewardsgold-dot-com-part-2/"/>
+    <updated>2015-01-30T23:22:05-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2015/01/30/hacking-rewardsgold-dot-com-part-2</id>
+    <content type="html"><![CDATA[<p>If you haven&rsquo;t read part one, you can find it <a href="http://joshuabamboo.github.io/blog/2015/01/25/hacking-rewardsgold-dot-com/">here</a>. If you have, you&rsquo;ll recall that I wrote a script to submit the invite form for points on rewardsgold.com. This works perfectly fine; however, while tinkering with their form I discovered a flaw.</p>
+
+<p>Beware of form data. This one line of code left Rewards Gold vulnerable:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;hidden&quot;</span> <span class="na">name=</span><span class="s">&quot;points&quot;</span> <span class="na">value=</span><span class="s">&quot;500&quot;</span><span class="nt">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>They actually keep their point value as a hidden input in their form. By simply inspecting the element in Chrome, you can alter that &ldquo;500&rdquo; to any number you like. And just like that, when you submit the form your point count will increase by whatever number you choose. Pro tip: The Economist is 8600 points. :)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Hacking RewardsGold.com: Part 1]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2015/01/25/hacking-rewardsgold-dot-com/"/>
+    <updated>2015-01-25T21:50:29-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2015/01/25/hacking-rewardsgold-dot-com</id>
+    <content type="html"><![CDATA[<p><a href="http://www.rewardsgold.com/">Rewards Gold</a> is one of those sites where you earn points, and the points then act as currency for products in the Rewards Gold store. There are several ways to earn points, but the one that caught my attention was the &ldquo;Invite Friends&rdquo; option. Simple enough: 250 points for each friend you refer.</p>
+
+<p>At this point I should mention that their store consists almost entirely of magazine and newspaper subscriptions. One of which caught my eye - The Economist. A year of The Economist can set you back anywhere from $350-$120 (i.e. well worth my time).</p>
+
+<p>At a price of 8,600 points, The Economist would&rsquo;ve cost me 35 friends&#8217; names and emails. Not terrible, but I was looking for something scalable.</p>
+
+<p>Naturally, I began writing a script. <a href="https://github.com/joshuabamboo/rewards-gold">Here it is on GitHub</a></p>
+
+<p>I created a class called <code>FriendGenerator</code> where the user could pass in their Rewards Gold username, email, and number of points they needed. Using the Mechanize gem, the script logs the user in and then submits the &ldquo;Invite Friends&rdquo; form until the specified number of points are reach. It turns out the emails aren&rsquo;t vetted in any way. As you can see from the <code>submit_friend_form</code> method, all of the form data is randomly generated.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">submit_friend_form</span>
+</span><span class='line'>  <span class="n">page</span> <span class="o">=</span> <span class="vi">@mechanize</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;http://www.rewardsgold.com/surv/referfriend.php&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">form</span> <span class="o">=</span> <span class="vi">@mechanize</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">form_with</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;theform&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">form</span><span class="o">.</span><span class="n">FriendName1</span> <span class="o">=</span> <span class="no">Random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1000000000</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">form</span><span class="o">.</span><span class="n">FriendEmail1</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="no">Random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1000000000</span><span class="p">)</span><span class="si">}</span><span class="s2">@</span><span class="si">#{</span><span class="no">Random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1000000000</span><span class="p">)</span><span class="si">}</span><span class="s2">.com&quot;</span>
+</span><span class='line'>  <span class="n">form</span><span class="o">.</span><span class="n">FriendName2</span> <span class="o">=</span> <span class="no">Random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1000000000</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">form</span><span class="o">.</span><span class="n">FriendEmail2</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="no">Random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1000000000</span><span class="p">)</span><span class="si">}</span><span class="s2">@</span><span class="si">#{</span><span class="no">Random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1000000000</span><span class="p">)</span><span class="si">}</span><span class="s2">.com&quot;</span>
+</span><span class='line'>  <span class="n">button</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">button_with</span><span class="p">(</span><span class="ss">:value</span> <span class="o">=&gt;</span> <span class="s2">&quot;Submit&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="vi">@mechanize</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">button</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This works. By simply creating a new instance of the class, passing in the arguments, and calling the <code>get_points</code> method, you can get all the points you want.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">f</span> <span class="o">=</span> <span class="no">FriendGenerator</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;youremail@example.com&quot;</span><span class="p">,</span> <span class="s2">&quot;PASSWORD&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">f</span><span class="o">.</span><span class="n">get_points</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Bam! Go get yourself The Economist. We could stop here, but there is an even simpler way I discovered. To be continued&hellip;</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Flatiron Students Present - Timber]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2015/01/20/flatiron-presents-timber/"/>
+    <updated>2015-01-20T15:00:28-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2015/01/20/flatiron-presents-timber</id>
+    <content type="html"><![CDATA[<p><img src="../images/timber-home.png" width="650" alt="Timber homepage" /></p>
+
+<p>Timber is an application my partner and I built and presented at Flatiron Students Present Meetup. We wanted to create a fun application that we&rsquo;d enjoy making and presenting. We wanted to dive pretty heavily into relational databases. And we wanted a good way to really get a grasp of Active Record. Behold, Timber was born.</p>
+
+<h3>What is Timber?</h3>
+
+<p>Timber is a web app clone of Tinder built in Rails. The twist being that it is specifically targeted at users that recently ended a relationship and were still living with their significant other. In essence, Timber is the Tinder for cohabitation breakups.</p>
+
+<h3>How does it work?</h3>
+
+<p>For our demo, we used two obvious test users, Pitbull and Ke$ha (<a href="http://open.spotify.com/track/3cHyrEgdyYRjgJKSOiOtcS">You know the song</a>).</p>
+
+<p>Pitbull recently broke up with his girlfriend, and he was looking for a place to move. Ke$ha recently broke up with her boyfriend, and she was looking for someone to help defray the cost of her now much more expensive apartment.</p>
+
+<p>From here, the UX resembles Tinder. Pitbull will see heterosexual females with apartments. Ke$ha will see heterosexual males looking for a place to stay. If they like each other, they will match and can send messages back and forth.</p>
+
+<h3>The tech</h3>
+
+<p>This project relies heavily on database interaction. In a way, our database queries were a little more complex than a Tinder-style checking for reciprical likes. Our models were more similar to an Airbnb model, in that each user could be a guest or a host. In order to filter the users properly, we check gender, orientation, and the sex they&rsquo;re looking for. Once we have our <code>@user</code> variable set, we then must check to see if the user is a guest or a host. We do all this with smaller helper methods such as <code>not_have_apts</code> vs <code>have_apts</code> and <code>women_seeking_men</code> vs <code>men_seeking_women</code>. The goal is that ultimately the methods start to read like conversational English.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">filtered_users</span>
+</span><span class='line'>  <span class="k">if</span> <span class="nb">self</span><span class="o">.</span><span class="n">gender</span> <span class="o">==</span> <span class="s2">&quot;male&quot;</span> <span class="o">&amp;&amp;</span> <span class="nb">self</span><span class="o">.</span><span class="n">orientation</span> <span class="o">==</span> <span class="s2">&quot;straight&quot;</span> <span class="o">&amp;&amp;</span> <span class="nb">self</span><span class="o">.</span><span class="n">looking_for</span> <span class="o">==</span> <span class="s2">&quot;women&quot;</span>
+</span><span class='line'>    <span class="vi">@users</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">women_seeking_men</span>
+</span><span class='line'>  <span class="k">elsif</span> <span class="nb">self</span><span class="o">.</span><span class="n">gender</span> <span class="o">==</span> <span class="s2">&quot;female&quot;</span> <span class="o">&amp;&amp;</span> <span class="nb">self</span><span class="o">.</span><span class="n">orientation</span> <span class="o">==</span> <span class="s2">&quot;straight&quot;</span> <span class="o">&amp;&amp;</span> <span class="nb">self</span><span class="o">.</span><span class="n">looking_for</span> <span class="o">==</span> <span class="s2">&quot;men&quot;</span>
+</span><span class='line'>    <span class="vi">@users</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">men_seeking_women</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="vi">@users</span> <span class="o">=</span> <span class="s2">&quot;error&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="nb">self</span><span class="o">.</span><span class="n">host?</span> <span class="p">?</span> <span class="vi">@users</span><span class="o">.</span><span class="n">not_have_apts</span> <span class="p">:</span> <span class="vi">@users</span><span class="o">.</span><span class="n">have_apts</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Another important component of database interaction was making sure that users were only viewing users they hadn&rsquo;t seen before. To do this, we will go through the <code>Like</code> and <code>Dislike</code> tables to look for users where neither a like nor dislike is persisted.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">unviewed_users</span>
+</span><span class='line'>  <span class="n">users</span> <span class="o">=</span> <span class="nb">self</span><span class="o">.</span><span class="n">filtered_users</span>
+</span><span class='line'>  <span class="k">if</span> <span class="nb">self</span><span class="o">.</span><span class="n">has_liked?</span>
+</span><span class='line'>    <span class="no">Like</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="ss">:liker_id</span> <span class="o">=&gt;</span> <span class="nb">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">find_each</span> <span class="k">do</span> <span class="o">|</span><span class="n">like</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">users</span> <span class="o">=</span> <span class="n">users</span><span class="o">.</span><span class="n">where</span><span class="o">.</span><span class="n">not</span><span class="p">(</span><span class="ss">:id</span> <span class="o">=&gt;</span> <span class="n">like</span><span class="o">.</span><span class="n">likee_id</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="k">if</span> <span class="nb">self</span><span class="o">.</span><span class="n">has_disliked?</span>
+</span><span class='line'>    <span class="no">Dislike</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="ss">:disliker_id</span> <span class="o">=&gt;</span> <span class="nb">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">find_each</span> <span class="k">do</span> <span class="o">|</span><span class="n">dislike</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">users</span> <span class="o">=</span> <span class="n">users</span><span class="o">.</span><span class="n">where</span><span class="o">.</span><span class="n">not</span><span class="p">(</span><span class="ss">:id</span> <span class="o">=&gt;</span> <span class="n">dislike</span><span class="o">.</span><span class="n">dislikee_id</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="n">users</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Lastly, it&rsquo;s worthwhile to take a look into the Message model to examine the query for displaying user messages. Here, we grab messages based on a <code>to_id</code> and <code>from_id</code>, grab the reciprocal messages, concatenate them, and sort by date and time.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Message</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>  <span class="n">belongs_to</span> <span class="ss">:to</span><span class="p">,</span> <span class="ss">:class_name</span> <span class="o">=&gt;</span> <span class="ss">:user</span>
+</span><span class='line'>  <span class="n">belongs_to</span> <span class="ss">:from</span><span class="p">,</span> <span class="ss">:class_name</span> <span class="o">=&gt;</span> <span class="ss">:user</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">messages</span><span class="p">(</span><span class="n">to_id</span><span class="p">,</span> <span class="n">from_id</span><span class="p">)</span>
+</span><span class='line'>    <span class="no">Message</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;to_id = ? AND from_id = ?&quot;</span><span class="p">,</span> <span class="n">to_id</span><span class="p">,</span> <span class="n">from_id</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">conversation_with</span><span class="p">(</span><span class="n">recipient_id</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">current_user_messages</span> <span class="o">=</span> <span class="no">Message</span><span class="o">.</span><span class="n">messages</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">recipient_id</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">recipient_messages</span> <span class="o">=</span> <span class="no">Message</span><span class="o">.</span><span class="n">messages</span><span class="p">(</span><span class="n">recipient_id</span><span class="p">,</span> <span class="nb">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">conversation</span> <span class="o">=</span> <span class="p">(</span><span class="n">current_user_messages</span> <span class="o">+</span> <span class="n">recipient_messages</span><span class="p">)</span><span class="o">.</span><span class="n">sort_by</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:created_at</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Explaining Active Record]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2015/01/15/explaining-active-record/"/>
+    <updated>2015-01-15T14:27:31-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2015/01/15/explaining-active-record</id>
+    <content type="html"><![CDATA[<blockquote class="twitter-tweet" lang="en"><p>ActiveRecord is the shit. <a href="https://twitter.com/hashtag/coding?src=hash">#coding</a> <a href="https://twitter.com/hashtag/justsayin?src=hash">#justsayin</a> <a href="https://twitter.com/hashtag/rails?src=hash">#rails</a></p>&mdash; Logan Hasson (@loganhasson) <a href="https://twitter.com/loganhasson/status/396801652399030273">November 3, 2013</a></blockquote>
+
+
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+<p>Indeed, it is, but why? The Rails Guides &ndash; while normally crystal clear &ndash; can be a bit confusing to understand with regard to AR. Below is a sample excerpt from their answer to &ldquo;What is Active Record?&rdquo;</p>
+
+<blockquote><p>Active Record is the M in MVC - the model - which is the layer of the system responsible for representing business data and logic. Active Record facilitates the creation and use of business objects whose data requires persistent storage to a database. It is an implementation of the Active Record pattern which itself is a description of an Object Relational Mapping system.</p></blockquote>
+
+<p>While this is all technically precise, I remember this sounding like complete gibberish my first time reading it. In light of this, allow me to try to translate:</p>
+
+<ul>
+<li><p>&ldquo;Active Record is the M in MVC - the model - which is the layer of the system responsible for representing business data and logic.&rdquo;</p>
+
+<blockquote><p>This is obviously assuming some basic knowledge of the MVC paradigm. Essentially the biggest takeaway is that AR deals with the database and the data being stored inside it. AR is responsible for handling all database interaction from the application level.</p></blockquote></li>
+<li><p>&ldquo;Active Record facilitates the creation and use of business objects whose data requires persistent storage to a database. It is an implementation of the Active Record pattern which itself is a description of an Object Relational Mapping system.&rdquo;</p>
+
+<blockquote><p>What makes AR so special is that it interacts with the database in a simple and intuitive way (Read: not SQL). The way it does this is by creating Ruby objects that come with all the benefits of being objects (like methods). AR then translates between those objects and the database, so you don&rsquo;t have to.</p></blockquote></li>
+</ul>
+
+
+<h2>Why not use SQL?</h2>
+
+<p>Let&rsquo;s compare SQL and AR by using a simple use case. Imagine you want to find the last item in one of the tables in your database. In SQL it will look something like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">SELECT</span> <span class="o">*</span>
+</span><span class='line'><span class="k">FROM</span> <span class="k">table_name</span>
+</span><span class='line'><span class="k">ORDER</span> <span class="k">BY</span> <span class="nb">date</span> <span class="k">DESC</span>
+</span><span class='line'><span class="k">LIMIT</span> <span class="mi">1</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In Ruby, it&rsquo;s one method <code>last</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">table_name</span><span class="o">.</span><span class="n">last</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Even though this is a very simple query, the difference is stark. It only gets worse as the queries become more complex.</p>
+
+<p>To summarize: AR composes SQL, submits the SQL, parses the output, and puts it in a Ruby object&ndash;all in one fell swoop. Now you can retweet Logan with confidence and let the world know that Active Record is, indeed, the shit.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[JavaScript Semicolons: When to use them;]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2014/12/01/a-javascript-weekend/"/>
+    <updated>2014-12-01T09:21:01-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2014/12/01/a-javascript-weekend</id>
+    <content type="html"><![CDATA[<p>For someone making the switch from Ruby to JavaScript, the first thing you may notice is JavaScript&rsquo;s ineligant obsession with semicolons. They&rsquo;re everywhere!</p>
+
+<p>Here are some quick and dirty tips to determine whether or not that line should have a semicolon.</p>
+
+<h4>DO use semicolons:</h4>
+
+<ul>
+<li> After you assign something</li>
+<li> After you call a function</li>
+<li> After you return something</li>
+</ul>
+
+
+<h4>DO NOT use semicolons:</h4>
+
+<ul>
+<li> After an if statement</li>
+<li> After a function expression</li>
+</ul>
+
+
+<p>The good <a href="news:">news:</a> The browser will intelligently place semicolons if you forget one here and there.</p>
+
+<p>The bad <a href="news:">news:</a> You can&rsquo;t rely on this.</p>
+
+<p>Still having problems wrapping your head around it? Pair program with a semicolon pro.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[The Secret Project: Day 3]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-3/"/>
+    <updated>2014-11-24T21:46:45-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-3</id>
+    <content type="html"><![CDATA[<p>Integration with Soundcloud</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[The Secret Project: Day 2]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-2/"/>
+    <updated>2014-11-24T09:20:48-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-2</id>
+    <content type="html"><![CDATA[<p>Event Handlers</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[The Secret Project: Day 1]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-1/"/>
+    <updated>2014-11-24T09:20:28-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-1</id>
+    <content type="html"><![CDATA[<p>Make it work.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Lessons from My First Meetup Presentation]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2014/11/24/lessons-from-my-first-meetup-presentation/"/>
+    <updated>2014-11-24T09:19:56-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2014/11/24/lessons-from-my-first-meetup-presentation</id>
+    <content type="html"><![CDATA[<h2>1. Only build what you need.</h2>
+
+<p>My partner and I spent the beginning of the week building out a user model, controller, and view. It was beautiful. You could make a user profile, and edit it. It was styled nicely. Only problem was: we weren&rsquo;t demoing user signup, and we definitely weren&rsquo;t editing a user&rsquo;s profile. Stick with what you need.</p>
+
+<h2>2. Fake it &lsquo;til you make it.</h2>
+
+<p>You&rsquo;re demoing your project locally. You&rsquo;re controlling what gets clicked. This is extremely convient for building an MVP. It doesn&rsquo;t have to be perfect. All the features don&rsquo;t have to be added. Build your cool feature, demo it, and polish it later.</p>
+
+<h2>3. Don&rsquo;t frown on a tech talk</h2>
+
+<p>You don&rsquo;t have to build an app. Tech talks are extremely valuable for the audience. Also, as the presenter, it gives you the opportunity for a deeper understanding into a topic.</p>
+
+<h2>4. Pre-record your demo</h2>
+
+<p>You won&rsquo;t need it (hopefully). But there will be sometime in your life when your app crashes. That time may be on a presenter stage. Be prepared.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Top 6 Keyboard Shortcuts You Can Use Constantly]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2014/11/24/top-10-life-changing-keyboard-shortcuts/"/>
+    <updated>2014-11-24T09:18:16-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2014/11/24/top-10-life-changing-keyboard-shortcuts</id>
+    <content type="html"><![CDATA[<p>Okay, so you&rsquo;ve <a href="http://joshuabamboo.github.io/blog/2014/11/12/test/">modified your keyboard to make the Caps Lock a more useful button</a>. Now, let&rsquo;s actually put that new Control(^) button to use.</p>
+
+<h2>Here are my top 6 time-saving shortcuts I use constantly:</h2>
+
+<blockquote><ol>
+<li>Control-a - Jumps to the beginning of a line. (Similarly, Control-e jumps to the end)</li>
+<li>Shift-Command- ←or→ - Highlight the text to the left or right of your curser. This is particularly helpful when trying to delete, cut, or copy a line.</li>
+<li>Control-r (in the Terminal) - Allows you to search your previous commands. Sort of like pressing the up arrow, but using a keyword search instead.</li>
+<li>Function-Delete - Forward delete. When I switched from PC to Mac, this was the only thing I missed until I realized Macs (of course) have it, too.</li>
+<li>Command-Control-Shift-4 - Copy screen grab to your clipboard. Before this trick, my Desktop was littered with random screenshots I saved to my computer only to drop them in an email or website.</li>
+<li>Command-Tab - To switch between running programs. Tapping tab allows you to loop through (The directional pad serves the same function). Make your selection by releasing Command.</li>
+</ol>
+</blockquote>
+
+<p>Although the benefits are marginal, marginal benefits add up quickly.</p>
+
+<h3>Let&rsquo;s make some (conservative) assumptions:</h3>
+
+<blockquote><ul>
+<li>As a programmer, you&rsquo;re on your computer 8 hours/day</li>
+<li>You probably use 5 keyboard shortcuts per hour</li>
+<li>Each keyboard shortcut nets 2 saved seconds</li>
+</ul>
+</blockquote>
+
+<p>That&rsquo;s 29,200 seconds per year &ndash; The equivalent of an entire work day!</p>
+
+<p>(((10 seconds per hour * 8 hours * 365 days)/60)/60) = 8.11 hours</p>
+
+<p>Additional resources:
+<a href="https://www.macupdate.com/app/mac/44454/hotkey-eve">Eve</a> is a great learning tool that notifies you of the keyboard shortcut every time you do something with the curser.</p>
+
+<p>Apple&rsquo;s documentation provides a comprehensive overview of emacs shortcuts: <a href="http://support.apple.com/en-us/HT201236">http://support.apple.com/en-us/HT201236</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[The Developers Keyboard]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2014/11/12/test/"/>
+    <updated>2014-11-12T09:15:51-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2014/11/12/test</id>
+    <content type="html"><![CDATA[<p>As a developer you&rsquo;ll spend a lot of time working with your keyboard, and consequently you&rsquo;ll start to learn all the shortcuts to optimize your workflow. One of the most useful hacks I&rsquo;ve found is to replace the caps lock functionality for another control button.</p>
+
+<p>If you&rsquo;re using OS X v.10.9 (Mavericks), just follow these simple steps:</p>
+
+<p>1.) Open your keyboard settings found in System Preferences
+<img src="../images/modify-keyboard-1.png" alt="Finding Keyboard in System Preferences" /></p>
+
+<p>2.) Make sure the &lsquo;keyboard&rsquo; tab is selected and click the &lsquo;Modifier keys&hellip;&rsquo; button
+<img src="../images/modify-keyboard-2.png" alt="Select" /></p>
+
+<p>3.) Here is where the magic happens. Just select &lsquo;^ Control&rsquo; from the Caps Lock dropdown, and apply the changes.
+<img src="../images/modify-keyboard-3.png" alt="Change" /></p>
+
+<p>Simple as that. Congrats on stepping your keyboard game up.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Best Flatiron Food]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2014/11/05/your-title-in-there/"/>
+    <updated>2014-11-05T19:31:56-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2014/11/05/your-title-in-there</id>
+    <content type="html"><![CDATA[<p>Dear future Flatiron colleagues,</p>
+
+<p>Chipotle, The Korean food at the deli in the basement, Indian food cart, GoGo Grill, Murphy&rsquo;s Tavern, Tres Carnes, Chop&rsquo;t, Hale and Hearty, Kungfu Tea.</p>
+
+<p>Sincerely,
+Ruby-006</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Computer Man]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2014/11/03/computer-man/"/>
+    <updated>2014-11-03T09:25:06-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2014/11/03/computer-man</id>
+    <content type="html"><![CDATA[<p><a href="http://www.youtube.com/watch?feature=player_embedded&v=NWD7iqtOJSE
+" target="_blank"><img src="http://img.youtube.com/vi/NWD7iqtOJSE/0.jpg"
+alt="Computer Man" width="240" height="180" border="10" /></a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[TIL Konstantin Haase Rebuilt Sinatra... in 6 lines!]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2014/10/27/til-konstantin-haase-rebuilt-sinatra-dot-dot-dot-in-6-lines/"/>
+    <updated>2014-10-27T20:44:47-04:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2014/10/27/til-konstantin-haase-rebuilt-sinatra-dot-dot-dot-in-6-lines</id>
+    <content type="html"><![CDATA[<p>That&rsquo;s right - 6 Lines.</p>
+
+<p>Sinatra, a stripped-down alternative to Ruby frameworks like Rails, is known for being lightweight and flexible. It&rsquo;s not a framework and doesn&rsquo;t require using the Model-View-Controller architecture pattern. Even still, a simple DSL like Sinatra has a lot going on behind the scenes. Sinatra is just under 2,000 lines of code (LOC). Rails, by comparison, is ??,???.</p>
+
+<p>Konstantin Haase managed to create a Sinatra clone called <a href="https://github.com/rkh/almost-sinatra">Almost Sinatra</a> using just 6 lines of code. Here&rsquo;s it is:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="sx">%w.rack tilt date INT TERM.</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">l</span><span class="o">|</span><span class="nb">trap</span><span class="p">(</span><span class="n">l</span><span class="p">){</span><span class="vg">$r</span><span class="o">.</span><span class="n">stop</span><span class="p">}</span><span class="k">rescue</span> <span class="nb">require</span> <span class="n">l</span><span class="p">};</span><span class="vg">$u</span><span class="o">=</span><span class="no">Date</span><span class="p">;</span><span class="vg">$z</span><span class="o">=</span><span class="p">(</span><span class="vg">$u</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">year</span> <span class="o">+</span> <span class="mi">145</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">;</span><span class="nb">puts</span> <span class="s2">&quot;== Almost Sinatra/No Version has taken the stage on </span><span class="si">#$z</span><span class="s2"> for development with backup from Webrick&quot;</span>
+</span><span class='line'><span class="vg">$n</span><span class="o">=</span><span class="no">Module</span><span class="o">.</span><span class="n">new</span><span class="p">{</span><span class="kp">extend</span> <span class="no">Rack</span><span class="p">;</span><span class="n">a</span><span class="p">,</span><span class="n">D</span><span class="p">,</span><span class="n">S</span><span class="p">,</span><span class="n">q</span><span class="o">=</span><span class="no">Rack</span><span class="o">::</span><span class="no">Builder</span><span class="o">.</span><span class="n">new</span><span class="p">,</span><span class="no">Object</span><span class="o">.</span><span class="n">method</span><span class="p">(</span><span class="ss">:define_method</span><span class="p">),</span><span class="sr">/@@ *([^\n]+)\n(((?!@@)[^\n]*\n)*)/m</span>
+</span><span class='line'><span class="sx">%w[get post put delete]</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">m</span><span class="o">|</span><span class="n">D</span><span class="o">.</span><span class="p">(</span><span class="n">m</span><span class="p">){</span><span class="o">|</span><span class="n">u</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="o">|</span><span class="n">a</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">u</span><span class="p">){</span><span class="n">run</span><span class="o">-&gt;</span><span class="p">(</span><span class="n">e</span><span class="p">){</span><span class="o">[</span><span class="mi">200</span><span class="p">,{</span><span class="s2">&quot;Content-Type&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;text/html&quot;</span><span class="p">},</span><span class="o">[</span><span class="n">a</span><span class="o">.</span><span class="n">instance_eval</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="p">)</span><span class="o">]]</span><span class="p">}}}}</span>
+</span><span class='line'><span class="no">Tilt</span><span class="o">.</span><span class="n">mappings</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">|</span><span class="n">D</span><span class="o">.</span><span class="p">(</span><span class="n">k</span><span class="p">){</span><span class="o">|</span><span class="n">n</span><span class="p">,</span><span class="o">*</span><span class="n">o</span><span class="o">|</span><span class="vg">$t</span><span class="o">||=</span><span class="p">(</span><span class="n">h</span><span class="o">=</span><span class="vg">$u</span><span class="o">.</span><span class="n">_jisx0301</span><span class="p">(</span><span class="s2">&quot;hash, please&quot;</span><span class="p">);</span><span class="no">File</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="nb">caller</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="sr">/^[^:]+/</span><span class="o">]</span><span class="p">)</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">S</span><span class="p">){</span><span class="o">|</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="o">|</span><span class="n">h</span><span class="o">[</span><span class="n">a</span><span class="o">]=</span><span class="n">b</span><span class="p">};</span><span class="n">h</span><span class="p">);</span><span class="n">v</span><span class="o">[</span><span class="mi">0</span><span class="o">].</span><span class="n">new</span><span class="p">(</span><span class="o">*</span><span class="n">o</span><span class="p">){</span><span class="n">n</span><span class="o">==</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">n</span><span class="si">}</span><span class="s2">&quot;</span><span class="sc">?n</span><span class="p">:</span><span class="vg">$t</span><span class="o">[</span><span class="n">n</span><span class="o">.</span><span class="n">to_s</span><span class="o">]</span><span class="p">}</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">o</span><span class="o">[</span><span class="mi">0</span><span class="o">].</span><span class="n">try</span><span class="p">(</span><span class="ss">:[]</span><span class="p">,</span><span class="ss">:locals</span><span class="p">)</span><span class="o">||</span><span class="p">{})}}</span>
+</span><span class='line'><span class="sx">%w[set enable disable configure helpers use register]</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">m</span><span class="o">|</span><span class="n">D</span><span class="o">.</span><span class="p">(</span><span class="n">m</span><span class="p">){</span><span class="o">|*</span><span class="n">_</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="o">|</span><span class="n">b</span><span class="o">.</span><span class="n">try</span> <span class="ss">:[]</span><span class="p">}};</span><span class="k">END</span><span class="p">{</span><span class="no">Rack</span><span class="o">::</span><span class="no">Handler</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;webrick&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="ss">Port</span><span class="p">:</span><span class="vg">$z</span><span class="p">){</span><span class="o">|</span><span class="n">s</span><span class="o">|</span><span class="vg">$r</span><span class="o">=</span><span class="n">s</span><span class="p">}}</span>
+</span><span class='line'><span class="sx">%w[params session]</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">m</span><span class="o">|</span><span class="n">D</span><span class="o">.</span><span class="p">(</span><span class="n">m</span><span class="p">){</span><span class="n">q</span><span class="o">.</span><span class="n">send</span> <span class="n">m</span><span class="p">}};</span><span class="n">a</span><span class="o">.</span><span class="n">use</span> <span class="no">Rack</span><span class="o">::</span><span class="no">Session</span><span class="o">::</span><span class="no">Cookie</span><span class="p">;</span><span class="n">a</span><span class="o">.</span><span class="n">use</span> <span class="no">Rack</span><span class="o">::</span><span class="no">Lock</span><span class="p">;</span><span class="n">D</span><span class="o">.</span><span class="p">(</span><span class="ss">:before</span><span class="p">){</span><span class="o">|&amp;</span><span class="n">b</span><span class="o">|</span><span class="n">a</span><span class="o">.</span><span class="n">use</span> <span class="no">Rack</span><span class="o">::</span><span class="no">Config</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="p">};</span><span class="n">before</span><span class="p">{</span><span class="o">|</span><span class="n">e</span><span class="o">|</span><span class="n">q</span><span class="o">=</span><span class="no">Rack</span><span class="o">::</span><span class="no">Request</span><span class="o">.</span><span class="n">new</span> <span class="n">e</span><span class="p">;</span><span class="n">q</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">dup</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">|</span><span class="n">params</span><span class="o">[</span><span class="n">k</span><span class="o">.</span><span class="n">to_sym</span><span class="o">]=</span><span class="n">v</span><span class="p">}}}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="https://p.gr-assets.com/540x540/fit/hostedimages/1383924783/6705751.gif" alt="Mind Blown" /></p>
+
+<p>This is obviously just a fun exercize. As he explains in <a href="http://vimeo.com/61087285">this video on obfuscation</a>, this was just &ldquo;an interesting project I did on the weekend.&rdquo; <a href="http://oi39.tinypic.com/14b6nmu.jpg">#NoBigDeal</a></p>
+
+<p>Give the video a look and check him out of twitter <a href="https://twitter.com/konstantinhaase">@konstantinhaase</a>. Not only is the content interesting, he&rsquo;s a really funny guy.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Communicating With Other Classes]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2014/10/14/communicating-with-other-classes/"/>
+    <updated>2014-10-14T22:15:57-04:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2014/10/14/communicating-with-other-classes</id>
+    <content type="html"><![CDATA[<p>When creating multiple classes, I noticed I was having a hard time wrapping my head around calling methods that weren&rsquo;t defined in my class. If you&rsquo;re like me, you had a hard time understanding how you could access methods from other classes. Here&rsquo;s an example of what I mean:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="k">class</span> <span class="nc">Artist</span>
+</span><span class='line'>      <span class="vc">@@artists</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>      <span class="kp">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:songs</span><span class="p">,</span> <span class="ss">:genres</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">def</span> <span class="nf">initialize</span>
+</span><span class='line'>          <span class="vi">@songs</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>      <span class="vi">@genres</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>      <span class="vc">@@artists</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">def</span> <span class="nf">add_song</span><span class="p">(</span><span class="n">song</span><span class="p">)</span>      <span class="c1">### passing in a parameter that&#39;s an instance of the Song class</span>
+</span><span class='line'>          <span class="vi">@songs</span> <span class="o">&lt;&lt;</span> <span class="n">song</span>
+</span><span class='line'>      <span class="vi">@genres</span> <span class="o">&lt;&lt;</span> <span class="n">song</span><span class="o">.</span><span class="n">genre</span>    <span class="c1">### calling genre method from the Song class</span>
+</span><span class='line'>      <span class="k">if</span> <span class="n">song</span><span class="o">.</span><span class="n">genre</span>
+</span><span class='line'>        <span class="n">song</span><span class="o">.</span><span class="n">genre</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">class</span> <span class="nc">Song</span>
+</span><span class='line'>      <span class="kp">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:artist</span><span class="p">,</span> <span class="ss">:genre</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">def</span> <span class="nf">genre</span><span class="o">=</span><span class="p">(</span><span class="n">genre</span><span class="p">)</span>        <span class="c1">### passing in a parameter that&#39;s an instance of the Genre class</span>
+</span><span class='line'>          <span class="vi">@genre</span> <span class="o">=</span> <span class="n">genre</span>
+</span><span class='line'>          <span class="n">genre</span><span class="o">.</span><span class="n">add_song</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span>  <span class="c1">### calling add_song method from the Genre class</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">class</span> <span class="nc">Genre</span>
+</span><span class='line'>          <span class="kp">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:songs</span><span class="p">,</span> <span class="ss">:artists</span>
+</span><span class='line'>          <span class="vc">@@genres</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">def</span> <span class="nf">initialize</span>
+</span><span class='line'>              <span class="vi">@songs</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>              <span class="vi">@artists</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>              <span class="vc">@@genres</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">def</span> <span class="nf">add_song</span><span class="p">(</span><span class="n">song</span><span class="p">)</span>
+</span><span class='line'>              <span class="vi">@songs</span> <span class="o">&lt;&lt;</span> <span class="n">song</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">def</span> <span class="nf">add_artist</span><span class="p">(</span><span class="n">artist</span><span class="p">)</span>
+</span><span class='line'>              <span class="vi">@artists</span> <span class="o">&lt;&lt;</span> <span class="n">artist</span>
+</span><span class='line'>              <span class="vi">@artists</span><span class="o">.</span><span class="n">uniq!</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Here we have three classes (Artist, Song, Genre). Notice the comments (###). These classes are calling methods that do not exist in their class. This can be confusing, especially if you&rsquo;re thinking about the concept of <a href="http://www.techotopia.com/index.php/Ruby_Variable_Scope">scope</a>. The method isn&rsquo;t defined. How could I possibly use it, right?! Wrong.</p>
+
+<p>A simple step back helped me finally wrap my head around it. Think about a class that already exists that we use all the time, like arrays.</p>
+
+<h5>Array is a class (Just like the ones we created above)</h5>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="k">class</span> <span class="nc">Array</span>
+</span><span class='line'>      <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>A new array is an instance within the class Array</h5>
+
+<p><code>rappers = []</code></p>
+
+<p>is the same as</p>
+
+<p><code>rappers = Array.new</code></p>
+
+<h5>Now we can pass our rappers array as an argument into another class&#8217; method</h5>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="k">class</span> <span class="nc">Artist</span>
+</span><span class='line'>      <span class="k">def</span> <span class="nf">count_rappers</span><span class="p">(</span><span class="n">rappers</span><span class="p">)</span>
+</span><span class='line'>          <span class="n">rappers</span><span class="o">.</span><span class="n">size</span>     <span class="c1">### calling size method on rappers array</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note that we are calling size on rappers, but we have not defined any method called size in our Artist class. The reason we have access to the size method is because it is <a href="http://www.ruby-doc.org/core-2.1.3/Array.html">one of the many methods within the class Array</a>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="k">class</span> <span class="nc">Array</span>
+</span><span class='line'>      <span class="k">def</span> <span class="nf">size</span>
+</span><span class='line'>          <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Rappers is an instance of the class Array; therefore, methods within that class can be called on the rappers array. This is really no different than the first example of the Artist, Genre and Song classes. Within the Artist class, the add_song method is being passed a parameter that is an instance of the Song class. This allows us to then call methods from the Song class on that instance. Similarly, in the Song class we can access the Genre class method by passing in an instance of Genre. As long as the method&rsquo;s parameter is an instance of a particular class, we will always be able to reach into that class.</p>
+]]></content>
+  </entry>
+  
+</feed>

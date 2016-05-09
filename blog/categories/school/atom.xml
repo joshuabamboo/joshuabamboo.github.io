@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: school, | Irrationally Coded]]></title>
+  <link href="http://joshuabamboo.github.io/blog/categories/school/atom.xml" rel="self"/>
+  <link href="http://joshuabamboo.github.io/"/>
+  <updated>2016-02-20T17:10:16-05:00</updated>
+  <id>http://joshuabamboo.github.io/</id>
+  <author>
+    <name><![CDATA[Josh Owens]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Top 6 Keyboard Shortcuts You Can Use Constantly]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2014/11/24/top-10-life-changing-keyboard-shortcuts/"/>
+    <updated>2014-11-24T09:18:16-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2014/11/24/top-10-life-changing-keyboard-shortcuts</id>
+    <content type="html"><![CDATA[<p>Okay, so you&rsquo;ve <a href="http://joshuabamboo.github.io/blog/2014/11/12/test/">modified your keyboard to make the Caps Lock a more useful button</a>. Now, let&rsquo;s actually put that new Control(^) button to use.</p>
+
+<h2>Here are my top 6 time-saving shortcuts I use constantly:</h2>
+
+<blockquote><ol>
+<li>Control-a - Jumps to the beginning of a line. (Similarly, Control-e jumps to the end)</li>
+<li>Shift-Command- ←or→ - Highlight the text to the left or right of your curser. This is particularly helpful when trying to delete, cut, or copy a line.</li>
+<li>Control-r (in the Terminal) - Allows you to search your previous commands. Sort of like pressing the up arrow, but using a keyword search instead.</li>
+<li>Function-Delete - Forward delete. When I switched from PC to Mac, this was the only thing I missed until I realized Macs (of course) have it, too.</li>
+<li>Command-Control-Shift-4 - Copy screen grab to your clipboard. Before this trick, my Desktop was littered with random screenshots I saved to my computer only to drop them in an email or website.</li>
+<li>Command-Tab - To switch between running programs. Tapping tab allows you to loop through (The directional pad serves the same function). Make your selection by releasing Command.</li>
+</ol>
+</blockquote>
+
+<p>Although the benefits are marginal, marginal benefits add up quickly.</p>
+
+<h3>Let&rsquo;s make some (conservative) assumptions:</h3>
+
+<blockquote><ul>
+<li>As a programmer, you&rsquo;re on your computer 8 hours/day</li>
+<li>You probably use 5 keyboard shortcuts per hour</li>
+<li>Each keyboard shortcut nets 2 saved seconds</li>
+</ul>
+</blockquote>
+
+<p>That&rsquo;s 29,200 seconds per year &ndash; The equivalent of an entire work day!</p>
+
+<p>(((10 seconds per hour * 8 hours * 365 days)/60)/60) = 8.11 hours</p>
+
+<p>Additional resources:
+<a href="https://www.macupdate.com/app/mac/44454/hotkey-eve">Eve</a> is a great learning tool that notifies you of the keyboard shortcut every time you do something with the curser.</p>
+
+<p>Apple&rsquo;s documentation provides a comprehensive overview of emacs shortcuts: <a href="http://support.apple.com/en-us/HT201236">http://support.apple.com/en-us/HT201236</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[The Developers Keyboard]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2014/11/12/test/"/>
+    <updated>2014-11-12T09:15:51-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2014/11/12/test</id>
+    <content type="html"><![CDATA[<p>As a developer you&rsquo;ll spend a lot of time working with your keyboard, and consequently you&rsquo;ll start to learn all the shortcuts to optimize your workflow. One of the most useful hacks I&rsquo;ve found is to replace the caps lock functionality for another control button.</p>
+
+<p>If you&rsquo;re using OS X v.10.9 (Mavericks), just follow these simple steps:</p>
+
+<p>1.) Open your keyboard settings found in System Preferences
+<img src="../images/modify-keyboard-1.png" alt="Finding Keyboard in System Preferences" /></p>
+
+<p>2.) Make sure the &lsquo;keyboard&rsquo; tab is selected and click the &lsquo;Modifier keys&hellip;&rsquo; button
+<img src="../images/modify-keyboard-2.png" alt="Select" /></p>
+
+<p>3.) Here is where the magic happens. Just select &lsquo;^ Control&rsquo; from the Caps Lock dropdown, and apply the changes.
+<img src="../images/modify-keyboard-3.png" alt="Change" /></p>
+
+<p>Simple as that. Congrats on stepping your keyboard game up.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[TIL Konstantin Haase Rebuilt Sinatra... in 6 lines!]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2014/10/27/til-konstantin-haase-rebuilt-sinatra-dot-dot-dot-in-6-lines/"/>
+    <updated>2014-10-27T20:44:47-04:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2014/10/27/til-konstantin-haase-rebuilt-sinatra-dot-dot-dot-in-6-lines</id>
+    <content type="html"><![CDATA[<p>That&rsquo;s right - 6 Lines.</p>
+
+<p>Sinatra, a stripped-down alternative to Ruby frameworks like Rails, is known for being lightweight and flexible. It&rsquo;s not a framework and doesn&rsquo;t require using the Model-View-Controller architecture pattern. Even still, a simple DSL like Sinatra has a lot going on behind the scenes. Sinatra is just under 2,000 lines of code (LOC). Rails, by comparison, is ??,???.</p>
+
+<p>Konstantin Haase managed to create a Sinatra clone called <a href="https://github.com/rkh/almost-sinatra">Almost Sinatra</a> using just 6 lines of code. Here&rsquo;s it is:</p>
+
+<pre><code class="ruby">    %w.rack tilt date INT TERM..map{|l|trap(l){$r.stop}rescue require l};$u=Date;$z=($u.new.year + 145).abs;puts "== Almost Sinatra/No Version has taken the stage on #$z for development with backup from Webrick"
+    $n=Module.new{extend Rack;a,D,S,q=Rack::Builder.new,Object.method(:define_method),/@@ *([^\n]+)\n(((?!@@)[^\n]*\n)*)/m
+    %w[get post put delete].map{|m|D.(m){|u,&amp;b|a.map(u){run-&gt;(e){[200,{"Content-Type"=&gt;"text/html"},[a.instance_eval(&amp;b)]]}}}}
+    Tilt.mappings.map{|k,v|D.(k){|n,*o|$t||=(h=$u._jisx0301("hash, please");File.read(caller[0][/^[^:]+/]).scan(S){|a,b|h[a]=b};h);v[0].new(*o){n=="#{n}"?n:$t[n.to_s]}.render(a,o[0].try(:[],:locals)||{})}}
+    %w[set enable disable configure helpers use register].map{|m|D.(m){|*_,&amp;b|b.try :[]}};END{Rack::Handler.get("webrick").run(a,Port:$z){|s|$r=s}}
+    %w[params session].map{|m|D.(m){q.send m}};a.use Rack::Session::Cookie;a.use Rack::Lock;D.(:before){|&amp;b|a.use Rack::Config,&amp;b};before{|e|q=Rack::Request.new e;q.params.dup.map{|k,v|params[k.to_sym]=v}}}
+</code></pre>
+
+<p><img src="https://p.gr-assets.com/540x540/fit/hostedimages/1383924783/6705751.gif" alt="Mind Blown" /></p>
+
+<p>This is obviously just a fun exercize. As he explains in <a href="http://vimeo.com/61087285">this video on obfuscation</a>, this was just &ldquo;an interesting project I did on the weekend.&rdquo; <a href="http://oi39.tinypic.com/14b6nmu.jpg">#NoBigDeal</a></p>
+
+<p>Give the video a look and check him out of twitter <a href="https://twitter.com/konstantinhaase">@konstantinhaase</a>. Not only is the content interesting, he&rsquo;s a really funny guy.</p>
+]]></content>
+  </entry>
+  
+</feed>

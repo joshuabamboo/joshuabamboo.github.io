@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: flatiron | Irrationally Coded]]></title>
+  <link href="http://joshuabamboo.github.io/blog/categories/flatiron/atom.xml" rel="self"/>
+  <link href="http://joshuabamboo.github.io/"/>
+  <updated>2016-02-20T17:10:16-05:00</updated>
+  <id>http://joshuabamboo.github.io/</id>
+  <author>
+    <name><![CDATA[Josh Owens]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[We're Programmers, Dammit]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2015/09/06/were-programmers-dammit/"/>
+    <updated>2015-09-06T14:17:55-04:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2015/09/06/were-programmers-dammit</id>
+    <content type="html"><![CDATA[<p>This is a phrase I borrowed from <a href="http://hostiledeveloper.com/">programmer extraordinaire Steven Nunez</a>. I love this sentiment. I love the idea that we aren&rsquo;t limited to consuming the Internet. We can be an active participant.</p>
+
+<p>In this edition of &ldquo;We&rsquo;re Programmers, Dammit&rdquo;, I&rsquo;ll walk through how I used a Chrome Extension to change the functionality of an unwanted feature of a website. I will walk through the basic steps for getting a Chrome Extension up and running. The project lives at <a href="https://github.com/joshuabamboo/fias">this Github repository</a>.</p>
+
+<h4>1. Create a <code>manifest.json</code> file</h4>
+
+<p>Inside a directory that will contain extension, create a <code>manifest.json</code>. This file is what Chrome will look for first. It supplies Chrome with all the metadata about the extension (e.g. <code>manifest_version</code>, <code>name</code>, <code>version</code>). These are the only things <em>required</em> to make a chrome extention, so let&rsquo;s do the basics and come back later.</p>
+
+<pre><code class="json">  {
+    "manifest_version": 2,
+    "name": "extenion_name",
+    "version": "myExtensionVersion"
+  } 
+</code></pre>
+
+<h4>2. Connect your local directory to Chrome</h4>
+
+<p>Now we have the following directory:
+<code>
+  extension_name/
+  └── manifest.json
+</code></p>
+
+<p>To get the directory into Chrome, we must first go to <code>chrome://extensions/</code> in your Chrome browser. Next, click the <code>Developer Mode</code> checkbox at the top right. It should look like this:
+<img src="/images/chrome-ext.png" /></p>
+
+<p>Next, locate the directory in your finder, and drag the entire folder into the browser opened to <code>chrome://extensions/</code>. Chrome allows you to drop the entire folder to load it into Chrome. It&rsquo;s as simple as that. You&rsquo;ll only have to do this step once. Any changes you make to the files will now be available in Chrome one you reload (<code>cmd + r</code>) the page. Click the <code>Enable</code> checkbox, and you&rsquo;ve got yourself a Chrome Extension.</p>
+
+<p><img src="/images/chrome-drag.png" /></p>
+
+<p>Protip: If you get an error at this phase, more than likely you have a syntax error. Check your json formatting (check your commas) and try again.</p>
+
+<h4>3. Now make it do something</h4>
+
+<p>Congrats! You officially have a Chrome Extension. The downside is, it doesn&rsquo;t do anything. Let&rsquo;s fix that. In my case, I wanted to remove a social feature on <a href="http://learn.co">Learn.co</a>. The site looks like this. I&rsquo;m feeling particularly antisocial today, so I want to get rid of everything in the red box.</p>
+
+<p><img src="/images/chrome-ext-learn-before.png" /></p>
+
+<p>Back to <code>manifest.json</code>. We&rsquo;ll need to add some <code>content_scripts</code> to the manifest.</p>
+
+<pre><code class="json">  {
+    "manifest_version": 2,
+    "name": "extenion_name",
+    "version": "myExtensionVersion"
+
+    "content_scripts": [
+      {
+        "matches": ["https://learn.co/*"],
+        "css": ["fias.css"]
+      }
+    ]
+  } 
+</code></pre>
+
+<p><code>matches</code> refers to the URLs we want to the Chrome Extension to change. In our case, we want it to work on every URL that starts with <code>https://learn.co/</code>.</p>
+
+<p><code>css</code> is where we link the css files in the directory. Go ahead and create the css file at the root of the directory.</p>
+
+<pre><code>  extension_name/ 
+  └── manifest.json
+  └── fias.css
+</code></pre>
+
+<p><code>fias.css</code> is where we will add the css to remove the elements on the page that we do not want to see. That is as simple as adding <code>display: none</code> to the id of the divs. In our case it looks like this:</p>
+
+<pre><code class="`css">  #students-working-container {
+    display: none;
+  }
+</code></pre>
+
+<p><img src="/images/chrome-ext-learn-after.png" /></p>
+
+<p>It&rsquo;s as simple as that. With a few lines of code we&rsquo;ve completely removed an unwanted feature because we&rsquo;re programmers, dammit!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[JavaScript Semicolons: When to use them;]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2014/12/01/a-javascript-weekend/"/>
+    <updated>2014-12-01T09:21:01-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2014/12/01/a-javascript-weekend</id>
+    <content type="html"><![CDATA[<p>For someone making the switch from Ruby to JavaScript, the first thing you may notice is JavaScript&rsquo;s ineligant obsession with semicolons. They&rsquo;re everywhere!</p>
+
+<p>Here are some quick and dirty tips to determine whether or not that line should have a semicolon.</p>
+
+<h4>DO use semicolons:</h4>
+
+<ul>
+<li> After you assign something</li>
+<li> After you call a function</li>
+<li> After you return something</li>
+</ul>
+
+
+<h4>DO NOT use semicolons:</h4>
+
+<ul>
+<li> After an if statement</li>
+<li> After a function expression</li>
+</ul>
+
+
+<p>The good <a href="news:">news:</a> The browser will intelligently place semicolons if you forget one here and there.</p>
+
+<p>The bad <a href="news:">news:</a> You can&rsquo;t rely on this.</p>
+
+<p>Still having problems wrapping your head around it? Pair program with a semicolon pro.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[The Secret Project: Day 3]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-3/"/>
+    <updated>2014-11-24T21:46:45-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-3</id>
+    <content type="html"><![CDATA[<p>Integration with Soundcloud</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[The Secret Project: Day 2]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-2/"/>
+    <updated>2014-11-24T09:20:48-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-2</id>
+    <content type="html"><![CDATA[<p>Event Handlers</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[The Secret Project: Day 1]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-1/"/>
+    <updated>2014-11-24T09:20:28-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-1</id>
+    <content type="html"><![CDATA[<p>Make it work.</p>
+]]></content>
+  </entry>
+  
+</feed>

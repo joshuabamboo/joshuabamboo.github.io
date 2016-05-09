@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: tip | Irrationally Coded]]></title>
+  <link href="http://joshuabamboo.github.io/blog/categories/tip/atom.xml" rel="self"/>
+  <link href="http://joshuabamboo.github.io/"/>
+  <updated>2016-02-20T17:10:16-05:00</updated>
+  <id>http://joshuabamboo.github.io/</id>
+  <author>
+    <name><![CDATA[Josh Owens]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Top 6 Keyboard Shortcuts You Can Use Constantly]]></title>
+    <link href="http://joshuabamboo.github.io/blog/2014/11/24/top-10-life-changing-keyboard-shortcuts/"/>
+    <updated>2014-11-24T09:18:16-05:00</updated>
+    <id>http://joshuabamboo.github.io/blog/2014/11/24/top-10-life-changing-keyboard-shortcuts</id>
+    <content type="html"><![CDATA[<p>Okay, so you&rsquo;ve <a href="http://joshuabamboo.github.io/blog/2014/11/12/test/">modified your keyboard to make the Caps Lock a more useful button</a>. Now, let&rsquo;s actually put that new Control(^) button to use.</p>
+
+<h2>Here are my top 6 time-saving shortcuts I use constantly:</h2>
+
+<blockquote><ol>
+<li>Control-a - Jumps to the beginning of a line. (Similarly, Control-e jumps to the end)</li>
+<li>Shift-Command- ←or→ - Highlight the text to the left or right of your curser. This is particularly helpful when trying to delete, cut, or copy a line.</li>
+<li>Control-r (in the Terminal) - Allows you to search your previous commands. Sort of like pressing the up arrow, but using a keyword search instead.</li>
+<li>Function-Delete - Forward delete. When I switched from PC to Mac, this was the only thing I missed until I realized Macs (of course) have it, too.</li>
+<li>Command-Control-Shift-4 - Copy screen grab to your clipboard. Before this trick, my Desktop was littered with random screenshots I saved to my computer only to drop them in an email or website.</li>
+<li>Command-Tab - To switch between running programs. Tapping tab allows you to loop through (The directional pad serves the same function). Make your selection by releasing Command.</li>
+</ol>
+</blockquote>
+
+<p>Although the benefits are marginal, marginal benefits add up quickly.</p>
+
+<h3>Let&rsquo;s make some (conservative) assumptions:</h3>
+
+<blockquote><ul>
+<li>As a programmer, you&rsquo;re on your computer 8 hours/day</li>
+<li>You probably use 5 keyboard shortcuts per hour</li>
+<li>Each keyboard shortcut nets 2 saved seconds</li>
+</ul>
+</blockquote>
+
+<p>That&rsquo;s 29,200 seconds per year &ndash; The equivalent of an entire work day!</p>
+
+<p>(((10 seconds per hour * 8 hours * 365 days)/60)/60) = 8.11 hours</p>
+
+<p>Additional resources:
+<a href="https://www.macupdate.com/app/mac/44454/hotkey-eve">Eve</a> is a great learning tool that notifies you of the keyboard shortcut every time you do something with the curser.</p>
+
+<p>Apple&rsquo;s documentation provides a comprehensive overview of emacs shortcuts: <a href="http://support.apple.com/en-us/HT201236">http://support.apple.com/en-us/HT201236</a></p>
+]]></content>
+  </entry>
+  
+</feed>

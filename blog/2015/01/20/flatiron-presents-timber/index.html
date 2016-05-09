@@ -1,0 +1,210 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta charset="utf-8">
+	<title>Flatiron Students Present - Timber | Irrationally Coded</title>
+
+	<meta name="author" content="Josh Owens">
+	
+	<meta name="description" content="Irrationally Coded 20 Jan 2015 Flatiron Students Present - Timber Timber is an application my partner and I built and presented at Flatiron Students &hellip;">
+
+	<meta name="HandheldFriendly" content="True" />
+	<meta name="MobileOptimized" content="320" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+	<link href="/atom.xml" rel="alternate" title="Irrationally Coded" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic|Open+Sans:700,400" />
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/.min.css" />
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+
+<body class="post-template">
+  <main class="content" role="main"><article class="post">
+  
+	<header class="post-header">
+		<a id="blog-logo" href="/">Irrationally Coded</a>
+	</header>
+	<span class="post-meta">20 Jan 2015</span>
+	<h1 class="post-title">Flatiron Students Present - Timber</h1>
+
+	<section class="post-content">
+		<p><img src="../images/timber-home.png" width="650" alt="Timber homepage" /></p>
+
+<p>Timber is an application my partner and I built and presented at Flatiron Students Present Meetup. We wanted to create a fun application that we&rsquo;d enjoy making and presenting. We wanted to dive pretty heavily into relational databases. And we wanted a good way to really get a grasp of Active Record. Behold, Timber was born.</p>
+
+<h3>What is Timber?</h3>
+
+<p>Timber is a web app clone of Tinder built in Rails. The twist being that it is specifically targeted at users that recently ended a relationship and were still living with their significant other. In essence, Timber is the Tinder for cohabitation breakups.</p>
+
+<h3>How does it work?</h3>
+
+<p>For our demo, we used two obvious test users, Pitbull and Ke$ha (<a href="http://open.spotify.com/track/3cHyrEgdyYRjgJKSOiOtcS">You know the song</a>).</p>
+
+<p>Pitbull recently broke up with his girlfriend, and he was looking for a place to move. Ke$ha recently broke up with her boyfriend, and she was looking for someone to help defray the cost of her now much more expensive apartment.</p>
+
+<p>From here, the UX resembles Tinder. Pitbull will see heterosexual females with apartments. Ke$ha will see heterosexual males looking for a place to stay. If they like each other, they will match and can send messages back and forth.</p>
+
+<h3>The tech</h3>
+
+<p>This project relies heavily on database interaction. In a way, our database queries were a little more complex than a Tinder-style checking for reciprical likes. Our models were more similar to an Airbnb model, in that each user could be a guest or a host. In order to filter the users properly, we check gender, orientation, and the sex they&rsquo;re looking for. Once we have our <code>@user</code> variable set, we then must check to see if the user is a guest or a host. We do all this with smaller helper methods such as <code>not_have_apts</code> vs <code>have_apts</code> and <code>women_seeking_men</code> vs <code>men_seeking_women</code>. The goal is that ultimately the methods start to read like conversational English.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">filtered_users</span>
+</span><span class='line'>  <span class="k">if</span> <span class="nb">self</span><span class="o">.</span><span class="n">gender</span> <span class="o">==</span> <span class="s2">&quot;male&quot;</span> <span class="o">&amp;&amp;</span> <span class="nb">self</span><span class="o">.</span><span class="n">orientation</span> <span class="o">==</span> <span class="s2">&quot;straight&quot;</span> <span class="o">&amp;&amp;</span> <span class="nb">self</span><span class="o">.</span><span class="n">looking_for</span> <span class="o">==</span> <span class="s2">&quot;women&quot;</span>
+</span><span class='line'>    <span class="vi">@users</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">women_seeking_men</span>
+</span><span class='line'>  <span class="k">elsif</span> <span class="nb">self</span><span class="o">.</span><span class="n">gender</span> <span class="o">==</span> <span class="s2">&quot;female&quot;</span> <span class="o">&amp;&amp;</span> <span class="nb">self</span><span class="o">.</span><span class="n">orientation</span> <span class="o">==</span> <span class="s2">&quot;straight&quot;</span> <span class="o">&amp;&amp;</span> <span class="nb">self</span><span class="o">.</span><span class="n">looking_for</span> <span class="o">==</span> <span class="s2">&quot;men&quot;</span>
+</span><span class='line'>    <span class="vi">@users</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">men_seeking_women</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="vi">@users</span> <span class="o">=</span> <span class="s2">&quot;error&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="nb">self</span><span class="o">.</span><span class="n">host?</span> <span class="p">?</span> <span class="vi">@users</span><span class="o">.</span><span class="n">not_have_apts</span> <span class="p">:</span> <span class="vi">@users</span><span class="o">.</span><span class="n">have_apts</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Another important component of database interaction was making sure that users were only viewing users they hadn&rsquo;t seen before. To do this, we will go through the <code>Like</code> and <code>Dislike</code> tables to look for users where neither a like nor dislike is persisted.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">unviewed_users</span>
+</span><span class='line'>  <span class="n">users</span> <span class="o">=</span> <span class="nb">self</span><span class="o">.</span><span class="n">filtered_users</span>
+</span><span class='line'>  <span class="k">if</span> <span class="nb">self</span><span class="o">.</span><span class="n">has_liked?</span>
+</span><span class='line'>    <span class="no">Like</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="ss">:liker_id</span> <span class="o">=&gt;</span> <span class="nb">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">find_each</span> <span class="k">do</span> <span class="o">|</span><span class="n">like</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">users</span> <span class="o">=</span> <span class="n">users</span><span class="o">.</span><span class="n">where</span><span class="o">.</span><span class="n">not</span><span class="p">(</span><span class="ss">:id</span> <span class="o">=&gt;</span> <span class="n">like</span><span class="o">.</span><span class="n">likee_id</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="k">if</span> <span class="nb">self</span><span class="o">.</span><span class="n">has_disliked?</span>
+</span><span class='line'>    <span class="no">Dislike</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="ss">:disliker_id</span> <span class="o">=&gt;</span> <span class="nb">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">find_each</span> <span class="k">do</span> <span class="o">|</span><span class="n">dislike</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">users</span> <span class="o">=</span> <span class="n">users</span><span class="o">.</span><span class="n">where</span><span class="o">.</span><span class="n">not</span><span class="p">(</span><span class="ss">:id</span> <span class="o">=&gt;</span> <span class="n">dislike</span><span class="o">.</span><span class="n">dislikee_id</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="n">users</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Lastly, it&rsquo;s worthwhile to take a look into the Message model to examine the query for displaying user messages. Here, we grab messages based on a <code>to_id</code> and <code>from_id</code>, grab the reciprocal messages, concatenate them, and sort by date and time.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Message</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>  <span class="n">belongs_to</span> <span class="ss">:to</span><span class="p">,</span> <span class="ss">:class_name</span> <span class="o">=&gt;</span> <span class="ss">:user</span>
+</span><span class='line'>  <span class="n">belongs_to</span> <span class="ss">:from</span><span class="p">,</span> <span class="ss">:class_name</span> <span class="o">=&gt;</span> <span class="ss">:user</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">messages</span><span class="p">(</span><span class="n">to_id</span><span class="p">,</span> <span class="n">from_id</span><span class="p">)</span>
+</span><span class='line'>    <span class="no">Message</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;to_id = ? AND from_id = ?&quot;</span><span class="p">,</span> <span class="n">to_id</span><span class="p">,</span> <span class="n">from_id</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">conversation_with</span><span class="p">(</span><span class="n">recipient_id</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">current_user_messages</span> <span class="o">=</span> <span class="no">Message</span><span class="o">.</span><span class="n">messages</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">recipient_id</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">recipient_messages</span> <span class="o">=</span> <span class="no">Message</span><span class="o">.</span><span class="n">messages</span><span class="p">(</span><span class="n">recipient_id</span><span class="p">,</span> <span class="nb">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">conversation</span> <span class="o">=</span> <span class="p">(</span><span class="n">current_user_messages</span> <span class="o">+</span> <span class="n">recipient_messages</span><span class="p">)</span><span class="o">.</span><span class="n">sort_by</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:created_at</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+	</section>
+
+  <footer class="post-footer">
+  <section class="author">
+    <h4>Josh Owens</h4>
+    <p></p>
+  </section>
+  <section class="share">
+    <h4>Share this post</h4>
+    <a class="icon-twitter" href="http://twitter.com/share?text=Flatiron Students Present - Timber&amp;url=http://joshuabamboo.github.io/blog/2015/01/20/flatiron-presents-timber/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+      <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://joshuabamboo.github.io/blog/2015/01/20/flatiron-presents-timber/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+      <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=http://joshuabamboo.github.io/blog/2015/01/20/flatiron-presents-timber/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+      <span class="hidden">Google+</span>
+    </a>
+  </section>
+</footer>
+  <hr>
+  
+    <div class="share">
+</div>
+
+  
+  
+</article></main>
+  <footer class="site-footer"><a class="subscribe icon-feed" href="http://joshuabamboo.github.io/atom.xml"><span class="tooltip">Subscribe!</span></a>
+
+
+<div class="inner">
+
+
+Follow me on
+
+
+
+<a class="social twitter" href="http://twitter.com/joshuabamboo" title="Twitter">Twitter</a>
+
+
+
+<a class="social github" href="http://github.com/joshuabamboo" title="GitHub">GitHub</a>
+
+
+
+
+<section class="copyright">All content copyright <a href="/">Josh Owens</a> © 2016 • All rights reserved.</section>
+
+<section class="poweredby">Casper theme by <a class="icon-ghost" href="http://tryghost.org">Ghost</a> &amp; Published with <a href="http://octopress.org">Octopress</a></section>
+
+</div>
+</footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+
+
+
+
+
+
+</body>
+</html>

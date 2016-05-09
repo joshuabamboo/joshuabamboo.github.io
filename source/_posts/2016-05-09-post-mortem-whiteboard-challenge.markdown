@@ -6,8 +6,8 @@ comments: true
 categories:
 ---
 
-####What I learned and how I would face the problem today
---
+#####What I learned and how I would face the problem today
+
 
 During an interview with a large tech company, I was asked to solve the following problem:
 

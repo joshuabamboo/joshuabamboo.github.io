@@ -262,9 +262,11 @@ The other idea was this: if we have the coordinates of the items&#8217; location
 
 <p>Now that we have the smaller box, we can check it against a list of winning patterns more efficiently.</p>
 
+<h3>Problem 3: Matching the user&rsquo;s pattern with the winning patterns</h3>
+
 <p>During the interview, I kept coming back to the notion that this problem was solvable with a tree. We even discussed the possibility of using regular expressions. Now with the smaller box boundary, we can make use of either. In fact, we can revisit the initial naive solution. Modified slightly, this set up now works with our new solution:</p>
 
-<h4>Hash</h4>
+<h5>Hash</h5>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -278,7 +280,7 @@ The other idea was this: if we have the coordinates of the items&#8217; location
 <p><img src="../images/patterns-hash.png" alt="" />
 <img src="../images/patterns-hash-nil.png" alt="" /></p>
 
-<h4>DB</h4>
+<h5>DB</h5>
 
 <p>If we stuck to the original database concept, the <code>patterns</code> table would simply be three columns, and would no longer grow horizontally depending on the size of the grid.</p>
 
@@ -300,7 +302,22 @@ The other idea was this: if we have the coordinates of the items&#8217; location
 </table>
 
 
-<h1>What Did I Learn</h1>
+<p>With the DB solution, you could structure the winning pattern as an array or string as a column in the <code>winning_patterns</code> table (I will use the array example since that&rsquo;s what I used above).</p>
+
+<p>At this point, we just need to query the database. In Rails, the ActiveRecord query would look like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">user_pattern</span> <span class="o">=</span> <span class="o">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="kp">nil</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="o">]</span>
+</span><span class='line'><span class="n">win</span> <span class="o">=</span> <span class="no">WinningPattern</span><span class="o">.</span><span class="n">find_by</span><span class="p">(</span><span class="ss">pattern</span><span class="p">:</span> <span class="n">user_pattern</span><span class="p">)</span>
+</span><span class='line'><span class="n">win</span><span class="o">.</span><span class="n">prize</span> <span class="k">if</span> <span class="n">win</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If the query returns an object, then the return value of <code>win.prize</code> will be the corresponding prize, in this casey <code>"money"</code>. If no match is found in the db <code>WinningPattern.find_by(pattern: user_pattern)</code> will return <code>nil</code>.</p>
+
+<h2>What Did I Learn</h2>
 
 <ul>
 <li>Clarifying questions are important. They shed light on ambiguity and help break the problem down into its component parts.</li>

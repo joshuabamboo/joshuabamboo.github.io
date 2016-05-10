@@ -170,11 +170,11 @@ Now that we have the pattern stored as a key in our `patterns` hash, we can simp
 
 
 #####DB
-If we stuck to the original database concept, the `patterns` table would simply be three columns, and would no longer grow horizontally depending on the size of the grid.
+If we stuck to the original database concept, the `patterns` table would simply be four columns, and would no longer grow horizontally depending on the size of the grid.
 
-| id   | prize | pattern |
-| ---- |:-----|---|
-| 1 | "money" | ["a", "b", nil, "c"] |
+| id   | prize   | pattern              | dimension |
+| ---- |---------|----------------------|-----------|
+| 1    | "money" | ["a", "b", nil, "c"] | "2x2"     |
 
 With the DB solution, you could structure the winning pattern as an array or string as a column in the `winning_patterns` table (I will use the array example since that's what I used above).
 
@@ -182,11 +182,12 @@ At this point, we just need to query the database. In Rails, the ActiveRecord qu
 
 ```ruby
 user_pattern = ["a", "b", nil, "c"]
-win = WinningPattern.find_by(pattern: user_pattern)
+size = "2x2"
+win = WinningPattern.find_by(pattern: user_pattern, dimension: size)
 win.prize if win
 ```
 
-If the query returns an object, then the return value of `win.prize` will be the corresponding prize, in this casey `"money"`. If no match is found in the db `WinningPattern.find_by(pattern: user_pattern)` will return `nil`.
+If the query returns an object, then the return value of `win.prize` will be the corresponding prize, in this case `"money"`. If no match is found in the db `WinningPattern.find_by(pattern: user_pattern)` will return `nil`.
 
 
 ##What Did I Learn

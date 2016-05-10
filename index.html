@@ -217,21 +217,66 @@
 
 <p>Obviously the idea needs some finessing. A solution started to emerge, but I left the interview with the algorithm on my mind. A pattern was identified, but scaling was still an issue.</p>
 
-<h2>Post interview</h2>
+<hr />
 
-<p>I don&rsquo;t like the idea of needing to keep track of the size of the grid, which seems to be the source of our scaling problem. If we make the grid size irrelevant, scaling is no longer an issue.</p>
+<h1>Post interview</h1>
 
-<h3>Coordinates</h3>
+<h3>Clarify the problem</h3>
+
+<p>One of the big takeaways from this interview and all technical interviews is the importance of asking clarifying questions. Take the grid for example:</p>
+
+<ul>
+<li>Are we responsible for constructing the grid?
+
+<ul>
+<li>If not, how is the grid represented?
+
+<ul>
+<li>Is it a form?</li>
+<li>Is it an array of arrays?</li>
+<li>Is it just represented by a string?</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Is the grid being passed in somehow (EG HTTP request) or are we writing a script?</li>
+</ul>
+
+
+<p>This is an important start. It helps you become familiar with the domain. And more importantly, asking questions will help you scope the problem.</p>
+
+<h3>Breaking down the problem</h3>
+
+<p>We all know how important it is as an engineer to take one big problem and break it into several smaller problems. As I approach the problem today, I would actually break it down into at least three problems:</p>
+
+<ol>
+<li>Determining the grid layout</li>
+<li>Isolating the user&rsquo;s pattern</li>
+<li>Matching the user&rsquo;s pattern with the winning patterns</li>
+</ol>
+
+
+<h3>Problem 1: Determing the grid layout</h3>
+
+<p>I don&rsquo;t have the luxury of asking clarifying questions at this phase, so I had to make some assumptions. Since I was allowed in the interview to think about it as a form being submitted, I will stick with that. I am assuming that I, the programmer, am responsible for constructing the grid. I am choosing to have the grid designed as a form where each input is a different square in the grid. When the form is submitted, we could then access the value and name of each input via the params being sent back to our server.</p>
+
+<p>With this setup in mind, I began thinking about the best way to design a grid.
+I didn&rsquo;t like the idea of needing to keep track of the size of the grid, which seemed to be the source of our scaling problem. If we made the grid size irrelevant, scaling was no longer an issue.</p>
+
+<h5>Coordinates!</h5>
 
 <p>Switching from integer addresses to coordinates was a real breakthrough. This went from assigning arbitrary integers to a location to communicating valuable location information.</p>
 
 <p><img src="../images/whiteboard3.JPG" width="600" alt="" /></p>
 
-<h3>&ldquo;A grid within the grid&rdquo; Solution</h3>
+<h3>Problem 2: Isolating the user&rsquo;s pattern</h3>
 
-<p>The other idea was this: if we have the coordinates of the items&#8217; locations, then we know the boundaries of that location. Consider the following grid:</p>
+<p>If we have the coordinates of the items&#8217; locations, then we know the boundaries of that location. Consider the following grid:
+The other idea was this: if we have the coordinates of the items&#8217; locations, then we know the boundaries of that location. Consider the following grid:</p>
 
 <p><img src="../images/whiteboard6.JPG" width="600" alt="" /></p>
+
+<h5>&ldquo;A grid within the grid&rdquo; Solution</h5>
 
 <p>We can now draw a boundary box around the max and min <code>x</code> and <code>y</code> axis points, creating a more explicit box within the grid. Everything outside of that smaller box is empty space, and not relevant to solving the problem.</p>
 
@@ -273,6 +318,15 @@
 </tr>
 </tbody>
 </table>
+
+
+<h1>What Did I Learn</h1>
+
+<ul>
+<li>Clarifying questions are important. They shed light on ambiguity and help break the problem down into its component parts.</li>
+<li>Find the problems within the problem. Breaking down the original problem into bite-sized chucks not only helps you solve the problem, but helps you relax. If you are focusing on one little problem and tabling everything else, it alleviates the stress of needing to solve everything at once.</li>
+<li>I find this type of on-the-fly problem solving combined with normal interview pressure tough in the moment. Try to find comfort in knowing that the questions are designed to be tough. No one is immediately &ldquo;John Nashing&rdquo; the answer on the whiteboard. Furthermore, that&rsquo;s not even what the interviewer is looking for you to do. The interviewer is on your side. They are hoping you do well (so they can stop doing 5 interviews a day :) ). They just want to see how you work.</li>
+</ul>
 
 
 	</section>

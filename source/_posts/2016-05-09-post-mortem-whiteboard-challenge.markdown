@@ -152,9 +152,11 @@ We can now draw a boundary box around the max and min `x` and `y` axis points, c
 
 Now that we have the smaller box, we can check it against a list of winning patterns more efficiently.
 
+###Problem 3: Matching the user's pattern with the winning patterns
+
 During the interview, I kept coming back to the notion that this problem was solvable with a tree. We even discussed the possibility of using regular expressions. Now with the smaller box boundary, we can make use of either. In fact, we can revisit the initial naive solution. Modified slightly, this set up now works with our new solution:
 
-####Hash
+#####Hash
 
 ```ruby
 pattern = ["a", "b", nil, "c"]
@@ -167,16 +169,28 @@ Now that we have the pattern stored as a key in our `patterns` hash, we can simp
 ![](../images/patterns-hash-nil.png)
 
 
-####DB
+#####DB
 If we stuck to the original database concept, the `patterns` table would simply be three columns, and would no longer grow horizontally depending on the size of the grid.
 
 | id   | prize | pattern |
 | ---- |:-----|---|
 | 1 | "money" | ["a", "b", nil, "c"] |
 
+With the DB solution, you could structure the winning pattern as an array or string as a column in the `winning_patterns` table (I will use the array example since that's what I used above).
 
-#What Did I Learn
+At this point, we just need to query the database. In Rails, the ActiveRecord query would look like this:
+
+```ruby
+user_pattern = ["a", "b", nil, "c"]
+win = WinningPattern.find_by(pattern: user_pattern)
+win.prize if win
+```
+
+If the query returns an object, then the return value of `win.prize` will be the corresponding prize, in this casey `"money"`. If no match is found in the db `WinningPattern.find_by(pattern: user_pattern)` will return `nil`.
+
+
+##What Did I Learn
 
 * Clarifying questions are important. They shed light on ambiguity and help break the problem down into its component parts.
 * Find the problems within the problem. Breaking down the original problem into bite-sized chucks not only helps you solve the problem, but helps you relax. If you are focusing on one little problem and tabling everything else, it alleviates the stress of needing to solve everything at once.
-* I find this type of on-the-fly problem solving combined with normal interview pressure tough in the moment. Try to find comfort in knowing that the questions are designed to be tough. No one is immediately "John Nashing" the answer on the whiteboard. Furthermore, that's not even what the interviewer is looking for you to do. The interviewer is on your side. They are hoping you do well (so they can stop doing 5 interviews a day :) ). They just want to see how you work. 
+* I find this type of on-the-fly problem solving combined with normal interview pressure tough in the moment. Try to find comfort in knowing that the questions are designed to be tough. No one is immediately "John Nashing" the answer on the whiteboard. Furthermore, that's not even what the interviewer is looking for you to do. The interviewer is on your side. They are hoping you do well (so they can stop doing 5 interviews a day :) ). They just want to see how you work.

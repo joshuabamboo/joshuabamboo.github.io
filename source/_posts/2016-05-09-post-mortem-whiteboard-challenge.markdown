@@ -103,20 +103,50 @@ At this point we ran out of time in the interview.
 Obviously the idea needs some finessing. A solution started to emerge, but I left the interview with the algorithm on my mind. A pattern was identified, but scaling was still an issue.
 
 
-##Post interview
+-----
 
-I don't like the idea of needing to keep track of the size of the grid, which seems to be the source of our scaling problem. If we make the grid size irrelevant, scaling is no longer an issue.
+#Post interview
 
-###Coordinates
+###Clarify the problem
+One of the big takeaways from this interview and all technical interviews is the importance of asking clarifying questions. Take the grid for example:
+
+* Are we responsible for constructing the grid?
+	* If not, how is the grid represented?
+		* Is it a form?
+		* Is it an array of arrays?
+		* Is it just represented by a string?
+* Is the grid being passed in somehow (EG HTTP request) or are we writing a script?
+
+This is an important start. It helps you become familiar with the domain. And more importantly, asking questions will help you scope the problem.
+
+###Breaking down the problem
+
+We all know how important it is as an engineer to take one big problem and break it into several smaller problems. As I approach the problem today, I would actually break it down into at least three problems:
+
+1. Determining the grid layout
+2. Isolating the user's pattern
+3. Matching the user's pattern with the winning patterns
+
+
+###Problem 1: Determing the grid layout
+
+I don't have the luxury of asking clarifying questions at this phase, so I had to make some assumptions. Since I was allowed in the interview to think about it as a form being submitted, I will stick with that. I am assuming that I, the programmer, am responsible for constructing the grid. I am choosing to have the grid designed as a form where each input is a different square in the grid. When the form is submitted, we could then access the value and name of each input via the params being sent back to our server.
+
+With this setup in mind, I began thinking about the best way to design a grid.
+I didn't like the idea of needing to keep track of the size of the grid, which seemed to be the source of our scaling problem. If we made the grid size irrelevant, scaling was no longer an issue.
+
+#####Coordinates!
 Switching from integer addresses to coordinates was a real breakthrough. This went from assigning arbitrary integers to a location to communicating valuable location information.
 
 ![](../images/whiteboard3.JPG =600x)
 
+###Problem 2: Isolating the user's pattern
 
-###"A grid within the grid" Solution
+If we have the coordinates of the items' locations, then we know the boundaries of that location. Consider the following grid:
 The other idea was this: if we have the coordinates of the items' locations, then we know the boundaries of that location. Consider the following grid:
 
 ![](../images/whiteboard6.JPG =600x)
+#####"A grid within the grid" Solution
 
 We can now draw a boundary box around the max and min `x` and `y` axis points, creating a more explicit box within the grid. Everything outside of that smaller box is empty space, and not relevant to solving the problem.
 
@@ -143,3 +173,10 @@ If we stuck to the original database concept, the `patterns` table would simply 
 | id   | prize | pattern |
 | ---- |:-----|---|
 | 1 | "money" | ["a", "b", nil, "c"] |
+
+
+#What Did I Learn
+
+* Clarifying questions are important. They shed light on ambiguity and help break the problem down into its component parts.
+* Find the problems within the problem. Breaking down the original problem into bite-sized chucks not only helps you solve the problem, but helps you relax. If you are focusing on one little problem and tabling everything else, it alleviates the stress of needing to solve everything at once.
+* I find this type of on-the-fly problem solving combined with normal interview pressure tough in the moment. Try to find comfort in knowing that the questions are designed to be tough. No one is immediately "John Nashing" the answer on the whiteboard. Furthermore, that's not even what the interviewer is looking for you to do. The interviewer is on your side. They are hoping you do well (so they can stop doing 5 interviews a day :) ). They just want to see how you work. 

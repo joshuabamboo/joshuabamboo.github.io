@@ -150,7 +150,100 @@ The other idea was this: if we have the coordinates of the items' locations, the
 
 We can now draw a boundary box around the max and min `x` and `y` axis points, creating a more explicit box within the grid. Everything outside of that smaller box is empty space, and not relevant to solving the problem.
 
-Now that we have the smaller box, we can check it against a list of winning patterns more efficiently.
+programmatically, we could represent this by (a) isolating the dimensions then (b) isolating the pattern within those dimensions.
+
+#####Isolating the dimensions
+When we receive params, it will contain information for every form input. For example, a 3x3 grid might return something like:
+
+```ruby
+params[:grid] #=> {"0-0"=>"a", "1-0"=>"b", "2-0"=>"",
+                   "0-1"=>"", "1-1"=>"c", "2-1"=>"",
+                   "0-2"=>"", "1-2"=>"", "2-2"=>"",
+                  }
+```
+The task now is to pull out the key/value pairs that contain non-empty strings as values.
+
+```ruby
+coordinates = []
+params[:grid].each {|location, item| coordinates<<location if item != ""}
+```
+
+Now, we have a `coordinates` array that returns `["0-0", "1-0", "1-1"]`. We have to separate the strings on the hyphen.
+```ruby
+separated_coords=[]
+coordinates.each {|cord| separated_coords<<cord.split("-")}
+
+separated_coords #=> [["0", "0"], ["1", "0"], ["1", "1"]]
+```
+
+Next, we want to iterate through each array and store the x and y values in separate arrays.
+
+```ruby
+x=[]
+y=[]
+
+separated_coords.each {|cord| x<<cord[0]; y<<cord[1]}
+
+x #=> ["0", "1", "1"]  
+y #=> ["0", "0", "1"]  
+```
+
+Now we can easily do the calculations to find the smallest possible grid that contains this patterns.
+
+```ruby
+max_x = x.max.to_i
+min_x = x.min.to_i
+
+min_y = y.min.to_i
+max_y = y.max.to_i
+
+smallest_grid_dimensions = "#{(max_x - min_x)+1}*#{(max_y - min_y)+1}"
+  #=> "2*2"
+```
+
+#####Isolating the pattern
+
+We know from our first operation while calculating the dimensions that three items added to the grid. We can calculate this by call `#size` on `separated_coords`.
+
+```ruby
+separated_coords.size #=> 3
+```
+
+We also know that there are four elements that make up this pattern, given that we now have the dimensions.
+
+```ruby
+eval(smallest_grid_dimensions) #=> 4
+```
+
+This tells us that there is just one `nil` missing from our pattern.
+
+Meanwhile, we can get a list of all the items by iterating through params.
+
+```ruby
+items=[]
+params[:grid].each {|location, item| items<<item}
+items #=> ["a", "b", "", "", "c", "", "", "", ""]
+```
+
+The starting point of our pattern will be at the minimum values for x (`min_x`) and y (`min_y`).
+```ruby
+starting_item = params[:grid]["#{min_x}-#{min_y}"]
+```
+
+Likewise, the same can be done with the max values to get the ending_item
+```ruby
+ending_item = params[:grid]["#{max_x}-#{max_y}"]
+```
+
+```ruby
+while x <=
+```
+
+This leaves us with an array of all the user's items.
+
+`user_pattern #=> ["a", "b", nil, "c"]`
+
+Now that we have the pattern for the smallest grid dimensions, we can check it against a list of winning patterns more efficiently.
 
 ###Problem 3: Matching the user's pattern with the winning patterns
 
@@ -159,7 +252,7 @@ During the interview, I kept coming back to the notion that this problem was sol
 #####Hash
 
 ```ruby
-pattern = ["a", "b", nil, "c"]
+pattern = ["2*2", "a", "b", nil, "c"]
 patterns = {pattern => "money"}
 ```
 
@@ -174,7 +267,7 @@ If we stuck to the original database concept, the `patterns` table would simply 
 
 | id   | prize   | pattern              | dimension |
 | ---- |---------|----------------------|-----------|
-| 1    | "money" | ["a", "b", nil, "c"] | "2x2"     |
+| 1    | "money" | ["a", "b", nil, "c"] | "2*2"     |
 
 With the DB solution, you could structure the winning pattern as an array or string as a column in the `winning_patterns` table (I will use the array example since that's what I used above).
 

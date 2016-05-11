@@ -280,7 +280,140 @@ The other idea was this: if we have the coordinates of the items&#8217; location
 
 <p>We can now draw a boundary box around the max and min <code>x</code> and <code>y</code> axis points, creating a more explicit box within the grid. Everything outside of that smaller box is empty space, and not relevant to solving the problem.</p>
 
-<p>Now that we have the smaller box, we can check it against a list of winning patterns more efficiently.</p>
+<p>programmatically, we could represent this by (a) isolating the dimensions then (b) isolating the pattern within those dimensions.</p>
+
+<h5>Isolating the dimensions</h5>
+
+<p>When we receive params, it will contain information for every form input. For example, a 3x3 grid might return something like:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">params</span><span class="o">[</span><span class="ss">:grid</span><span class="o">]</span> <span class="c1">#=&gt; {&quot;0-0&quot;=&gt;&quot;a&quot;, &quot;1-0&quot;=&gt;&quot;b&quot;, &quot;2-0&quot;=&gt;&quot;&quot;,</span>
+</span><span class='line'>                   <span class="s2">&quot;0-1&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;1-1&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;2-1&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+</span><span class='line'>                   <span class="s2">&quot;0-2&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;1-2&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;2-2&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+</span><span class='line'>                  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The task now is to pull out the key/value pairs that contain non-empty strings as values.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">coordinates</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'><span class="n">params</span><span class="o">[</span><span class="ss">:grid</span><span class="o">].</span><span class="n">each</span> <span class="p">{</span><span class="o">|</span><span class="n">location</span><span class="p">,</span> <span class="n">item</span><span class="o">|</span> <span class="n">coordinates</span><span class="o">&lt;&lt;</span><span class="n">location</span> <span class="k">if</span> <span class="n">item</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, we have a <code>coordinates</code> array that returns <code>["0-0", "1-0", "1-1"]</code>. We have to separate the strings on the hyphen.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">separated_coords</span><span class="o">=[]</span>
+</span><span class='line'><span class="n">coordinates</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span><span class="o">|</span><span class="n">cord</span><span class="o">|</span> <span class="n">separated_coords</span><span class="o">&lt;&lt;</span><span class="n">cord</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">separated_coords</span> <span class="c1">#=&gt; [[&quot;0&quot;, &quot;0&quot;], [&quot;1&quot;, &quot;0&quot;], [&quot;1&quot;, &quot;1&quot;]]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next, we want to iterate through each array and store the x and y values in separate arrays.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">x</span><span class="o">=[]</span>
+</span><span class='line'><span class="n">y</span><span class="o">=[]</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">separated_coords</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span><span class="o">|</span><span class="n">cord</span><span class="o">|</span> <span class="n">x</span><span class="o">&lt;&lt;</span><span class="n">cord</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">;</span> <span class="n">y</span><span class="o">&lt;&lt;</span><span class="n">cord</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">x</span> <span class="c1">#=&gt; [&quot;0&quot;, &quot;1&quot;, &quot;1&quot;]  </span>
+</span><span class='line'><span class="n">y</span> <span class="c1">#=&gt; [&quot;0&quot;, &quot;0&quot;, &quot;1&quot;]  </span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we can easily do the calculations to find the smallest possible grid that contains this patterns.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">max_x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="o">.</span><span class="n">to_i</span>
+</span><span class='line'><span class="n">min_x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="o">.</span><span class="n">to_i</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">min_y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">min</span><span class="o">.</span><span class="n">to_i</span>
+</span><span class='line'><span class="n">max_y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">max</span><span class="o">.</span><span class="n">to_i</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">smallest_grid_dimensions</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="p">(</span><span class="n">max_x</span> <span class="o">-</span> <span class="n">min_x</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">*</span><span class="si">#{</span><span class="p">(</span><span class="n">max_y</span> <span class="o">-</span> <span class="n">min_y</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>  <span class="c1">#=&gt; &quot;2*2&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>Isolating the pattern</h5>
+
+<p>We know from our first operation while calculating the dimensions that three items added to the grid. We can calculate this by call <code>#size</code> on <code>separated_coords</code>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">separated_coords</span><span class="o">.</span><span class="n">size</span> <span class="c1">#=&gt; 3</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We also know that there are four elements that make up this pattern, given that we now have the dimensions.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">eval</span><span class="p">(</span><span class="n">smallest_grid_dimensions</span><span class="p">)</span> <span class="c1">#=&gt; 4</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This tells us that there is just one <code>nil</code> missing from our pattern.</p>
+
+<p>Meanwhile, we can get a list of all the items by iterating through params.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">items</span><span class="o">=[]</span>
+</span><span class='line'><span class="n">params</span><span class="o">[</span><span class="ss">:grid</span><span class="o">].</span><span class="n">each</span> <span class="p">{</span><span class="o">|</span><span class="n">location</span><span class="p">,</span> <span class="n">item</span><span class="o">|</span> <span class="n">items</span><span class="o">&lt;&lt;</span><span class="n">item</span><span class="p">}</span>
+</span><span class='line'><span class="n">items</span> <span class="c1">#=&gt; [&quot;a&quot;, &quot;b&quot;, &quot;&quot;, &quot;&quot;, &quot;c&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The starting point of our pattern will be at the minimum values for x (<code>min_x</code>) and y (<code>min_y</code>).</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">starting_item</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:grid</span><span class="o">][</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">min_x</span><span class="si">}</span><span class="s2">-</span><span class="si">#{</span><span class="n">min_y</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Likewise, the same can be done with the max values to get the ending_item</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">ending_item</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:grid</span><span class="o">][</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">max_x</span><span class="si">}</span><span class="s2">-</span><span class="si">#{</span><span class="n">max_y</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">while</span> <span class="n">x</span> <span class="o">&lt;=</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This leaves us with an array of all the user&rsquo;s items.</p>
+
+<p><code>user_pattern #=&gt; ["a", "b", nil, "c"]</code></p>
+
+<p>Now that we have the pattern for the smallest grid dimensions, we can check it against a list of winning patterns more efficiently.</p>
 
 <h3>Problem 3: Matching the user&rsquo;s pattern with the winning patterns</h3>
 
@@ -290,7 +423,7 @@ The other idea was this: if we have the coordinates of the items&#8217; location
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">pattern</span> <span class="o">=</span> <span class="o">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="kp">nil</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="o">]</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">pattern</span> <span class="o">=</span> <span class="o">[</span><span class="s2">&quot;2*2&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="kp">nil</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="o">]</span>
 </span><span class='line'><span class="n">patterns</span> <span class="o">=</span> <span class="p">{</span><span class="n">pattern</span> <span class="o">=&gt;</span> <span class="s2">&quot;money&quot;</span><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -318,7 +451,7 @@ The other idea was this: if we have the coordinates of the items&#8217; location
 <td> 1    </td>
 <td> &ldquo;money&rdquo; </td>
 <td> [&ldquo;a&rdquo;, &ldquo;b&rdquo;, nil, &ldquo;c&rdquo;] </td>
-<td> &ldquo;2x2&rdquo;     </td>
+<td> &ldquo;2*2&rdquo;     </td>
 </tr>
 </tbody>
 </table>

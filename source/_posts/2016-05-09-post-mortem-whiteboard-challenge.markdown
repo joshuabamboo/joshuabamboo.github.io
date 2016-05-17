@@ -258,8 +258,8 @@ patterns = {pattern => "money"}
 
 Now that we have the pattern stored as a key in our `patterns` hash, we can simply pass in an array of the items from our "grid within a grid." If the array of items matches one of the patterns stored in our hash, it will return the prize that is stored as the value. If not, it will return `nil`.
 
-![](../images/patterns-hash.png)
-![](../images/patterns-hash-nil.png)
+![](http://joshuabamboo.github.io/images/patterns-hash.png)
+![](http://joshuabamboo.github.io/images/patterns-hash-nil.png)
 
 
 #####DB

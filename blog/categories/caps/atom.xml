@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: caps | Ride or Pry]]></title>
-  <link href="http://joshuabamboo.github.io/blog/categories/caps/atom.xml" rel="self"/>
-  <link href="http://joshuabamboo.github.io/"/>
-  <updated>2016-05-16T23:19:15-04:00</updated>
-  <id>http://joshuabamboo.github.io/</id>
+  <link href="http:///blog/categories/caps/atom.xml" rel="self"/>
+  <link href="http:///"/>
+  <updated>2017-08-31T02:05:49-04:00</updated>
+  <id>http:///</id>
   <author>
     <name><![CDATA[Josh Owens]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[The Developers Keyboard]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2014/11/12/test/"/>
+    <link href="http:///blog/2014/11/12/test/"/>
     <updated>2014-11-12T09:15:51-05:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2014/11/12/test</id>
+    <id>http:///blog/2014/11/12/test</id>
     <content type="html"><![CDATA[<p>As a developer you&rsquo;ll spend a lot of time working with your keyboard, and consequently you&rsquo;ll start to learn all the shortcuts to optimize your workflow. One of the most useful hacks I&rsquo;ve found is to replace the caps lock functionality for another control button.</p>
 
 <p>If you&rsquo;re using OS X v.10.9 (Mavericks), just follow these simple steps:</p>

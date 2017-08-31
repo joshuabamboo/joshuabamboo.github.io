@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: til | Ride or Pry]]></title>
-  <link href="http://joshuabamboo.github.io/blog/categories/til/atom.xml" rel="self"/>
-  <link href="http://joshuabamboo.github.io/"/>
-  <updated>2016-05-16T23:19:15-04:00</updated>
-  <id>http://joshuabamboo.github.io/</id>
+  <link href="http:///blog/categories/til/atom.xml" rel="self"/>
+  <link href="http:///"/>
+  <updated>2017-08-31T02:05:49-04:00</updated>
+  <id>http:///</id>
   <author>
     <name><![CDATA[Josh Owens]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[TIL Konstantin Haase Rebuilt Sinatra... in 6 lines!]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2014/10/27/til-konstantin-haase-rebuilt-sinatra-dot-dot-dot-in-6-lines/"/>
+    <link href="http:///blog/2014/10/27/til-konstantin-haase-rebuilt-sinatra-dot-dot-dot-in-6-lines/"/>
     <updated>2014-10-27T20:44:47-04:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2014/10/27/til-konstantin-haase-rebuilt-sinatra-dot-dot-dot-in-6-lines</id>
+    <id>http:///blog/2014/10/27/til-konstantin-haase-rebuilt-sinatra-dot-dot-dot-in-6-lines</id>
     <content type="html"><![CDATA[<p>That&rsquo;s right - 6 Lines.</p>
 
 <p>Sinatra, a stripped-down alternative to Ruby frameworks like Rails, is known for being lightweight and flexible. It&rsquo;s not a framework and doesn&rsquo;t require using the Model-View-Controller architecture pattern. Even still, a simple DSL like Sinatra has a lot going on behind the scenes. Sinatra is just under 2,000 lines of code (LOC). Rails, by comparison, is ??,???.</p>

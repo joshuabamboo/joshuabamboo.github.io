@@ -9,7 +9,7 @@
 
 	<meta name="author" content="Josh Owens">
 	
-	<meta name="description" content="14 Oct 2014 Communicating With Other Classes When creating multiple classes, I noticed I was having a hard time wrapping my head around calling &hellip;">
+	<meta name="description" content="27 Oct 2014 TIL Konstantin Haase Rebuilt Sinatra... In 6 Lines! That&rsquo;s right - 6 Lines. Sinatra, a stripped-down alternative to Ruby &hellip;">
 
 	<meta name="HandheldFriendly" content="True" />
 	<meta name="MobileOptimized" content="320" />
@@ -44,6 +44,51 @@
       
 	
 		
+	
+	<header class="post-header">
+		<span class="post-meta">27 Oct 2014</span>
+		<h2 class="post-title">
+			
+			<a href="/blog/2014/10/27/til-konstantin-haase-rebuilt-sinatra-dot-dot-dot-in-6-lines/">
+			
+				TIL Konstantin Haase Rebuilt Sinatra&#8230; In 6 Lines!</a>
+		</h2>
+	</header>
+	<section class="post-excerpt">
+		<p>That&rsquo;s right - 6 Lines.</p>
+
+<p>Sinatra, a stripped-down alternative to Ruby frameworks like Rails, is known for being lightweight and flexible. It&rsquo;s not a framework and doesn&rsquo;t require using the Model-View-Controller architecture pattern. Even still, a simple DSL like Sinatra has a lot going on behind the scenes. Sinatra is just under 2,000 lines of code (LOC). Rails, by comparison, is ??,???.</p>
+
+<p>Konstantin Haase managed to create a Sinatra clone called <a href="https://github.com/rkh/almost-sinatra">Almost Sinatra</a> using just 6 lines of code. Here&rsquo;s it is:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="sx">%w.rack tilt date INT TERM.</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">l</span><span class="o">|</span><span class="nb">trap</span><span class="p">(</span><span class="n">l</span><span class="p">){</span><span class="vg">$r</span><span class="o">.</span><span class="n">stop</span><span class="p">}</span><span class="k">rescue</span> <span class="nb">require</span> <span class="n">l</span><span class="p">};</span><span class="vg">$u</span><span class="o">=</span><span class="no">Date</span><span class="p">;</span><span class="vg">$z</span><span class="o">=</span><span class="p">(</span><span class="vg">$u</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">year</span> <span class="o">+</span> <span class="mi">145</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">;</span><span class="nb">puts</span> <span class="s2">&quot;== Almost Sinatra/No Version has taken the stage on </span><span class="si">#$z</span><span class="s2"> for development with backup from Webrick&quot;</span>
+</span><span class='line'><span class="vg">$n</span><span class="o">=</span><span class="no">Module</span><span class="o">.</span><span class="n">new</span><span class="p">{</span><span class="kp">extend</span> <span class="no">Rack</span><span class="p">;</span><span class="n">a</span><span class="p">,</span><span class="n">D</span><span class="p">,</span><span class="n">S</span><span class="p">,</span><span class="n">q</span><span class="o">=</span><span class="no">Rack</span><span class="o">::</span><span class="no">Builder</span><span class="o">.</span><span class="n">new</span><span class="p">,</span><span class="no">Object</span><span class="o">.</span><span class="n">method</span><span class="p">(</span><span class="ss">:define_method</span><span class="p">),</span><span class="sr">/@@ *([^\n]+)\n(((?!@@)[^\n]*\n)*)/m</span>
+</span><span class='line'><span class="sx">%w[get post put delete]</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">m</span><span class="o">|</span><span class="n">D</span><span class="o">.</span><span class="p">(</span><span class="n">m</span><span class="p">){</span><span class="o">|</span><span class="n">u</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="o">|</span><span class="n">a</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">u</span><span class="p">){</span><span class="n">run</span><span class="o">-&gt;</span><span class="p">(</span><span class="n">e</span><span class="p">){</span><span class="o">[</span><span class="mi">200</span><span class="p">,{</span><span class="s2">&quot;Content-Type&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;text/html&quot;</span><span class="p">},</span><span class="o">[</span><span class="n">a</span><span class="o">.</span><span class="n">instance_eval</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="p">)</span><span class="o">]]</span><span class="p">}}}}</span>
+</span><span class='line'><span class="no">Tilt</span><span class="o">.</span><span class="n">mappings</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">|</span><span class="n">D</span><span class="o">.</span><span class="p">(</span><span class="n">k</span><span class="p">){</span><span class="o">|</span><span class="n">n</span><span class="p">,</span><span class="o">*</span><span class="n">o</span><span class="o">|</span><span class="vg">$t</span><span class="o">||=</span><span class="p">(</span><span class="n">h</span><span class="o">=</span><span class="vg">$u</span><span class="o">.</span><span class="n">_jisx0301</span><span class="p">(</span><span class="s2">&quot;hash, please&quot;</span><span class="p">);</span><span class="no">File</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="nb">caller</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="sr">/^[^:]+/</span><span class="o">]</span><span class="p">)</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">S</span><span class="p">){</span><span class="o">|</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="o">|</span><span class="n">h</span><span class="o">[</span><span class="n">a</span><span class="o">]=</span><span class="n">b</span><span class="p">};</span><span class="n">h</span><span class="p">);</span><span class="n">v</span><span class="o">[</span><span class="mi">0</span><span class="o">].</span><span class="n">new</span><span class="p">(</span><span class="o">*</span><span class="n">o</span><span class="p">){</span><span class="n">n</span><span class="o">==</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">n</span><span class="si">}</span><span class="s2">&quot;</span><span class="sc">?n</span><span class="p">:</span><span class="vg">$t</span><span class="o">[</span><span class="n">n</span><span class="o">.</span><span class="n">to_s</span><span class="o">]</span><span class="p">}</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">o</span><span class="o">[</span><span class="mi">0</span><span class="o">].</span><span class="n">try</span><span class="p">(</span><span class="ss">:[]</span><span class="p">,</span><span class="ss">:locals</span><span class="p">)</span><span class="o">||</span><span class="p">{})}}</span>
+</span><span class='line'><span class="sx">%w[set enable disable configure helpers use register]</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">m</span><span class="o">|</span><span class="n">D</span><span class="o">.</span><span class="p">(</span><span class="n">m</span><span class="p">){</span><span class="o">|*</span><span class="n">_</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="o">|</span><span class="n">b</span><span class="o">.</span><span class="n">try</span> <span class="ss">:[]</span><span class="p">}};</span><span class="k">END</span><span class="p">{</span><span class="no">Rack</span><span class="o">::</span><span class="no">Handler</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;webrick&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="ss">Port</span><span class="p">:</span><span class="vg">$z</span><span class="p">){</span><span class="o">|</span><span class="n">s</span><span class="o">|</span><span class="vg">$r</span><span class="o">=</span><span class="n">s</span><span class="p">}}</span>
+</span><span class='line'><span class="sx">%w[params session]</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">m</span><span class="o">|</span><span class="n">D</span><span class="o">.</span><span class="p">(</span><span class="n">m</span><span class="p">){</span><span class="n">q</span><span class="o">.</span><span class="n">send</span> <span class="n">m</span><span class="p">}};</span><span class="n">a</span><span class="o">.</span><span class="n">use</span> <span class="no">Rack</span><span class="o">::</span><span class="no">Session</span><span class="o">::</span><span class="no">Cookie</span><span class="p">;</span><span class="n">a</span><span class="o">.</span><span class="n">use</span> <span class="no">Rack</span><span class="o">::</span><span class="no">Lock</span><span class="p">;</span><span class="n">D</span><span class="o">.</span><span class="p">(</span><span class="ss">:before</span><span class="p">){</span><span class="o">|&amp;</span><span class="n">b</span><span class="o">|</span><span class="n">a</span><span class="o">.</span><span class="n">use</span> <span class="no">Rack</span><span class="o">::</span><span class="no">Config</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="p">};</span><span class="n">before</span><span class="p">{</span><span class="o">|</span><span class="n">e</span><span class="o">|</span><span class="n">q</span><span class="o">=</span><span class="no">Rack</span><span class="o">::</span><span class="no">Request</span><span class="o">.</span><span class="n">new</span> <span class="n">e</span><span class="p">;</span><span class="n">q</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">dup</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">|</span><span class="n">params</span><span class="o">[</span><span class="n">k</span><span class="o">.</span><span class="n">to_sym</span><span class="o">]=</span><span class="n">v</span><span class="p">}}}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="https://p.gr-assets.com/540x540/fit/hostedimages/1383924783/6705751.gif" alt="Mind Blown" /></p>
+
+<p>This is obviously just a fun exercize. As he explains in <a href="http://vimeo.com/61087285">this video on obfuscation</a>, this was just &ldquo;an interesting project I did on the weekend.&rdquo; <a href="http://oi39.tinypic.com/14b6nmu.jpg">#NoBigDeal</a></p>
+
+<p>Give the video a look and check him out of twitter <a href="https://twitter.com/konstantinhaase">@konstantinhaase</a>. Not only is the content interesting, he&rsquo;s a really funny guy.</p>
+
+	</section>
+
+    </article>
+
+  
+    <article class="post">
+      
 	
 	<header class="post-header">
 		<span class="post-meta">14 Oct 2014</span>
@@ -260,7 +305,7 @@
 
 
   </main>
-  <footer class="site-footer"><a class="subscribe icon-feed" href="http://joshuabamboo.github.io/atom.xml"><span class="tooltip">Subscribe!</span></a>
+  <footer class="site-footer"><a class="subscribe icon-feed" href="http:///atom.xml"><span class="tooltip">Subscribe!</span></a>
 
 
 <div class="inner">
@@ -279,7 +324,7 @@ Follow me on
 
 
 
-<section class="copyright">All content copyright <a href="/">Josh Owens</a> © 2016 • All rights reserved.</section>
+<section class="copyright">All content copyright <a href="/">Josh Owens</a> © 2017 • All rights reserved.</section>
 
 <section class="poweredby">Casper theme by <a class="icon-ghost" href="http://tryghost.org">Ghost</a> &amp; Published with <a href="http://octopress.org">Octopress</a></section>
 

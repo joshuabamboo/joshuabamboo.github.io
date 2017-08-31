@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: flatiron | Ride or Pry]]></title>
-  <link href="http://joshuabamboo.github.io/blog/categories/flatiron/atom.xml" rel="self"/>
-  <link href="http://joshuabamboo.github.io/"/>
-  <updated>2016-05-16T23:19:15-04:00</updated>
-  <id>http://joshuabamboo.github.io/</id>
+  <link href="http:///blog/categories/flatiron/atom.xml" rel="self"/>
+  <link href="http:///"/>
+  <updated>2017-08-31T02:05:49-04:00</updated>
+  <id>http:///</id>
   <author>
     <name><![CDATA[Josh Owens]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[We're Programmers, Dammit]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2015/09/06/were-programmers-dammit/"/>
+    <link href="http:///blog/2015/09/06/were-programmers-dammit/"/>
     <updated>2015-09-06T14:17:55-04:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2015/09/06/were-programmers-dammit</id>
+    <id>http:///blog/2015/09/06/were-programmers-dammit</id>
     <content type="html"><![CDATA[<p>This is a phrase I borrowed from <a href="http://hostiledeveloper.com/">programmer extraordinaire Steven Nunez</a>. I love this sentiment. I love the idea that we aren&rsquo;t limited to consuming the Internet. We can be an active participant.</p>
 
 <p>In this edition of &ldquo;We&rsquo;re Programmers, Dammit&rdquo;, I&rsquo;ll walk through how I used a Chrome Extension to change the functionality of an unwanted feature of a website. I will walk through the basic steps for getting a Chrome Extension up and running. The project lives at <a href="https://github.com/joshuabamboo/fias">this Github repository</a>.</p>
@@ -96,9 +96,9 @@
   
   <entry>
     <title type="html"><![CDATA[JavaScript Semicolons: When to use them;]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2014/12/01/a-javascript-weekend/"/>
+    <link href="http:///blog/2014/12/01/a-javascript-weekend/"/>
     <updated>2014-12-01T09:21:01-05:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2014/12/01/a-javascript-weekend</id>
+    <id>http:///blog/2014/12/01/a-javascript-weekend</id>
     <content type="html"><![CDATA[<p>For someone making the switch from Ruby to JavaScript, the first thing you may notice is JavaScript&rsquo;s ineligant obsession with semicolons. They&rsquo;re everywhere!</p>
 
 <p>Here are some quick and dirty tips to determine whether or not that line should have a semicolon.</p>
@@ -130,27 +130,27 @@
   
   <entry>
     <title type="html"><![CDATA[The Secret Project: Day 3]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-3/"/>
+    <link href="http:///blog/2014/11/24/the-secret-project-day-3/"/>
     <updated>2014-11-24T21:46:45-05:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-3</id>
+    <id>http:///blog/2014/11/24/the-secret-project-day-3</id>
     <content type="html"><![CDATA[<p>Integration with Soundcloud</p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[The Secret Project: Day 2]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-2/"/>
+    <link href="http:///blog/2014/11/24/the-secret-project-day-2/"/>
     <updated>2014-11-24T09:20:48-05:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-2</id>
+    <id>http:///blog/2014/11/24/the-secret-project-day-2</id>
     <content type="html"><![CDATA[<p>Event Handlers</p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[The Secret Project: Day 1]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-1/"/>
+    <link href="http:///blog/2014/11/24/the-secret-project-day-1/"/>
     <updated>2014-11-24T09:20:28-05:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-1</id>
+    <id>http:///blog/2014/11/24/the-secret-project-day-1</id>
     <content type="html"><![CDATA[<p>Make it work.</p>
 ]]></content>
   </entry>

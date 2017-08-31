@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: the | Ride or Pry]]></title>
-  <link href="http://joshuabamboo.github.io/blog/categories/the/atom.xml" rel="self"/>
-  <link href="http://joshuabamboo.github.io/"/>
-  <updated>2016-05-16T23:19:15-04:00</updated>
-  <id>http://joshuabamboo.github.io/</id>
+  <link href="http:///blog/categories/the/atom.xml" rel="self"/>
+  <link href="http:///"/>
+  <updated>2017-08-31T02:05:49-04:00</updated>
+  <id>http:///</id>
   <author>
     <name><![CDATA[Josh Owens]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[JavaScript Semicolons: When to use them;]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2014/12/01/a-javascript-weekend/"/>
+    <link href="http:///blog/2014/12/01/a-javascript-weekend/"/>
     <updated>2014-12-01T09:21:01-05:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2014/12/01/a-javascript-weekend</id>
+    <id>http:///blog/2014/12/01/a-javascript-weekend</id>
     <content type="html"><![CDATA[<p>For someone making the switch from Ruby to JavaScript, the first thing you may notice is JavaScript&rsquo;s ineligant obsession with semicolons. They&rsquo;re everywhere!</p>
 
 <p>Here are some quick and dirty tips to determine whether or not that line should have a semicolon.</p>
@@ -49,36 +49,36 @@
   
   <entry>
     <title type="html"><![CDATA[The Secret Project: Day 3]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-3/"/>
+    <link href="http:///blog/2014/11/24/the-secret-project-day-3/"/>
     <updated>2014-11-24T21:46:45-05:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-3</id>
+    <id>http:///blog/2014/11/24/the-secret-project-day-3</id>
     <content type="html"><![CDATA[<p>Integration with Soundcloud</p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[The Secret Project: Day 2]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-2/"/>
+    <link href="http:///blog/2014/11/24/the-secret-project-day-2/"/>
     <updated>2014-11-24T09:20:48-05:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-2</id>
+    <id>http:///blog/2014/11/24/the-secret-project-day-2</id>
     <content type="html"><![CDATA[<p>Event Handlers</p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[The Secret Project: Day 1]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-1/"/>
+    <link href="http:///blog/2014/11/24/the-secret-project-day-1/"/>
     <updated>2014-11-24T09:20:28-05:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-1</id>
+    <id>http:///blog/2014/11/24/the-secret-project-day-1</id>
     <content type="html"><![CDATA[<p>Make it work.</p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Lessons from My First Meetup Presentation]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2014/11/24/lessons-from-my-first-meetup-presentation/"/>
+    <link href="http:///blog/2014/11/24/lessons-from-my-first-meetup-presentation/"/>
     <updated>2014-11-24T09:19:56-05:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2014/11/24/lessons-from-my-first-meetup-presentation</id>
+    <id>http:///blog/2014/11/24/lessons-from-my-first-meetup-presentation</id>
     <content type="html"><![CDATA[<h2>1. Only build what you need.</h2>
 
 <p>My partner and I spent the beginning of the week building out a user model, controller, and view. It was beautiful. You could make a user profile, and edit it. It was styled nicely. Only problem was: we weren&rsquo;t demoing user signup, and we definitely weren&rsquo;t editing a user&rsquo;s profile. Stick with what you need.</p>

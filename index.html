@@ -9,7 +9,8 @@
 
 	<meta name="author" content="Josh Owens">
 	
-	<meta name="description" content="09 May 2016 Postmortem: Whiteboard Challenge What I learned and how I would face the problem today During an interview with a large tech company, I &hellip;">
+	<meta name="description" content="31 Aug 2017 You're Whiteboarding All Wrong I’ve done a number of white boarding challenges, and they all terrify me. Something about them.
+The best &hellip;">
 
 	<meta name="HandheldFriendly" content="True" />
 	<meta name="MobileOptimized" content="320" />
@@ -44,6 +45,112 @@
       
 	
 		
+	
+	<header class="post-header">
+		<span class="post-meta">31 Aug 2017</span>
+		<h2 class="post-title">
+			
+			<a href="/blog/2017/08/31/youre-whiteboarding-all-wrong/">
+			
+				You&#8217;re Whiteboarding All Wrong</a>
+		</h2>
+	</header>
+	<section class="post-excerpt">
+		<p>I’ve done a number of white boarding challenges, and they all terrify me. Something about them.
+The best way I can describe it is that feeling you get when you’re taking a test you didn&rsquo;t study for. You’re given a problem - you&rsquo;ve never seen it before - but you <em>need</em> to have the answer.
+It&rsquo;s a miserable feeling. Some people shut down and leave the page blank. Some ramble in the hopes that they might stumble upon the answer. I’ve been guilty of both. The good <a href="news:">news:</a> This is not a test.</p>
+
+<p><img src="https://media.giphy.com/media/10gtBUqL2PNHBS/giphy.gif" alt="" /></p>
+
+<p>YOU AIN&rsquo;T GOT THE ANSWERS, SWAY! Luckily, you don’t need them.</p>
+
+<h4>White boarding is a discussion.</h4>
+
+<p>With a test, you&rsquo;re given a problem. There are two possible outcomes: pass or fail. If you know the answer you pass; if not, you fail.</p>
+
+<p>With a discussion, you are given a problem. You don’t need to know the solution. In fact, if you did it would ruin the whole thing. There would be nothing to discuss.
+Your job is to do your best to make the problem approachable. They want to walk through the process with you. Watch your brain work. It’s okay to be Sway.</p>
+
+<p>With a test, the process might look something like this:</p>
+
+<h5>Problem -> Solution -> Harder Problem -> Revised Solution -> Add complexity -> Next solution…</h5>
+
+<p>With a discussion, it&rsquo;s a very different story.</p>
+
+<h5>Problem -> Questions -> Clarify problem -> Restate the problem -> Discuss scoped problem -> Exploration…</h5>
+
+<p>Notice, the major difference between these two: The discussion has no solution in sight. That does not mean that you will not arrive at a solution. It&rsquo;s just that there is much to consider before a solution begins to reveal itself. Let&rsquo;s take a look at what these differing approaches may look like in practice.</p>
+
+<h2>Examples</h2>
+
+<p>Here is a recent example of a whiteboard challenge. Let’s take a look at how it went, and then compare how it might’ve gone using this more structured discussion approach.</p>
+
+<p>The Problem: Determine whether the following code will compile/How you would determine if there was a missing curly bracket: <code>var greeting = {</code></p>
+
+<h3>Test Approach</h3>
+
+<p>I asked a few clarifying questions. Could I assume it was a a string? If so, I could split a string and then go through an array to find the opening and closing brackets. When in the test mindset, the pressure of producing some result leaves you leaping toward a solution.</p>
+
+<p>Boom. Naive solution. Split the string. Iterate through the collection. If you find the an open bracket, continue iterating and look for its partner.</p>
+
+<p>We discussed. In an attempt to clarify, I jotted down a basic implementation.</p>
+
+<p>He added complexity. What happens if we have nested brackets: <code>{ greetingCount: [[1],2]}</code></p>
+
+<p>I tried reworking the initial solution for the new case. When that hit a dead end, I attempted another path: regex. After all, regex is made for pattern matching. This led to us going down rabbit holes because I committed early on to this solution. It was hard to switch gears.</p>
+
+<p><img src="https://media.giphy.com/media/26uflOGFZAKurnp7O/giphy.gif" alt="" /></p>
+
+<h3>Discussion Approach</h3>
+
+<p>Now, let&rsquo;s compare that experience with the back and forth of the discussion approach. Again, notice how there is no solution in Problem -> Questions -> Clarify problem -> Restate the problem -> Discuss scoped problem -> Exploration.</p>
+
+<p><strong>Question</strong></p>
+
+<p>Can we assume it&rsquo;s a string? Are these the only two characters we want to check for? Should it be a method? If so, should it return a boolean value?</p>
+
+<p><strong>Clarify</strong></p>
+
+<p>These starter questions give you a chance to get more info about the problem. In my example, the interviewer gave me a key detail that I missed. “You don’t need to write code.” I should’ve used this opportunity to ask even more questions. If no code, should we explore different algorithms? Data structures? Pseudocode? This would give me the chance to scope the problem even further.</p>
+
+<p><strong>Restate</strong></p>
+
+<p>Depending on the conversation, the new restated problem might be something like: <em>What data structure could you use to find connected components in a string?</em></p>
+
+<p><strong>Discuss</strong></p>
+
+<p>Notice we have the same problem, but a whole new direction for the conversation. Now we can talk about data structures.</p>
+
+<ol>
+<li><p>Array - This is where I could explore the initial string solution from above. It could be useful because we have the indexed position of the character.</p></li>
+<li><p>Hash - A hash could potentially be used to keep track of a character’s count and position. It seems complex. Probably too complex, but we could always revisit.</p></li>
+<li><p>Linked list - Probably not ideal for this one.</p></li>
+<li><p>Stack - Could we add the characters to a stack and keep track of each one using LIFO?</p></li>
+<li><p>Queue - Or maybe we could use FIFO to queue up the characters?</p></li>
+</ol>
+
+
+<p><strong>Explore</strong></p>
+
+<p>Again, this continues the discussion. “A stack seems to make the most sense, let&rsquo;s explore it&hellip;”</p>
+
+<p>Rather than a teacher/student dynamic, this approach creates a sort of partnership between you and the interviewer where you are working together. This is, after all, what you will be doing with this person if you get the job.</p>
+
+<p><img src="https://media.giphy.com/media/Jylb9PZHvJZSg/giphy.gif" alt="" /></p>
+
+<h2>Final Thoughts</h2>
+
+<p>Hindsight’s 20/20, so the example is admittedly a bit contrived. But the important takeaway for me is the back and forth with the interviewer. Notice there is no code yet (just like the interviewer suggested). The discussion allows for you to better understand the problem. It allows the interviewer to learn a little bit about your thought process and what you know. In fact, it&rsquo;s a great way to show off your breadth in real time.</p>
+
+<p>Treat it like you’re making a web app. You don’t go immediately from idea to production. There are a ton of steps in between, and most don’t involve code. You have domain model sketches, wireframes, Trello boards with user stories, tests, bugs, conversations with friends, colleagues and rubber ducks. The whiteboard is a microcosm of this. Creating a back and forth with your interviewer is just a way of showcasing some of those skills.</p>
+
+	</section>
+
+    </article>
+
+  
+    <article class="post">
+      
 	
 	<header class="post-header">
 		<span class="post-meta">09 May 2016</span>
@@ -1190,72 +1297,6 @@ The other idea was this: if we have the coordinates of the items&#8217; location
 
     </article>
 
-  
-    <article class="post">
-      
-	
-	<header class="post-header">
-		<span class="post-meta">15 Jan 2015</span>
-		<h2 class="post-title">
-			
-			<a href="/blog/2015/01/15/explaining-active-record/">
-			
-				Explaining Active Record</a>
-		</h2>
-	</header>
-	<section class="post-excerpt">
-		<blockquote class="twitter-tweet" lang="en"><p>ActiveRecord is the shit. <a href="https://twitter.com/hashtag/coding?src=hash">#coding</a> <a href="https://twitter.com/hashtag/justsayin?src=hash">#justsayin</a> <a href="https://twitter.com/hashtag/rails?src=hash">#rails</a></p>&mdash; Logan Hasson (@loganhasson) <a href="https://twitter.com/loganhasson/status/396801652399030273">November 3, 2013</a></blockquote>
-
-
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-
-<p>Indeed, it is, but why? The Rails Guides &ndash; while normally crystal clear &ndash; can be a bit confusing to understand with regard to AR. Below is a sample excerpt from their answer to &ldquo;What is Active Record?&rdquo;</p>
-
-<blockquote><p>Active Record is the M in MVC - the model - which is the layer of the system responsible for representing business data and logic. Active Record facilitates the creation and use of business objects whose data requires persistent storage to a database. It is an implementation of the Active Record pattern which itself is a description of an Object Relational Mapping system.</p></blockquote>
-
-<p>While this is all technically precise, I remember this sounding like complete gibberish my first time reading it. In light of this, allow me to try to translate:</p>
-
-<ul>
-<li><p>&ldquo;Active Record is the M in MVC - the model - which is the layer of the system responsible for representing business data and logic.&rdquo;</p>
-
-<blockquote><p>This is obviously assuming some basic knowledge of the MVC paradigm. Essentially the biggest takeaway is that AR deals with the database and the data being stored inside it. AR is responsible for handling all database interaction from the application level.</p></blockquote></li>
-<li><p>&ldquo;Active Record facilitates the creation and use of business objects whose data requires persistent storage to a database. It is an implementation of the Active Record pattern which itself is a description of an Object Relational Mapping system.&rdquo;</p>
-
-<blockquote><p>What makes AR so special is that it interacts with the database in a simple and intuitive way (Read: not SQL). The way it does this is by creating Ruby objects that come with all the benefits of being objects (like methods). AR then translates between those objects and the database, so you don&rsquo;t have to.</p></blockquote></li>
-</ul>
-
-
-<h2>Why not use SQL?</h2>
-
-<p>Let&rsquo;s compare SQL and AR by using a simple use case. Imagine you want to find the last item in one of the tables in your database. In SQL it will look something like this:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">SELECT</span> <span class="o">*</span>
-</span><span class='line'><span class="k">FROM</span> <span class="k">table_name</span>
-</span><span class='line'><span class="k">ORDER</span> <span class="k">BY</span> <span class="nb">date</span> <span class="k">DESC</span>
-</span><span class='line'><span class="k">LIMIT</span> <span class="mi">1</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>In Ruby, it&rsquo;s one method <code>last</code>:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">table_name</span><span class="o">.</span><span class="n">last</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Even though this is a very simple query, the difference is stark. It only gets worse as the queries become more complex.</p>
-
-<p>To summarize: AR composes SQL, submits the SQL, parses the output, and puts it in a Ruby object&ndash;all in one fell swoop. Now you can retweet Logan with confidence and let the world know that Active Record is, indeed, the shit.</p>
-
-	</section>
-
-    </article>
-
 
 <nav class="pagination" role="pagination">
   
@@ -1274,7 +1315,7 @@ The other idea was this: if we have the coordinates of the items&#8217; location
 
 
   </main>
-  <footer class="site-footer"><a class="subscribe icon-feed" href="http://joshuabamboo.github.io/atom.xml"><span class="tooltip">Subscribe!</span></a>
+  <footer class="site-footer"><a class="subscribe icon-feed" href="http:///atom.xml"><span class="tooltip">Subscribe!</span></a>
 
 
 <div class="inner">
@@ -1293,7 +1334,7 @@ Follow me on
 
 
 
-<section class="copyright">All content copyright <a href="/">Josh Owens</a> © 2016 • All rights reserved.</section>
+<section class="copyright">All content copyright <a href="/">Josh Owens</a> © 2017 • All rights reserved.</section>
 
 <section class="poweredby">Casper theme by <a class="icon-ghost" href="http://tryghost.org">Ghost</a> &amp; Published with <a href="http://octopress.org">Octopress</a></section>
 

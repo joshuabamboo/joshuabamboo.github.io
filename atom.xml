@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Ride or Pry]]></title>
-  <link href="http://joshuabamboo.github.io/atom.xml" rel="self"/>
-  <link href="http://joshuabamboo.github.io/"/>
-  <updated>2016-05-16T23:19:15-04:00</updated>
-  <id>http://joshuabamboo.github.io/</id>
+  <link href="http:///atom.xml" rel="self"/>
+  <link href="http:///"/>
+  <updated>2017-08-31T02:05:49-04:00</updated>
+  <id>http:///</id>
   <author>
     <name><![CDATA[Josh Owens]]></name>
     
@@ -14,10 +14,105 @@
 
   
   <entry>
+    <title type="html"><![CDATA[You're Whiteboarding All Wrong]]></title>
+    <link href="http:///blog/2017/08/31/youre-whiteboarding-all-wrong/"/>
+    <updated>2017-08-31T00:32:11-04:00</updated>
+    <id>http:///blog/2017/08/31/youre-whiteboarding-all-wrong</id>
+    <content type="html"><![CDATA[<p>I’ve done a number of white boarding challenges, and they all terrify me. Something about them.
+The best way I can describe it is that feeling you get when you’re taking a test you didn&rsquo;t study for. You’re given a problem - you&rsquo;ve never seen it before - but you <em>need</em> to have the answer.
+It&rsquo;s a miserable feeling. Some people shut down and leave the page blank. Some ramble in the hopes that they might stumble upon the answer. I’ve been guilty of both. The good <a href="news:">news:</a> This is not a test.</p>
+
+<p><img src="https://media.giphy.com/media/10gtBUqL2PNHBS/giphy.gif" alt="" /></p>
+
+<p>YOU AIN&rsquo;T GOT THE ANSWERS, SWAY! Luckily, you don’t need them.</p>
+
+<h4>White boarding is a discussion.</h4>
+
+<p>With a test, you&rsquo;re given a problem. There are two possible outcomes: pass or fail. If you know the answer you pass; if not, you fail.</p>
+
+<p>With a discussion, you are given a problem. You don’t need to know the solution. In fact, if you did it would ruin the whole thing. There would be nothing to discuss.
+Your job is to do your best to make the problem approachable. They want to walk through the process with you. Watch your brain work. It’s okay to be Sway.</p>
+
+<p>With a test, the process might look something like this:</p>
+
+<h5>Problem -> Solution -> Harder Problem -> Revised Solution -> Add complexity -> Next solution…</h5>
+
+<p>With a discussion, it&rsquo;s a very different story.</p>
+
+<h5>Problem -> Questions -> Clarify problem -> Restate the problem -> Discuss scoped problem -> Exploration…</h5>
+
+<p>Notice, the major difference between these two: The discussion has no solution in sight. That does not mean that you will not arrive at a solution. It&rsquo;s just that there is much to consider before a solution begins to reveal itself. Let&rsquo;s take a look at what these differing approaches may look like in practice.</p>
+
+<h2>Examples</h2>
+
+<p>Here is a recent example of a whiteboard challenge. Let’s take a look at how it went, and then compare how it might’ve gone using this more structured discussion approach.</p>
+
+<p>The Problem: Determine whether the following code will compile/How you would determine if there was a missing curly bracket: <code>var greeting = {</code></p>
+
+<h3>Test Approach</h3>
+
+<p>I asked a few clarifying questions. Could I assume it was a a string? If so, I could split a string and then go through an array to find the opening and closing brackets. When in the test mindset, the pressure of producing some result leaves you leaping toward a solution.</p>
+
+<p>Boom. Naive solution. Split the string. Iterate through the collection. If you find the an open bracket, continue iterating and look for its partner.</p>
+
+<p>We discussed. In an attempt to clarify, I jotted down a basic implementation.</p>
+
+<p>He added complexity. What happens if we have nested brackets: <code>{ greetingCount: [[1],2]}</code></p>
+
+<p>I tried reworking the initial solution for the new case. When that hit a dead end, I attempted another path: regex. After all, regex is made for pattern matching. This led to us going down rabbit holes because I committed early on to this solution. It was hard to switch gears.</p>
+
+<p><img src="https://media.giphy.com/media/26uflOGFZAKurnp7O/giphy.gif" alt="" /></p>
+
+<h3>Discussion Approach</h3>
+
+<p>Now, let&rsquo;s compare that experience with the back and forth of the discussion approach. Again, notice how there is no solution in Problem -> Questions -> Clarify problem -> Restate the problem -> Discuss scoped problem -> Exploration.</p>
+
+<p><strong>Question</strong></p>
+
+<p>Can we assume it&rsquo;s a string? Are these the only two characters we want to check for? Should it be a method? If so, should it return a boolean value?</p>
+
+<p><strong>Clarify</strong></p>
+
+<p>These starter questions give you a chance to get more info about the problem. In my example, the interviewer gave me a key detail that I missed. “You don’t need to write code.” I should’ve used this opportunity to ask even more questions. If no code, should we explore different algorithms? Data structures? Pseudocode? This would give me the chance to scope the problem even further.</p>
+
+<p><strong>Restate</strong></p>
+
+<p>Depending on the conversation, the new restated problem might be something like: <em>What data structure could you use to find connected components in a string?</em></p>
+
+<p><strong>Discuss</strong></p>
+
+<p>Notice we have the same problem, but a whole new direction for the conversation. Now we can talk about data structures.</p>
+
+<ol>
+<li><p>Array - This is where I could explore the initial string solution from above. It could be useful because we have the indexed position of the character.</p></li>
+<li><p>Hash - A hash could potentially be used to keep track of a character’s count and position. It seems complex. Probably too complex, but we could always revisit.</p></li>
+<li><p>Linked list - Probably not ideal for this one.</p></li>
+<li><p>Stack - Could we add the characters to a stack and keep track of each one using LIFO?</p></li>
+<li><p>Queue - Or maybe we could use FIFO to queue up the characters?</p></li>
+</ol>
+
+
+<p><strong>Explore</strong></p>
+
+<p>Again, this continues the discussion. “A stack seems to make the most sense, let&rsquo;s explore it&hellip;”</p>
+
+<p>Rather than a teacher/student dynamic, this approach creates a sort of partnership between you and the interviewer where you are working together. This is, after all, what you will be doing with this person if you get the job.</p>
+
+<p><img src="https://media.giphy.com/media/Jylb9PZHvJZSg/giphy.gif" alt="" /></p>
+
+<h2>Final Thoughts</h2>
+
+<p>Hindsight’s 20/20, so the example is admittedly a bit contrived. But the important takeaway for me is the back and forth with the interviewer. Notice there is no code yet (just like the interviewer suggested). The discussion allows for you to better understand the problem. It allows the interviewer to learn a little bit about your thought process and what you know. In fact, it&rsquo;s a great way to show off your breadth in real time.</p>
+
+<p>Treat it like you’re making a web app. You don’t go immediately from idea to production. There are a ton of steps in between, and most don’t involve code. You have domain model sketches, wireframes, Trello boards with user stories, tests, bugs, conversations with friends, colleagues and rubber ducks. The whiteboard is a microcosm of this. Creating a back and forth with your interviewer is just a way of showcasing some of those skills.</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Postmortem: Whiteboard Challenge]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2016/05/09/post-mortem-whiteboard-challenge/"/>
+    <link href="http:///blog/2016/05/09/post-mortem-whiteboard-challenge/"/>
     <updated>2016-05-09T02:10:45-04:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2016/05/09/post-mortem-whiteboard-challenge</id>
+    <id>http:///blog/2016/05/09/post-mortem-whiteboard-challenge</id>
     <content type="html"><![CDATA[<h5>What I learned and how I would face the problem today</h5>
 
 <p>During an interview with a large tech company, I was asked to solve the following problem:</p>
@@ -450,9 +545,9 @@ The other idea was this: if we have the coordinates of the items&#8217; location
   
   <entry>
     <title type="html"><![CDATA[How To Debug Hitting API Rate Limits]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2016/02/18/hitting-twitters-api-rate-limit/"/>
+    <link href="http:///blog/2016/02/18/hitting-twitters-api-rate-limit/"/>
     <updated>2016-02-18T22:43:58-05:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2016/02/18/hitting-twitters-api-rate-limit</id>
+    <id>http:///blog/2016/02/18/hitting-twitters-api-rate-limit</id>
     <content type="html"><![CDATA[<h2>Step 1: <code>p</code> All Over the Code</h2>
 
 <p>The ruby method <code>p</code> (<code>puts</code> works fine too. The only difference between the two is their return values. We don&rsquo;t care about return values in this case.) allows you to put strings to the console. We will use this as a tool to track the flow of our program by putting them in key places and describing where we are/what is happening in the code. Keep in mind that the purpose of these <code>p</code> statements is to read them later in the terminal to assess what code is being run and when. These will go everywhere: <code>p "&lt;&lt;where we are/what is happening in the code&gt;&gt;"</code></p>
@@ -461,7 +556,7 @@ The other idea was this: if we have the coordinates of the items&#8217; location
 
 <p>Put <code>p "Controller#action line number"</code> <em>on each line</em> of the triggered <code>Controller#Action</code>.</p>
 
-<p><img src="http://joshuabamboo.github.io/images/twitter-api/controller.png" /></p></blockquote>
+<p><img src="http:///images/twitter-api/controller.png" /></p></blockquote>
 
 <hr />
 
@@ -469,7 +564,7 @@ The other idea was this: if we have the coordinates of the items&#8217; location
 
 <p>Put <code>p "Model#method_name"</code> at the top of each method in the model where the API is called.</p>
 
-<p><img src="http://joshuabamboo.github.io/images/twitter-api/model.png" /></p></blockquote>
+<p><img src="http:///images/twitter-api/model.png" /></p></blockquote>
 
 <hr />
 
@@ -477,7 +572,7 @@ The other idea was this: if we have the coordinates of the items&#8217; location
 
 <p>Loops are the primary suspect for too many API calls, so we&rsquo;ll want to pay special attention to them. <code>p "Model#method_name loop"</code></p>
 
-<p><img src="http://joshuabamboo.github.io/images/twitter-api/model-loop.png" /></p></blockquote>
+<p><img src="http:///images/twitter-api/model-loop.png" /></p></blockquote>
 
 <hr />
 
@@ -491,7 +586,7 @@ The other idea was this: if we have the coordinates of the items&#8217; location
 </ul>
 
 
-<p><img src="http://joshuabamboo.github.io/images/twitter-api/client.png" /></p></blockquote>
+<p><img src="http:///images/twitter-api/client.png" /></p></blockquote>
 
 <h2>Step 2: Run the Code</h2>
 
@@ -502,7 +597,7 @@ The other idea was this: if we have the coordinates of the items&#8217; location
 <p>Here&rsquo;s the moment of truth. Go to the terminal where your server is running. Immediately following the request, you should see all of the <code>p</code> strings being put to the console as each line is run.</p>
 
 <p><video controls loop width="800" autoplay>
-  <source src="http://joshuabamboo.github.io/images/twitter-api/api-hell.mp4" type="video/mp4">
+  <source src="http:///images/twitter-api/api-hell.mp4" type="video/mp4">
 </video></p>
 
 <h2>Step 4: Detective Work</h2>
@@ -511,15 +606,15 @@ The other idea was this: if we have the coordinates of the items&#8217; location
 
 <p>In this particular case, notice that <code>TwitterDirt#get_user_timeline loop</code> is where it hits the rate limit.</p>
 
-<p><img src="http://joshuabamboo.github.io/images/twitter-api/terminal-output.png" /></p>
+<p><img src="http:///images/twitter-api/terminal-output.png" /></p>
 
 <p>Let&rsquo;s take a closer look at that loop.</p>
 
-<p><img src="http://joshuabamboo.github.io/images/twitter-api/detective-work.png" /></p>
+<p><img src="http:///images/twitter-api/detective-work.png" /></p>
 
 <p>The number of times we iterate is determined by the <code>TwitterDirt#number_of_pages</code> method. Let&rsquo;s put a binding in there and see what&rsquo;s happening.</p>
 
-<p><img src="http://joshuabamboo.github.io/images/twitter-api/pry.png" /></p>
+<p><img src="http:///images/twitter-api/pry.png" /></p>
 
 <p>It looks like we found our problem (one of them, at least)! This particular user has 155 pages of tweets. We have to send a request to Twitter for each page of tweets we want to access. Twitter only allows <a href="https://dev.twitter.com/rest/public/rate-limiting">180 API calls every 15 minutes</a>. <strong>This one request uses ~90% of the allowed calls.</strong> There&rsquo;s nothing we can do about Twitter&rsquo;s decision to only allow 180 calls, so we have to limit the number of pages we search.</p>
 
@@ -531,7 +626,7 @@ The other idea was this: if we have the coordinates of the items&#8217; location
 
 <p>What this means is that 16 should be the max number of API calls to get a user&rsquo;s timeline. After the 16th call, Twitter stops sending back the intended response. Consequently, <code>TwitterDirt#number_of_pages</code> should return an integer no greater than 16.</p>
 
-<p><img src="http://joshuabamboo.github.io/images/twitter-api/number-of-pages.png" /></p>
+<p><img src="http:///images/twitter-api/number-of-pages.png" /></p>
 
 <p><strong>This single line of code just saved us 139 API calls!</strong></p>
 
@@ -548,15 +643,15 @@ The other idea was this: if we have the coordinates of the items&#8217; location
 
 <p>This gets into application design (I could do a whole other blog post on refactoring this app). Notice in the controller a new <code>User</code> instance is created. And all the <code>TwitterDirt</code> is called on that <code>@user</code>.</p>
 
-<p><img src="http://joshuabamboo.github.io/images/twitter-api/user-trouble.png" /></p>
+<p><img src="http:///images/twitter-api/user-trouble.png" /></p>
 
 <p>Let&rsquo;s take a look at the <code>User</code> model.</p>
 
-<p><img src="http://joshuabamboo.github.io/images/twitter-api/user-model-trouble.png" /></p>
+<p><img src="http:///images/twitter-api/user-model-trouble.png" /></p>
 
 <p>Aha! Three new instances. Bad. Bad. Bad. Let&rsquo;s refactor the controller to interact directly with one instance of <code>TwitterDirt</code>.</p>
 
-<p><img src="http://joshuabamboo.github.io/images/twitter-api/refactored-controller.png" /></p>
+<p><img src="http:///images/twitter-api/refactored-controller.png" /></p>
 
 <p>That should do it. We&rsquo;ve gone from >180 API calls per request to 19.</p>
 
@@ -571,9 +666,9 @@ The other idea was this: if we have the coordinates of the items&#8217; location
   
   <entry>
     <title type="html"><![CDATA[Manipulating Server Response Using Rails After Filters]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2015/12/19/manipulating-server-response-using-rails-after-filters/"/>
+    <link href="http:///blog/2015/12/19/manipulating-server-response-using-rails-after-filters/"/>
     <updated>2015-12-19T19:39:25-05:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2015/12/19/manipulating-server-response-using-rails-after-filters</id>
+    <id>http:///blog/2015/12/19/manipulating-server-response-using-rails-after-filters</id>
     <content type="html"><![CDATA[<p>I recently created a website for <a href="http://coreycambridge.com/">a musician friend</a>. As a music site, it naturally contained</p>
 
 <p><a href="http://guides.rubyonrails.org/action_controller_overview.html#after-filters-and-around-filters">After Filters</a></p>
@@ -584,9 +679,9 @@ The other idea was this: if we have the coordinates of the items&#8217; location
   
   <entry>
     <title type="html"><![CDATA[We're Programmers, Dammit]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2015/09/06/were-programmers-dammit/"/>
+    <link href="http:///blog/2015/09/06/were-programmers-dammit/"/>
     <updated>2015-09-06T14:17:55-04:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2015/09/06/were-programmers-dammit</id>
+    <id>http:///blog/2015/09/06/were-programmers-dammit</id>
     <content type="html"><![CDATA[<p>This is a phrase I borrowed from <a href="http://hostiledeveloper.com/">programmer extraordinaire Steven Nunez</a>. I love this sentiment. I love the idea that we aren&rsquo;t limited to consuming the Internet. We can be an active participant.</p>
 
 <p>In this edition of &ldquo;We&rsquo;re Programmers, Dammit&rdquo;, I&rsquo;ll walk through how I used a Chrome Extension to change the functionality of an unwanted feature of a website. I will walk through the basic steps for getting a Chrome Extension up and running. The project lives at <a href="https://github.com/joshuabamboo/fias">this Github repository</a>.</p>
@@ -620,11 +715,11 @@ The other idea was this: if we have the coordinates of the items&#8217; location
 
 
 <p>To get the directory into Chrome, we must first go to <code>chrome://extensions/</code> in your Chrome browser. Next, click the <code>Developer Mode</code> checkbox at the top right. It should look like this:
-<img src="http://joshuabamboo.github.io/images/chrome-ext.png" /></p>
+<img src="http:///images/chrome-ext.png" /></p>
 
 <p>Next, locate the directory in your finder, and drag the entire folder into the browser opened to <code>chrome://extensions/</code>. Chrome allows you to drop the entire folder to load it into Chrome. It&rsquo;s as simple as that. You&rsquo;ll only have to do this step once. Any changes you make to the files will now be available in Chrome one you reload (<code>cmd + r</code>) the page. Click the <code>Enable</code> checkbox, and you&rsquo;ve got yourself a Chrome Extension.</p>
 
-<p><img src="http://joshuabamboo.github.io/images/chrome-drag.png" /></p>
+<p><img src="http:///images/chrome-drag.png" /></p>
 
 <p>Protip: If you get an error at this phase, more than likely you have a syntax error. Check your json formatting (check your commas) and try again.</p>
 
@@ -632,7 +727,7 @@ The other idea was this: if we have the coordinates of the items&#8217; location
 
 <p>Congrats! You officially have a Chrome Extension. The downside is, it doesn&rsquo;t do anything. Let&rsquo;s fix that. In my case, I wanted to remove a social feature on <a href="http://learn.co">Learn.co</a>. The site looks like this. I&rsquo;m feeling particularly antisocial today, so I want to get rid of everything in the red box.</p>
 
-<p><img src="http://joshuabamboo.github.io/images/chrome-ext-learn-before.png" /></p>
+<p><img src="http:///images/chrome-ext-learn-before.png" /></p>
 
 <p>Back to <code>manifest.json</code>. We&rsquo;ll need to add some <code>content_scripts</code> to the manifest.</p>
 
@@ -683,7 +778,7 @@ The other idea was this: if we have the coordinates of the items&#8217; location
   }
 </code></pre>
 
-<p><img src="http://joshuabamboo.github.io/images/chrome-ext-learn-after.png" /></p>
+<p><img src="http:///images/chrome-ext-learn-after.png" /></p>
 
 <p>It&rsquo;s as simple as that. With a few lines of code we&rsquo;ve completely removed an unwanted feature because we&rsquo;re programmers, dammit!</p>
 ]]></content>
@@ -691,9 +786,9 @@ The other idea was this: if we have the coordinates of the items&#8217; location
   
   <entry>
     <title type="html"><![CDATA[Hacking RewardsGold.com: Part 3]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2015/02/23/hacking-rewards-gold-part-3/"/>
+    <link href="http:///blog/2015/02/23/hacking-rewards-gold-part-3/"/>
     <updated>2015-02-23T23:39:02-05:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2015/02/23/hacking-rewards-gold-part-3</id>
+    <id>http:///blog/2015/02/23/hacking-rewards-gold-part-3</id>
     <content type="html"><![CDATA[<p>One of the mantras of behavioral economics is &ldquo;make it simple.&rdquo; In the spirit of simplifying my series on revealing vulnerabilities at RewardsGold.com, I decided to throw together a web app. Running a script or even manipulating a form field in the Chrome console can be too complex. I wanted something I could send to my mom, and she would have no problem understanding and walking through the process.</p>
 
 <p><a href="#">Protect your forms</a></p>
@@ -702,9 +797,9 @@ The other idea was this: if we have the coordinates of the items&#8217; location
   
   <entry>
     <title type="html"><![CDATA[Refactoring Tic Tac Toe]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2015/02/16/refactoring-tic-tac-toe/"/>
+    <link href="http:///blog/2015/02/16/refactoring-tic-tac-toe/"/>
     <updated>2015-02-16T23:43:50-05:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2015/02/16/refactoring-tic-tac-toe</id>
+    <id>http:///blog/2015/02/16/refactoring-tic-tac-toe</id>
     <content type="html"><![CDATA[<p>Oh, how far I&rsquo;ve come since I began this coding journey. So much of our journey as code newbies is focused on how much we still have to learn, but it&rsquo;s a good exercise to reflect on how far you&rsquo;ve come. For me, this came in the form of refactoring a game of tic tac toe.</p>
 
 <p>As much as it makes me cringe, I&rsquo;m sharing my first ever attempt at coding something in Ruby:</p>
@@ -880,9 +975,9 @@ The other idea was this: if we have the coordinates of the items&#8217; location
   
   <entry>
     <title type="html"><![CDATA[Hacking RewardsGold.com: Part 2]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2015/01/30/hacking-rewardsgold-dot-com-part-2/"/>
+    <link href="http:///blog/2015/01/30/hacking-rewardsgold-dot-com-part-2/"/>
     <updated>2015-01-30T23:22:05-05:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2015/01/30/hacking-rewardsgold-dot-com-part-2</id>
+    <id>http:///blog/2015/01/30/hacking-rewardsgold-dot-com-part-2</id>
     <content type="html"><![CDATA[<p>If you haven&rsquo;t read part one, you can find it <a href="http://joshuabamboo.github.io/blog/2015/01/25/hacking-rewardsgold-dot-com/">here</a>. If you have, you&rsquo;ll recall that I wrote a script to submit the invite form for points on rewardsgold.com. This works perfectly fine; however, while tinkering with their form I discovered a flaw.</p>
 
 <p>Beware of form data. This one line of code left Rewards Gold vulnerable:</p>
@@ -898,9 +993,9 @@ The other idea was this: if we have the coordinates of the items&#8217; location
   
   <entry>
     <title type="html"><![CDATA[Hacking RewardsGold.com: Part 1]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2015/01/25/hacking-rewardsgold-dot-com/"/>
+    <link href="http:///blog/2015/01/25/hacking-rewardsgold-dot-com/"/>
     <updated>2015-01-25T21:50:29-05:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2015/01/25/hacking-rewardsgold-dot-com</id>
+    <id>http:///blog/2015/01/25/hacking-rewardsgold-dot-com</id>
     <content type="html"><![CDATA[<p><a href="http://www.rewardsgold.com/">Rewards Gold</a> is one of those sites where you earn points, and the points then act as currency for products in the Rewards Gold store. There are several ways to earn points, but the one that caught my attention was the &ldquo;Invite Friends&rdquo; option. Simple enough: 250 points for each friend you refer.</p>
 
 <p>At this point I should mention that their store consists almost entirely of magazine and newspaper subscriptions. One of which caught my eye - The Economist. A year of The Economist can set you back anywhere from $350-$120 (i.e. well worth my time).</p>
@@ -949,9 +1044,9 @@ The other idea was this: if we have the coordinates of the items&#8217; location
   
   <entry>
     <title type="html"><![CDATA[Flatiron Students Present - Timber]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2015/01/20/flatiron-presents-timber/"/>
+    <link href="http:///blog/2015/01/20/flatiron-presents-timber/"/>
     <updated>2015-01-20T15:00:28-05:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2015/01/20/flatiron-presents-timber</id>
+    <id>http:///blog/2015/01/20/flatiron-presents-timber</id>
     <content type="html"><![CDATA[<p><img src="../images/timber-home.png" width="650" alt="Timber homepage" /></p>
 
 <p>Timber is an application my partner and I built and presented at Flatiron Students Present Meetup. We wanted to create a fun application that we&rsquo;d enjoy making and presenting. We wanted to dive pretty heavily into relational databases. And we wanted a good way to really get a grasp of Active Record. Behold, Timber was born.</p>
@@ -1065,9 +1160,9 @@ The other idea was this: if we have the coordinates of the items&#8217; location
   
   <entry>
     <title type="html"><![CDATA[Explaining Active Record]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2015/01/15/explaining-active-record/"/>
+    <link href="http:///blog/2015/01/15/explaining-active-record/"/>
     <updated>2015-01-15T14:27:31-05:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2015/01/15/explaining-active-record</id>
+    <id>http:///blog/2015/01/15/explaining-active-record</id>
     <content type="html"><![CDATA[<blockquote class="twitter-tweet" lang="en"><p>ActiveRecord is the shit. <a href="https://twitter.com/hashtag/coding?src=hash">#coding</a> <a href="https://twitter.com/hashtag/justsayin?src=hash">#justsayin</a> <a href="https://twitter.com/hashtag/rails?src=hash">#rails</a></p>&mdash; Logan Hasson (@loganhasson) <a href="https://twitter.com/loganhasson/status/396801652399030273">November 3, 2013</a></blockquote>
 
 
@@ -1120,9 +1215,9 @@ The other idea was this: if we have the coordinates of the items&#8217; location
   
   <entry>
     <title type="html"><![CDATA[JavaScript Semicolons: When to use them;]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2014/12/01/a-javascript-weekend/"/>
+    <link href="http:///blog/2014/12/01/a-javascript-weekend/"/>
     <updated>2014-12-01T09:21:01-05:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2014/12/01/a-javascript-weekend</id>
+    <id>http:///blog/2014/12/01/a-javascript-weekend</id>
     <content type="html"><![CDATA[<p>For someone making the switch from Ruby to JavaScript, the first thing you may notice is JavaScript&rsquo;s ineligant obsession with semicolons. They&rsquo;re everywhere!</p>
 
 <p>Here are some quick and dirty tips to determine whether or not that line should have a semicolon.</p>
@@ -1154,36 +1249,36 @@ The other idea was this: if we have the coordinates of the items&#8217; location
   
   <entry>
     <title type="html"><![CDATA[The Secret Project: Day 3]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-3/"/>
+    <link href="http:///blog/2014/11/24/the-secret-project-day-3/"/>
     <updated>2014-11-24T21:46:45-05:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-3</id>
+    <id>http:///blog/2014/11/24/the-secret-project-day-3</id>
     <content type="html"><![CDATA[<p>Integration with Soundcloud</p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[The Secret Project: Day 2]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-2/"/>
+    <link href="http:///blog/2014/11/24/the-secret-project-day-2/"/>
     <updated>2014-11-24T09:20:48-05:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-2</id>
+    <id>http:///blog/2014/11/24/the-secret-project-day-2</id>
     <content type="html"><![CDATA[<p>Event Handlers</p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[The Secret Project: Day 1]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-1/"/>
+    <link href="http:///blog/2014/11/24/the-secret-project-day-1/"/>
     <updated>2014-11-24T09:20:28-05:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2014/11/24/the-secret-project-day-1</id>
+    <id>http:///blog/2014/11/24/the-secret-project-day-1</id>
     <content type="html"><![CDATA[<p>Make it work.</p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Lessons from My First Meetup Presentation]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2014/11/24/lessons-from-my-first-meetup-presentation/"/>
+    <link href="http:///blog/2014/11/24/lessons-from-my-first-meetup-presentation/"/>
     <updated>2014-11-24T09:19:56-05:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2014/11/24/lessons-from-my-first-meetup-presentation</id>
+    <id>http:///blog/2014/11/24/lessons-from-my-first-meetup-presentation</id>
     <content type="html"><![CDATA[<h2>1. Only build what you need.</h2>
 
 <p>My partner and I spent the beginning of the week building out a user model, controller, and view. It was beautiful. You could make a user profile, and edit it. It was styled nicely. Only problem was: we weren&rsquo;t demoing user signup, and we definitely weren&rsquo;t editing a user&rsquo;s profile. Stick with what you need.</p>
@@ -1204,9 +1299,9 @@ The other idea was this: if we have the coordinates of the items&#8217; location
   
   <entry>
     <title type="html"><![CDATA[Top 6 Keyboard Shortcuts You Can Use Constantly]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2014/11/24/top-10-life-changing-keyboard-shortcuts/"/>
+    <link href="http:///blog/2014/11/24/top-10-life-changing-keyboard-shortcuts/"/>
     <updated>2014-11-24T09:18:16-05:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2014/11/24/top-10-life-changing-keyboard-shortcuts</id>
+    <id>http:///blog/2014/11/24/top-10-life-changing-keyboard-shortcuts</id>
     <content type="html"><![CDATA[<p>Okay, so you&rsquo;ve <a href="http://joshuabamboo.github.io/blog/2014/11/12/test/">modified your keyboard to make the Caps Lock a more useful button</a>. Now, let&rsquo;s actually put that new Control(^) button to use.</p>
 
 <h2>Here are my top 6 time-saving shortcuts I use constantly:</h2>
@@ -1245,9 +1340,9 @@ The other idea was this: if we have the coordinates of the items&#8217; location
   
   <entry>
     <title type="html"><![CDATA[The Developers Keyboard]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2014/11/12/test/"/>
+    <link href="http:///blog/2014/11/12/test/"/>
     <updated>2014-11-12T09:15:51-05:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2014/11/12/test</id>
+    <id>http:///blog/2014/11/12/test</id>
     <content type="html"><![CDATA[<p>As a developer you&rsquo;ll spend a lot of time working with your keyboard, and consequently you&rsquo;ll start to learn all the shortcuts to optimize your workflow. One of the most useful hacks I&rsquo;ve found is to replace the caps lock functionality for another control button.</p>
 
 <p>If you&rsquo;re using OS X v.10.9 (Mavericks), just follow these simple steps:</p>
@@ -1267,9 +1362,9 @@ The other idea was this: if we have the coordinates of the items&#8217; location
   
   <entry>
     <title type="html"><![CDATA[Best Flatiron Food]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2014/11/05/your-title-in-there/"/>
+    <link href="http:///blog/2014/11/05/your-title-in-there/"/>
     <updated>2014-11-05T19:31:56-05:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2014/11/05/your-title-in-there</id>
+    <id>http:///blog/2014/11/05/your-title-in-there</id>
     <content type="html"><![CDATA[<p>Dear future Flatiron colleagues,</p>
 
 <p>Chipotle, The Korean food at the deli in the basement, Indian food cart, GoGo Grill, Murphy&rsquo;s Tavern, Tres Carnes, Chop&rsquo;t, Hale and Hearty, Kungfu Tea.</p>
@@ -1281,46 +1376,12 @@ Ruby-006</p>
   
   <entry>
     <title type="html"><![CDATA[Computer Man]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2014/11/03/computer-man/"/>
+    <link href="http:///blog/2014/11/03/computer-man/"/>
     <updated>2014-11-03T09:25:06-05:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2014/11/03/computer-man</id>
+    <id>http:///blog/2014/11/03/computer-man</id>
     <content type="html"><![CDATA[<p><a href="http://www.youtube.com/watch?feature=player_embedded&v=NWD7iqtOJSE
 " target="_blank"><img src="http://img.youtube.com/vi/NWD7iqtOJSE/0.jpg"
 alt="Computer Man" width="240" height="180" border="10" /></a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[TIL Konstantin Haase Rebuilt Sinatra... in 6 lines!]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2014/10/27/til-konstantin-haase-rebuilt-sinatra-dot-dot-dot-in-6-lines/"/>
-    <updated>2014-10-27T20:44:47-04:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2014/10/27/til-konstantin-haase-rebuilt-sinatra-dot-dot-dot-in-6-lines</id>
-    <content type="html"><![CDATA[<p>That&rsquo;s right - 6 Lines.</p>
-
-<p>Sinatra, a stripped-down alternative to Ruby frameworks like Rails, is known for being lightweight and flexible. It&rsquo;s not a framework and doesn&rsquo;t require using the Model-View-Controller architecture pattern. Even still, a simple DSL like Sinatra has a lot going on behind the scenes. Sinatra is just under 2,000 lines of code (LOC). Rails, by comparison, is ??,???.</p>
-
-<p>Konstantin Haase managed to create a Sinatra clone called <a href="https://github.com/rkh/almost-sinatra">Almost Sinatra</a> using just 6 lines of code. Here&rsquo;s it is:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="sx">%w.rack tilt date INT TERM.</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">l</span><span class="o">|</span><span class="nb">trap</span><span class="p">(</span><span class="n">l</span><span class="p">){</span><span class="vg">$r</span><span class="o">.</span><span class="n">stop</span><span class="p">}</span><span class="k">rescue</span> <span class="nb">require</span> <span class="n">l</span><span class="p">};</span><span class="vg">$u</span><span class="o">=</span><span class="no">Date</span><span class="p">;</span><span class="vg">$z</span><span class="o">=</span><span class="p">(</span><span class="vg">$u</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">year</span> <span class="o">+</span> <span class="mi">145</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">;</span><span class="nb">puts</span> <span class="s2">&quot;== Almost Sinatra/No Version has taken the stage on </span><span class="si">#$z</span><span class="s2"> for development with backup from Webrick&quot;</span>
-</span><span class='line'><span class="vg">$n</span><span class="o">=</span><span class="no">Module</span><span class="o">.</span><span class="n">new</span><span class="p">{</span><span class="kp">extend</span> <span class="no">Rack</span><span class="p">;</span><span class="n">a</span><span class="p">,</span><span class="n">D</span><span class="p">,</span><span class="n">S</span><span class="p">,</span><span class="n">q</span><span class="o">=</span><span class="no">Rack</span><span class="o">::</span><span class="no">Builder</span><span class="o">.</span><span class="n">new</span><span class="p">,</span><span class="no">Object</span><span class="o">.</span><span class="n">method</span><span class="p">(</span><span class="ss">:define_method</span><span class="p">),</span><span class="sr">/@@ *([^\n]+)\n(((?!@@)[^\n]*\n)*)/m</span>
-</span><span class='line'><span class="sx">%w[get post put delete]</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">m</span><span class="o">|</span><span class="n">D</span><span class="o">.</span><span class="p">(</span><span class="n">m</span><span class="p">){</span><span class="o">|</span><span class="n">u</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="o">|</span><span class="n">a</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">u</span><span class="p">){</span><span class="n">run</span><span class="o">-&gt;</span><span class="p">(</span><span class="n">e</span><span class="p">){</span><span class="o">[</span><span class="mi">200</span><span class="p">,{</span><span class="s2">&quot;Content-Type&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;text/html&quot;</span><span class="p">},</span><span class="o">[</span><span class="n">a</span><span class="o">.</span><span class="n">instance_eval</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="p">)</span><span class="o">]]</span><span class="p">}}}}</span>
-</span><span class='line'><span class="no">Tilt</span><span class="o">.</span><span class="n">mappings</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">|</span><span class="n">D</span><span class="o">.</span><span class="p">(</span><span class="n">k</span><span class="p">){</span><span class="o">|</span><span class="n">n</span><span class="p">,</span><span class="o">*</span><span class="n">o</span><span class="o">|</span><span class="vg">$t</span><span class="o">||=</span><span class="p">(</span><span class="n">h</span><span class="o">=</span><span class="vg">$u</span><span class="o">.</span><span class="n">_jisx0301</span><span class="p">(</span><span class="s2">&quot;hash, please&quot;</span><span class="p">);</span><span class="no">File</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="nb">caller</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="sr">/^[^:]+/</span><span class="o">]</span><span class="p">)</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">S</span><span class="p">){</span><span class="o">|</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="o">|</span><span class="n">h</span><span class="o">[</span><span class="n">a</span><span class="o">]=</span><span class="n">b</span><span class="p">};</span><span class="n">h</span><span class="p">);</span><span class="n">v</span><span class="o">[</span><span class="mi">0</span><span class="o">].</span><span class="n">new</span><span class="p">(</span><span class="o">*</span><span class="n">o</span><span class="p">){</span><span class="n">n</span><span class="o">==</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">n</span><span class="si">}</span><span class="s2">&quot;</span><span class="sc">?n</span><span class="p">:</span><span class="vg">$t</span><span class="o">[</span><span class="n">n</span><span class="o">.</span><span class="n">to_s</span><span class="o">]</span><span class="p">}</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">o</span><span class="o">[</span><span class="mi">0</span><span class="o">].</span><span class="n">try</span><span class="p">(</span><span class="ss">:[]</span><span class="p">,</span><span class="ss">:locals</span><span class="p">)</span><span class="o">||</span><span class="p">{})}}</span>
-</span><span class='line'><span class="sx">%w[set enable disable configure helpers use register]</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">m</span><span class="o">|</span><span class="n">D</span><span class="o">.</span><span class="p">(</span><span class="n">m</span><span class="p">){</span><span class="o">|*</span><span class="n">_</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="o">|</span><span class="n">b</span><span class="o">.</span><span class="n">try</span> <span class="ss">:[]</span><span class="p">}};</span><span class="k">END</span><span class="p">{</span><span class="no">Rack</span><span class="o">::</span><span class="no">Handler</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;webrick&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="ss">Port</span><span class="p">:</span><span class="vg">$z</span><span class="p">){</span><span class="o">|</span><span class="n">s</span><span class="o">|</span><span class="vg">$r</span><span class="o">=</span><span class="n">s</span><span class="p">}}</span>
-</span><span class='line'><span class="sx">%w[params session]</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">m</span><span class="o">|</span><span class="n">D</span><span class="o">.</span><span class="p">(</span><span class="n">m</span><span class="p">){</span><span class="n">q</span><span class="o">.</span><span class="n">send</span> <span class="n">m</span><span class="p">}};</span><span class="n">a</span><span class="o">.</span><span class="n">use</span> <span class="no">Rack</span><span class="o">::</span><span class="no">Session</span><span class="o">::</span><span class="no">Cookie</span><span class="p">;</span><span class="n">a</span><span class="o">.</span><span class="n">use</span> <span class="no">Rack</span><span class="o">::</span><span class="no">Lock</span><span class="p">;</span><span class="n">D</span><span class="o">.</span><span class="p">(</span><span class="ss">:before</span><span class="p">){</span><span class="o">|&amp;</span><span class="n">b</span><span class="o">|</span><span class="n">a</span><span class="o">.</span><span class="n">use</span> <span class="no">Rack</span><span class="o">::</span><span class="no">Config</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="p">};</span><span class="n">before</span><span class="p">{</span><span class="o">|</span><span class="n">e</span><span class="o">|</span><span class="n">q</span><span class="o">=</span><span class="no">Rack</span><span class="o">::</span><span class="no">Request</span><span class="o">.</span><span class="n">new</span> <span class="n">e</span><span class="p">;</span><span class="n">q</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">dup</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">|</span><span class="n">params</span><span class="o">[</span><span class="n">k</span><span class="o">.</span><span class="n">to_sym</span><span class="o">]=</span><span class="n">v</span><span class="p">}}}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img src="https://p.gr-assets.com/540x540/fit/hostedimages/1383924783/6705751.gif" alt="Mind Blown" /></p>
-
-<p>This is obviously just a fun exercize. As he explains in <a href="http://vimeo.com/61087285">this video on obfuscation</a>, this was just &ldquo;an interesting project I did on the weekend.&rdquo; <a href="http://oi39.tinypic.com/14b6nmu.jpg">#NoBigDeal</a></p>
-
-<p>Give the video a look and check him out of twitter <a href="https://twitter.com/konstantinhaase">@konstantinhaase</a>. Not only is the content interesting, he&rsquo;s a really funny guy.</p>
 ]]></content>
   </entry>
   

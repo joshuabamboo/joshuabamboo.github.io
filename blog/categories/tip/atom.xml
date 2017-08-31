@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: tip | Ride or Pry]]></title>
-  <link href="http://joshuabamboo.github.io/blog/categories/tip/atom.xml" rel="self"/>
-  <link href="http://joshuabamboo.github.io/"/>
-  <updated>2016-05-16T23:19:15-04:00</updated>
-  <id>http://joshuabamboo.github.io/</id>
+  <link href="http:///blog/categories/tip/atom.xml" rel="self"/>
+  <link href="http:///"/>
+  <updated>2017-08-31T02:05:49-04:00</updated>
+  <id>http:///</id>
   <author>
     <name><![CDATA[Josh Owens]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Top 6 Keyboard Shortcuts You Can Use Constantly]]></title>
-    <link href="http://joshuabamboo.github.io/blog/2014/11/24/top-10-life-changing-keyboard-shortcuts/"/>
+    <link href="http:///blog/2014/11/24/top-10-life-changing-keyboard-shortcuts/"/>
     <updated>2014-11-24T09:18:16-05:00</updated>
-    <id>http://joshuabamboo.github.io/blog/2014/11/24/top-10-life-changing-keyboard-shortcuts</id>
+    <id>http:///blog/2014/11/24/top-10-life-changing-keyboard-shortcuts</id>
     <content type="html"><![CDATA[<p>Okay, so you&rsquo;ve <a href="http://joshuabamboo.github.io/blog/2014/11/12/test/">modified your keyboard to make the Caps Lock a more useful button</a>. Now, let&rsquo;s actually put that new Control(^) button to use.</p>
 
 <h2>Here are my top 6 time-saving shortcuts I use constantly:</h2>
